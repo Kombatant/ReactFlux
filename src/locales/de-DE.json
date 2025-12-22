@@ -113,6 +113,11 @@
     "mark_all_as_read_error": "Alles als gelesen markieren fehlgeschlagen",
     "mark_all_as_read_confirm": "Alles als gelesen markieren?",
     "mark_all_as_read_tooltip": "Alles als gelesen markieren",
+    "mark_as_read_options_tooltip": "Optionen: als gelesen markieren",
+    "mark_as_read_menu_older_day": "Artikel älter als ein Tag",
+    "mark_as_read_menu_older_week": "Artikel älter als eine Woche",
+    "mark_older_than_day_confirm": "Artikel, die älter als ein Tag sind, als gelesen markieren?",
+    "mark_older_than_week_confirm": "Artikel, die älter als eine Woche sind, als gelesen markieren?",
     "refresh_tooltip": "Neu laden"
   },
   "article_toc": {

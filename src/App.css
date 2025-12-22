@@ -1,9 +1,37 @@
 .app {
   display: grid;
-  grid-template-columns: 240px 1fr;
-  grid-template-areas: "sidebar main";
+  --pane-splitter-size: 8px;
+  grid-template-columns: 240px var(--pane-splitter-size) 1fr;
+  grid-template-areas: "sidebar splitter main";
   background-color: var(--color-neutral-2);
   height: 100%;
+}
+
+.pane-splitter {
+  grid-area: splitter;
+  width: var(--pane-splitter-size);
+  height: 100%;
+  cursor: col-resize;
+  touch-action: none;
+  position: relative;
+  background-color: transparent;
+}
+
+.pane-splitter::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100%;
+  background-color: var(--color-border-2);
+  opacity: 0.4;
+}
+
+.pane-splitter:hover::after,
+.pane-splitter.is-dragging::after {
+  opacity: 1;
 }
 
 .arco-btn-secondary:not(.arco-btn-disabled):has(svg) {
@@ -46,8 +74,8 @@
 
   .app {
     display: grid;
-    grid-template-columns: 240px 1fr;
-    grid-template-areas: "sidebar main";
+    grid-template-columns: 240px var(--pane-splitter-size) 1fr;
+    grid-template-areas: "sidebar splitter main";
     border-radius: var(--border-radius-medium);
     height: 100%;
     overflow: hidden;
@@ -74,8 +102,8 @@
 
 @media screen and (max-width: 992px) {
   .app {
-    grid-template-columns: 0 1fr;
-    grid-template-areas: "sidebar main";
+    grid-template-columns: 0 0 1fr;
+    grid-template-areas: "sidebar splitter main";
     height: 100%;
   }
 

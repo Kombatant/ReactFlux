@@ -113,6 +113,11 @@
     "mark_all_as_read_error": "无法标记所有文章为已读",
     "mark_all_as_read_confirm": "标记所有文章为已读？",
     "mark_all_as_read_tooltip": "标记所有文章为已读",
+    "mark_as_read_options_tooltip": "标记为已读选项",
+    "mark_as_read_menu_older_day": "一天前的文章",
+    "mark_as_read_menu_older_week": "一周前的文章",
+    "mark_older_than_day_confirm": "将一天前的文章标记为已读？",
+    "mark_older_than_week_confirm": "将一周前的文章标记为已读？",
     "refresh_tooltip": "刷新"
   },
   "article_toc": {

@@ -61,6 +61,10 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
   const { fetchArticleList } = useArticleList(info, getEntries)
   const { isBelowMedium } = useScreenWidth()
 
+  const [entryListWidth, setEntryListWidth] = useState(420)
+  const [isResizingEntryList, setIsResizingEntryList] = useState(false)
+  const contentSplitRef = useRef(null)
+
   const fetchArticleListOnly = async () => {
     await (isAppDataReady ? fetchArticleList(getEntries) : fetchAppData())
   }
@@ -201,12 +205,58 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
     }
   }, [params])
 
+  const handleEntryListSplitterPointerDown = (event) => {
+    if (isBelowMedium) {
+      return
+    }
+
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return
+    }
+
+    const container = contentSplitRef.current
+    if (!container) {
+      return
+    }
+
+    event.preventDefault()
+
+    const startX = event.clientX
+    const startWidth = entryListWidth
+
+    const minWidth = 280
+    const minRightPaneWidth = 320
+    const splitterSize = 8
+
+    document.body.style.userSelect = "none"
+    setIsResizingEntryList(true)
+
+    const handlePointerMove = (moveEvent) => {
+      const delta = moveEvent.clientX - startX
+      const containerWidth = container.getBoundingClientRect().width
+      const maxWidth = Math.max(minWidth, containerWidth - minRightPaneWidth - splitterSize)
+      const nextWidth = Math.min(maxWidth, Math.max(minWidth, startWidth + delta))
+      setEntryListWidth(nextWidth)
+    }
+
+    const handlePointerUp = () => {
+      document.body.style.userSelect = ""
+      setIsResizingEntryList(false)
+      globalThis.removeEventListener("pointermove", handlePointerMove)
+      globalThis.removeEventListener("pointerup", handlePointerUp)
+    }
+
+    globalThis.addEventListener("pointermove", handlePointerMove)
+    globalThis.addEventListener("pointerup", handlePointerUp)
+  }
+
   return (
-    <>
+    <div ref={contentSplitRef} className="content-split">
       <div
         className="entry-col"
         style={{
           opacity: isBelowMedium && isArticleLoading ? 0 : 1,
+          width: isBelowMedium ? undefined : entryListWidth,
         }}
       >
         <SearchAndSortBar />
@@ -222,8 +272,25 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
           refreshArticleList={fetchArticleListWithRelatedData}
         />
       </div>
+      {isBelowMedium ? null : (
+        <div
+          aria-label="Resize entry list"
+          aria-orientation="vertical"
+          role="separator"
+          className={
+            isResizingEntryList
+              ? "pane-splitter content-splitter is-dragging"
+              : "pane-splitter content-splitter"
+          }
+          onPointerDown={handleEntryListSplitterPointerDown}
+        />
+      )}
       {activeContent ? (
-        <div className="article-container content-wrapper" {...handlers}>
+        <div
+          className="article-container content-wrapper"
+          style={isBelowMedium ? undefined : { flex: 1, minWidth: 0 }}
+          {...handlers}
+        >
           {!isBelowMedium && <ActionButtons />}
           {isArticleLoading ? (
             <div style={{ flex: 1 }} />
@@ -247,14 +314,17 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
           {isBelowMedium && <ActionButtons />}
         </div>
       ) : (
-        <div className="content-empty content-wrapper">
+        <div
+          className="content-empty content-wrapper"
+          style={isBelowMedium ? undefined : { flex: 1, minWidth: 0 }}
+        >
           <IconEmpty style={{ fontSize: "64px" }} />
           <Typography.Title heading={6} style={{ color: "var(--color-text-3)", marginTop: "10px" }}>
             ReactFlux
           </Typography.Title>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

@@ -1,19 +1,21 @@
-import { Button, Notification, Popconfirm, Radio } from "@arco-design/web-react"
+import { Button, Dropdown, Menu, Notification, Popconfirm, Radio } from "@arco-design/web-react"
 import {
   IconAlignLeft,
   IconCheck,
+  IconClockCircle,
   IconRecord,
   IconRefresh,
   IconStarFill,
 } from "@arco-design/web-react/icon"
 import { useStore } from "@nanostores/react"
-import { useEffect } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import {
   getAllEntries,
   getCategoryEntries,
   getCounters,
   getFeedEntries,
+  getTodayEntries,
   updateEntriesStatus,
 } from "@/apis"
 import CustomTooltip from "@/components/ui/CustomTooltip"
@@ -21,10 +23,48 @@ import { polyglotState } from "@/hooks/useLanguage"
 import { contentState, setEntries } from "@/store/contentState"
 import { dataState, setUnreadInfo, setUnreadTodayCount } from "@/store/dataState"
 import { settingsState, updateSettings } from "@/store/settingsState"
+import { get24HoursAgoTimestamp } from "@/utils/date"
 import "./FooterPanel.css"
 
-const updateAllEntriesAsRead = () => {
-  setEntries((prev) => prev.map((entry) => ({ ...entry, status: "read" })))
+const getUnixSecondsFromDateString = (dateString) => {
+  if (!dateString) {
+    return null
+  }
+  if (/^\d+$/.test(dateString)) {
+    return Number(dateString)
+  }
+  const timeMs = Date.parse(dateString)
+  return Number.isFinite(timeMs) ? Math.floor(timeMs / 1000) : null
+}
+
+const fetchAllUnreadEntries = async (fetchEntries) => {
+  let unreadResponse = await fetchEntries()
+  const unreadCount = unreadResponse.total
+  let unreadEntries = unreadResponse.entries
+
+  if (unreadCount > unreadEntries.length) {
+    const fullResponse = await fetchEntries({ limit: unreadCount })
+    unreadEntries = fullResponse.entries
+  }
+
+  return unreadEntries
+}
+
+const updateEntriesAsRead = (publishedBeforeUnix = null) => {
+  setEntries((prev) =>
+    prev.map((entry) => {
+      if (publishedBeforeUnix == null) {
+        return { ...entry, status: "read" }
+      }
+
+      const publishedAtUnix = getUnixSecondsFromDateString(entry.published_at)
+      if (publishedAtUnix != null && publishedAtUnix <= publishedBeforeUnix) {
+        return { ...entry, status: "read" }
+      }
+
+      return entry
+    }),
+  )
 }
 
 const handleFilterChange = (value) => {
@@ -37,18 +77,47 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
   const { showStatus } = useStore(settingsState)
   const { polyglot } = useStore(polyglotState)
 
-  const handleMarkAllAsRead = async () => {
-    try {
-      await (filterDate && info.from !== "today" ? handleFilteredMarkAsRead() : markAllAsRead())
+  const MenuItem = Menu.Item
 
-      await updateUIAfterMarkAsRead()
-    } catch (error) {
-      console.error("Failed to mark all as read:", error)
-      Notification.error({
-        title: polyglot.t("article_list.mark_all_as_read_error"),
-        content: error.message,
-      })
+  const [dropdownVisible, setDropdownVisible] = useState(false)
+  const [confirmVisible, setConfirmVisible] = useState(false)
+  const [pendingAction, setPendingAction] = useState(null)
+
+  const confirmTitle = useMemo(() => {
+    switch (pendingAction) {
+      case "older-day": {
+        return polyglot.t("article_list.mark_older_than_day_confirm")
+      }
+      case "older-week": {
+        return polyglot.t("article_list.mark_older_than_week_confirm")
+      }
+      case "all": {
+        return polyglot.t("article_list.mark_all_as_read_confirm")
+      }
+      default: {
+        return ""
+      }
     }
+  }, [pendingAction, polyglot])
+
+  const updateUIAfterMarkAsRead = async (publishedBeforeUnix = null) => {
+    updateEntriesAsRead(publishedBeforeUnix)
+
+    const countersData = await getCounters()
+    const unreadInfo = {}
+    for (const feed of feedsData) {
+      unreadInfo[feed.id] = countersData.unreads[feed.id] ?? 0
+    }
+
+    setUnreadInfo(unreadInfo)
+
+    if (info.from === "today" && publishedBeforeUnix == null) {
+      setUnreadTodayCount(0)
+    }
+
+    Notification.success({
+      title: polyglot.t("article_list.mark_all_as_read_success"),
+    })
   }
 
   const handleFilteredMarkAsRead = async () => {
@@ -61,14 +130,9 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
     }
 
     const fetchEntries = entryFetchers[info.from]
-    let unreadResponse = await fetchEntries("unread")
-    const unreadCount = unreadResponse.total
-    let unreadEntries = unreadResponse.entries
-
-    if (unreadCount > unreadEntries.length) {
-      const fullResponse = await fetchEntries("unread", { limit: unreadCount })
-      unreadEntries = fullResponse.entries
-    }
+    const unreadEntries = await fetchAllUnreadEntries((options = {}) =>
+      fetchEntries("unread", options),
+    )
 
     if (unreadEntries.length > 0) {
       const unreadEntryIds = unreadEntries.map((entry) => entry.id)
@@ -76,24 +140,59 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
     }
   }
 
-  const updateUIAfterMarkAsRead = async () => {
-    updateAllEntriesAsRead()
-
-    const countersData = await getCounters()
-    const unreadInfo = {}
-    for (const feed of feedsData) {
-      unreadInfo[feed.id] = countersData.unreads[feed.id] ?? 0
+  const handleMarkAllAsRead = async () => {
+    try {
+      await (filterDate && info.from !== "today" ? handleFilteredMarkAsRead() : markAllAsRead())
+      await updateUIAfterMarkAsRead()
+    } catch (error) {
+      console.error("Failed to mark all as read:", error)
+      Notification.error({
+        title: polyglot.t("article_list.mark_all_as_read_error"),
+        content: error.message,
+      })
     }
+  }
 
-    setUnreadInfo(unreadInfo)
+  const handleMarkOlderThanAsRead = async (publishedBeforeUnix) => {
+    try {
+      const starred = showStatus === "starred"
 
-    if (info.from === "today") {
-      setUnreadTodayCount(0)
+      const entryFetchers = {
+        all: (options = {}) =>
+          getAllEntries("unread", { published_before: publishedBeforeUnix, ...options }),
+        today: (options = {}) =>
+          getTodayEntries("unread", { published_before: publishedBeforeUnix, ...options }),
+        feed: (options = {}) =>
+          getFeedEntries(info.id, "unread", starred, {
+            published_before: publishedBeforeUnix,
+            ...options,
+          }),
+        category: (options = {}) =>
+          getCategoryEntries(info.id, "unread", starred, {
+            published_before: publishedBeforeUnix,
+            ...options,
+          }),
+      }
+
+      const fetchEntries = entryFetchers[info.from]
+      if (!fetchEntries) {
+        return
+      }
+
+      const unreadEntries = await fetchAllUnreadEntries(fetchEntries)
+      if (unreadEntries.length > 0) {
+        const unreadEntryIds = unreadEntries.map((entry) => entry.id)
+        await updateEntriesStatus(unreadEntryIds, "read")
+      }
+
+      await updateUIAfterMarkAsRead(publishedBeforeUnix)
+    } catch (error) {
+      console.error("Failed to mark older entries as read:", error)
+      Notification.error({
+        title: polyglot.t("article_list.mark_all_as_read_error"),
+        content: error.message,
+      })
     }
-
-    Notification.success({
-      title: polyglot.t("article_list.mark_all_as_read_success"),
-    })
   }
 
   const baseFilterOptions = [
@@ -135,23 +234,75 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
     }
   }, [info.from, showStatus])
 
+  const openConfirm = (action) => {
+    setPendingAction(action)
+    setDropdownVisible(false)
+    setConfirmVisible(true)
+  }
+
+  const handleConfirmOk = () => {
+    if (pendingAction === "older-day") {
+      return handleMarkOlderThanAsRead(get24HoursAgoTimestamp())
+    }
+    if (pendingAction === "older-week") {
+      return handleMarkOlderThanAsRead(Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60)
+    }
+    return handleMarkAllAsRead()
+  }
+
+  const handleConfirmVisibleChange = (visible) => {
+    if (!visible) {
+      setConfirmVisible(false)
+      setPendingAction(null)
+    }
+  }
+
   return (
     <div className="entry-panel">
-      <Popconfirm
-        focusLock
-        title={polyglot.t("article_list.mark_all_as_read_confirm")}
-        onOk={handleMarkAllAsRead}
+      <Dropdown
+        popupVisible={dropdownVisible}
+        position="tr"
+        trigger="click"
+        droplist={
+          <Menu>
+            <MenuItem key="older-than-day" onClick={() => openConfirm("older-day")}>
+              <IconClockCircle className="icon-right" />
+              {polyglot.t("article_list.mark_as_read_menu_older_day")}
+            </MenuItem>
+
+            <MenuItem key="older-than-week" onClick={() => openConfirm("older-week")}>
+              <IconClockCircle className="icon-right" />
+              {polyglot.t("article_list.mark_as_read_menu_older_week")}
+            </MenuItem>
+
+            <MenuItem key="mark-all-as-read" onClick={() => openConfirm("all")}>
+              <IconCheck className="icon-right" />
+              {polyglot.t("article_list.mark_all_as_read_tooltip")}
+            </MenuItem>
+          </Menu>
+        }
+        onVisibleChange={setDropdownVisible}
       >
-        <CustomTooltip mini content={polyglot.t("article_list.mark_all_as_read_tooltip")}>
-          <Button
-            icon={<IconCheck />}
-            shape="circle"
-            style={{
-              visibility: ["starred", "history"].includes(info.from) ? "hidden" : "visible",
-            }}
-          />
-        </CustomTooltip>
-      </Popconfirm>
+        <Popconfirm
+          focusLock
+          popupVisible={confirmVisible}
+          title={confirmTitle}
+          triggerProps={{ disabled: true }}
+          onOk={handleConfirmOk}
+          onVisibleChange={handleConfirmVisibleChange}
+        >
+          <CustomTooltip mini content={polyglot.t("article_list.mark_as_read_options_tooltip")}>
+            <Button
+              icon={<IconCheck />}
+              shape="circle"
+              style={{
+                visibility: ["starred", "history"].includes(info.from) ? "hidden" : "visible",
+              }}
+            />
+          </CustomTooltip>
+        </Popconfirm>
+      </Dropdown>
+
       <Radio.Group
         style={{ visibility: info.from === "history" ? "hidden" : "visible" }}
         type="button"
@@ -160,6 +311,7 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
       >
         {filterOptions.map((option) => renderRadioButton(option))}
       </Radio.Group>
+
       <CustomTooltip mini content={polyglot.t("article_list.refresh_tooltip")}>
         <Button
           icon={<IconRefresh />}

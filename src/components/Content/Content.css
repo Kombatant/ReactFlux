@@ -1,9 +1,18 @@
+.content-split {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
 .article-container {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   background-color: var(--color-bg-1);
-  width: 100%;
+  flex: 1;
+  min-width: 0;
+  width: auto;
   box-shadow: var(--shadow);
   border-radius: var(--border-radius-medium);
   margin: 10px 10px 10px 0;
@@ -22,11 +31,14 @@
   box-shadow: var(--shadow);
   border-radius: var(--border-radius-medium);
   margin: 10px 10px 10px 0;
+  min-width: 0;
 }
 
 .entry-col {
   display: flex;
   flex-direction: column;
+  flex: 0 0 auto;
+  min-width: 0;
 }
 
 .swipe-hint {

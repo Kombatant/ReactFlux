@@ -2,9 +2,19 @@
 import { execSync } from "node:child_process"
 import { writeFileSync } from "node:fs"
 
+const safeExec = (command) => {
+  try {
+    return execSync(command, { stdio: ["ignore", "pipe", "ignore"] })
+      .toString()
+      .trim()
+  } catch {
+    return null
+  }
+}
+
 const versionInfo = {
-  gitHash: execSync("git rev-parse --short HEAD").toString().trim(),
-  gitDate: execSync("git log -1 --format=%cd --date=iso").toString().trim(),
+  gitHash: safeExec("git rev-parse --short HEAD") ?? "dev",
+  gitDate: safeExec("git log -1 --format=%cd --date=iso") ?? new Date().toISOString(),
 }
 
 writeFileSync("src/version-info.json", JSON.stringify(versionInfo, null, 2))

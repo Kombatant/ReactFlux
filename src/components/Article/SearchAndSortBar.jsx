@@ -203,7 +203,7 @@ const SearchAndSortBar = () => {
   }
 
   return (
-    <div className="search-and-sort-bar" style={{ width: isBelowMedium ? "100%" : 370 }}>
+    <div className="search-and-sort-bar" style={{ width: "100%" }}>
       <SidebarTrigger />
       <div className="page-info">
         <div className="title-container">

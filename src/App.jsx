@@ -5,7 +5,7 @@ import esES from "@arco-design/web-react/es/locale/es-ES"
 import frFR from "@arco-design/web-react/es/locale/fr-FR"
 import zhCN from "@arco-design/web-react/es/locale/zh-CN"
 import { useStore } from "@nanostores/react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import "./App.css"
 import Main from "./components/Main/Main"
@@ -28,6 +28,8 @@ const localMap = {
 
 const getLocale = (language) => localMap[language] || enUS
 
+const clampNumber = (value, min, max) => Math.min(max, Math.max(min, value))
+
 const App = () => {
   useLanguage()
   useTheme()
@@ -37,6 +39,9 @@ const App = () => {
 
   const { isBelowLarge } = useScreenWidth()
 
+  const [sidebarWidth, setSidebarWidth] = useState(240)
+  const [isResizingSidebar, setIsResizingSidebar] = useState(false)
+
   const { polyglot } = useStore(polyglotState)
   const { language } = useStore(settingsState)
   const locale = getLocale(language)
@@ -44,6 +49,39 @@ const App = () => {
   useEffect(() => {
     hideSpinner()
   }, [])
+
+  const handleSidebarSplitterPointerDown = (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return
+    }
+
+    event.preventDefault()
+
+    const startX = event.clientX
+    const startWidth = sidebarWidth
+
+    const minWidth = 180
+    const maxWidth = 480
+
+    document.body.style.userSelect = "none"
+    setIsResizingSidebar(true)
+
+    const handlePointerMove = (moveEvent) => {
+      const delta = moveEvent.clientX - startX
+      const nextWidth = clampNumber(startWidth + delta, minWidth, maxWidth)
+      setSidebarWidth(nextWidth)
+    }
+
+    const handlePointerUp = () => {
+      document.body.style.userSelect = ""
+      setIsResizingSidebar(false)
+      globalThis.removeEventListener("pointermove", handlePointerMove)
+      globalThis.removeEventListener("pointerup", handlePointerUp)
+    }
+
+    globalThis.addEventListener("pointermove", handlePointerMove)
+    globalThis.addEventListener("pointerup", handlePointerUp)
+  }
 
   useEffect(() => {
     if (hasUpdate) {
@@ -71,7 +109,7 @@ const App = () => {
               size="small"
               type="primary"
               onClick={() => {
-                window.open(`https://github.com/${GITHUB_REPO_PATH}/commits/main`, "_blank")
+                globalThis.open(`https://github.com/${GITHUB_REPO_PATH}/commits/main`, "_blank")
                 Notification.remove(id)
               }}
             >
@@ -86,17 +124,39 @@ const App = () => {
   return (
     polyglot && (
       <ConfigProvider locale={locale}>
-        <div className="app">
+        <div
+          className="app"
+          style={
+            isBelowLarge
+              ? undefined
+              : {
+                  gridTemplateColumns: `${sidebarWidth}px var(--pane-splitter-size) 1fr`,
+                }
+          }
+        >
           {isBelowLarge ? null : (
             <Layout.Sider
               breakpoint="lg"
               className="sidebar"
               collapsible={false}
               trigger={null}
-              width={240}
+              width={sidebarWidth}
             >
               <Sidebar />
             </Layout.Sider>
+          )}
+          {isBelowLarge ? null : (
+            <div
+              aria-label="Resize sidebar"
+              aria-orientation="vertical"
+              role="separator"
+              className={
+                isResizingSidebar
+                  ? "pane-splitter app-splitter is-dragging"
+                  : "pane-splitter app-splitter"
+              }
+              onPointerDown={handleSidebarSplitterPointerDown}
+            />
           )}
           <Main />
         </div>

@@ -113,6 +113,11 @@
     "mark_all_as_read_error": "Impossible de marquer tous les articles comme lus",
     "mark_all_as_read_confirm": "Marquer tous les articles comme lus ?",
     "mark_all_as_read_tooltip": "Marquer tous les articles comme lus",
+    "mark_as_read_options_tooltip": "Options de marquage comme lu",
+    "mark_as_read_menu_older_day": "Articles datant de plus d’un jour",
+    "mark_as_read_menu_older_week": "Articles datant de plus d’une semaine",
+    "mark_older_than_day_confirm": "Marquer comme lus les articles datant de plus d’un jour ?",
+    "mark_older_than_week_confirm": "Marquer comme lus les articles datant de plus d’une semaine ?",
     "refresh_tooltip": "Rafraîchir"
   },
   "article_toc": {

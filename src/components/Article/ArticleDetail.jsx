@@ -366,7 +366,11 @@ const ArticleDetail = forwardRef((_, ref) => {
     if (isBelowMedium) {
       return "90%"
     }
-    return `${articleWidth}ch`
+
+    // Map settings range to pane-relative width:
+    // 100 => 90% of pane, linear for other values (e.g. 75 => 67.5%).
+    const widthPercent = Math.min(100, Math.max(0, articleWidth * 0.9))
+    return `${widthPercent}%`
   }
 
   // pretty footnotes
@@ -440,7 +444,7 @@ const ArticleDetail = forwardRef((_, ref) => {
               fontSize: `${fontSize}rem`,
               maxWidth: getResponsiveMaxWidth(),
               fontFamily: fontFamily,
-              "--article-width": articleWidth,
+              "--article-width": articleWidth * 0.9,
             }}
           >
             {isMedia && mediaPlayerEnclosure && (
