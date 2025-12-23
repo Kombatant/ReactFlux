@@ -101,6 +101,12 @@ p {
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior-y: contain;
+  background: transparent;
+}
+
+.scroll-container .simplebar-content-wrapper,
+.scroll-container .simplebar-content {
+  background: transparent;
 }
 
 /* 文章标题链接样式 */

@@ -9,7 +9,9 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  background: var(--right-pane-surface-background);
+  background-color: var(--color-bg-1);
+  position: relative;
+  overflow: hidden;
   flex: 1;
   min-width: 0;
   width: auto;
@@ -27,11 +29,51 @@
   align-items: center;
   padding: 40px 16px;
   color: var(--color-text-3);
-  background: var(--right-pane-surface-background);
+  background-color: var(--color-bg-1);
+  position: relative;
+  overflow: hidden;
   box-shadow: var(--shadow);
   border-radius: var(--border-radius-medium);
   margin: 10px 10px 10px 0;
   min-width: 0;
+}
+
+.article-container::before,
+.content-empty::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.article-container > *,
+.content-empty > * {
+  position: relative;
+  z-index: 1;
+}
+
+body:not([arco-theme="dark"]) .article-container::before,
+body:not([arco-theme="dark"]) .content-empty::before {
+  background-image: linear-gradient(
+    180deg,
+    var(--color-neutral-2) 0%,
+    var(--color-bg-1) 5%,
+    var(--color-bg-1) 95%,
+    var(--color-neutral-2) 100%
+  );
+}
+
+body[arco-theme="dark"] .article-container::before,
+body[arco-theme="dark"] .content-empty::before {
+  background-image: linear-gradient(
+    180deg,
+    rgba(23, 23, 26, 0) 0%,
+    rgba(0, 0, 0, 1) 5%,
+    rgba(0, 0, 0, 1) 95%,
+    rgba(23, 23, 26, 0) 100%
+  );
 }
 
 .entry-col {
