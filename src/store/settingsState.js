@@ -4,6 +4,8 @@ import { getBrowserLanguage } from "@/utils/locales"
 
 const defaultValue = {
   articleWidth: 75,
+  sidebarWidth: 240,
+  entryListWidth: 420,
   compactSidebarGroups: true,
   coverDisplayMode: "auto",
   edgeToEdgeImages: false,
@@ -55,6 +57,14 @@ export const settingsState = persistentAtom("settings", defaultValue, {
       const migrated = raw > 90 ? raw * 0.9 : raw
       const clamped = Math.min(90, Math.max(50, migrated))
       storedValue.articleWidth = Math.round(clamped / 5) * 5
+    }
+
+    if (typeof storedValue.sidebarWidth === "number") {
+      storedValue.sidebarWidth = Math.min(480, Math.max(180, storedValue.sidebarWidth))
+    }
+
+    if (typeof storedValue.entryListWidth === "number") {
+      storedValue.entryListWidth = Math.min(900, Math.max(280, storedValue.entryListWidth))
     }
 
     return { ...defaultValue, ...storedValue }

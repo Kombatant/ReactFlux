@@ -31,7 +31,7 @@ import {
 } from "@/store/contentState"
 import { dataState } from "@/store/dataState"
 import { duplicateHotkeysState } from "@/store/hotkeysState"
-import { settingsState } from "@/store/settingsState"
+import { settingsState, updateSettings } from "@/store/settingsState"
 
 import "./Content.css"
 
@@ -39,8 +39,14 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
   const { activeContent, entries, filterDate, filterString, isArticleLoading } =
     useStore(contentState)
   const { isAppDataReady } = useStore(dataState)
-  const { enableSwipeGesture, orderBy, orderDirection, showStatus, swipeSensitivity } =
-    useStore(settingsState)
+  const {
+    enableSwipeGesture,
+    entryListWidth: storedEntryListWidth,
+    orderBy,
+    orderDirection,
+    showStatus,
+    swipeSensitivity,
+  } = useStore(settingsState)
   const { polyglot } = useStore(polyglotState)
   const duplicateHotkeys = useStore(duplicateHotkeysState)
 
@@ -61,7 +67,7 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
   const { fetchArticleList } = useArticleList(info, getEntries)
   const { isBelowMedium } = useScreenWidth()
 
-  const [entryListWidth, setEntryListWidth] = useState(420)
+  const [entryListWidth, setEntryListWidth] = useState(storedEntryListWidth ?? 420)
   const [isResizingEntryList, setIsResizingEntryList] = useState(false)
   const contentSplitRef = useRef(null)
 
@@ -223,6 +229,7 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
 
     const startX = event.clientX
     const startWidth = entryListWidth
+    let latestWidth = startWidth
 
     const minWidth = 280
     const minRightPaneWidth = 320
@@ -236,12 +243,14 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
       const containerWidth = container.getBoundingClientRect().width
       const maxWidth = Math.max(minWidth, containerWidth - minRightPaneWidth - splitterSize)
       const nextWidth = Math.min(maxWidth, Math.max(minWidth, startWidth + delta))
+      latestWidth = nextWidth
       setEntryListWidth(nextWidth)
     }
 
     const handlePointerUp = () => {
       document.body.style.userSelect = ""
       setIsResizingEntryList(false)
+      updateSettings({ entryListWidth: latestWidth })
       globalThis.removeEventListener("pointermove", handlePointerMove)
       globalThis.removeEventListener("pointerup", handlePointerUp)
     }

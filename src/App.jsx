@@ -15,7 +15,7 @@ import useLanguage, { polyglotState } from "./hooks/useLanguage"
 import useScreenWidth from "./hooks/useScreenWidth"
 import useTheme from "./hooks/useTheme"
 import useVersionCheck from "./hooks/useVersionCheck"
-import { settingsState } from "./store/settingsState"
+import { settingsState, updateSettings } from "./store/settingsState"
 import { GITHUB_REPO_PATH } from "./utils/constants"
 import hideSpinner from "./utils/loading"
 
@@ -39,12 +39,12 @@ const App = () => {
 
   const { isBelowLarge } = useScreenWidth()
 
-  const [sidebarWidth, setSidebarWidth] = useState(240)
-  const [isResizingSidebar, setIsResizingSidebar] = useState(false)
-
   const { polyglot } = useStore(polyglotState)
-  const { language } = useStore(settingsState)
+  const { language, sidebarWidth: storedSidebarWidth } = useStore(settingsState)
   const locale = getLocale(language)
+
+  const [sidebarWidth, setSidebarWidth] = useState(storedSidebarWidth ?? 240)
+  const [isResizingSidebar, setIsResizingSidebar] = useState(false)
 
   useEffect(() => {
     hideSpinner()
@@ -59,6 +59,7 @@ const App = () => {
 
     const startX = event.clientX
     const startWidth = sidebarWidth
+    let latestWidth = startWidth
 
     const minWidth = 180
     const maxWidth = 480
@@ -69,12 +70,14 @@ const App = () => {
     const handlePointerMove = (moveEvent) => {
       const delta = moveEvent.clientX - startX
       const nextWidth = clampNumber(startWidth + delta, minWidth, maxWidth)
+      latestWidth = nextWidth
       setSidebarWidth(nextWidth)
     }
 
     const handlePointerUp = () => {
       document.body.style.userSelect = ""
       setIsResizingSidebar(false)
+      updateSettings({ sidebarWidth: latestWidth })
       globalThis.removeEventListener("pointermove", handlePointerMove)
       globalThis.removeEventListener("pointerup", handlePointerUp)
     }
