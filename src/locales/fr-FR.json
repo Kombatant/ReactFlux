@@ -114,10 +114,16 @@
     "mark_all_as_read_confirm": "Marquer tous les articles comme lus ?",
     "mark_all_as_read_tooltip": "Marquer tous les articles comme lus",
     "mark_as_read_options_tooltip": "Options de marquage comme lu",
-    "mark_as_read_menu_older_day": "Articles datant de plus d’un jour",
-    "mark_as_read_menu_older_week": "Articles datant de plus d’une semaine",
+    "mark_as_read_menu_older_day": "Plus d’un jour",
+    "mark_as_read_menu_older_two_days": "Plus de deux jours",
+    "mark_as_read_menu_older_three_days": "Plus de trois jours",
+    "mark_as_read_menu_older_week": "Plus d’une semaine",
+    "mark_as_read_menu_older_two_weeks": "Plus de deux semaines",
     "mark_older_than_day_confirm": "Marquer comme lus les articles datant de plus d’un jour ?",
+    "mark_older_than_two_days_confirm": "Marquer comme lus les articles datant de plus de deux jours ?",
+    "mark_older_than_three_days_confirm": "Marquer comme lus les articles datant de plus de trois jours ?",
     "mark_older_than_week_confirm": "Marquer comme lus les articles datant de plus d’une semaine ?",
+    "mark_older_than_two_weeks_confirm": "Marquer comme lus les articles datant de plus de deux semaines ?",
     "refresh_tooltip": "Rafraîchir"
   },
   "article_toc": {

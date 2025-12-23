@@ -114,10 +114,16 @@
     "mark_all_as_read_confirm": "Mark all as read?",
     "mark_all_as_read_tooltip": "Mark all as read",
     "mark_as_read_options_tooltip": "Mark As Read options",
-    "mark_as_read_menu_older_day": "Articles Older than A Day",
-    "mark_as_read_menu_older_week": "Articles Older than A Week",
+    "mark_as_read_menu_older_day": "Older than a day",
+    "mark_as_read_menu_older_two_days": "Older than two days",
+    "mark_as_read_menu_older_three_days": "Older than three days",
+    "mark_as_read_menu_older_week": "Older than a week",
+    "mark_as_read_menu_older_two_weeks": "Older than two weeks",
     "mark_older_than_day_confirm": "Mark articles older than a day as read?",
+    "mark_older_than_two_days_confirm": "Mark articles older than two days as read?",
+    "mark_older_than_three_days_confirm": "Mark articles older than three days as read?",
     "mark_older_than_week_confirm": "Mark articles older than a week as read?",
+    "mark_older_than_two_weeks_confirm": "Mark articles older than two weeks as read?",
     "refresh_tooltip": "Refresh"
   },
   "article_toc": {

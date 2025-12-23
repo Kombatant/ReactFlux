@@ -114,10 +114,16 @@
     "mark_all_as_read_confirm": "¿Marcar todo como leído?",
     "mark_all_as_read_tooltip": "Marcar todo como leído",
     "mark_as_read_options_tooltip": "Opciones para marcar como leído",
-    "mark_as_read_menu_older_day": "Artículos de hace más de un día",
-    "mark_as_read_menu_older_week": "Artículos de hace más de una semana",
+    "mark_as_read_menu_older_day": "Hace más de un día",
+    "mark_as_read_menu_older_two_days": "Hace más de dos días",
+    "mark_as_read_menu_older_three_days": "Hace más de tres días",
+    "mark_as_read_menu_older_week": "Hace más de una semana",
+    "mark_as_read_menu_older_two_weeks": "Hace más de dos semanas",
     "mark_older_than_day_confirm": "¿Marcar como leídos los artículos de hace más de un día?",
+    "mark_older_than_two_days_confirm": "¿Marcar como leídos los artículos de hace más de dos días?",
+    "mark_older_than_three_days_confirm": "¿Marcar como leídos los artículos de hace más de tres días?",
     "mark_older_than_week_confirm": "¿Marcar como leídos los artículos de hace más de una semana?",
+    "mark_older_than_two_weeks_confirm": "¿Marcar como leídos los artículos de hace más de dos semanas?",
     "refresh_tooltip": "Actualizar"
   },
   "article_toc": {

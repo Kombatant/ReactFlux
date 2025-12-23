@@ -88,8 +88,17 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
       case "older-day": {
         return polyglot.t("article_list.mark_older_than_day_confirm")
       }
+      case "older-2-days": {
+        return polyglot.t("article_list.mark_older_than_two_days_confirm")
+      }
+      case "older-3-days": {
+        return polyglot.t("article_list.mark_older_than_three_days_confirm")
+      }
       case "older-week": {
         return polyglot.t("article_list.mark_older_than_week_confirm")
+      }
+      case "older-2-weeks": {
+        return polyglot.t("article_list.mark_older_than_two_weeks_confirm")
       }
       case "all": {
         return polyglot.t("article_list.mark_all_as_read_confirm")
@@ -244,8 +253,17 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
     if (pendingAction === "older-day") {
       return handleMarkOlderThanAsRead(get24HoursAgoTimestamp())
     }
+    if (pendingAction === "older-2-days") {
+      return handleMarkOlderThanAsRead(Math.floor(Date.now() / 1000) - 2 * 24 * 60 * 60)
+    }
+    if (pendingAction === "older-3-days") {
+      return handleMarkOlderThanAsRead(Math.floor(Date.now() / 1000) - 3 * 24 * 60 * 60)
+    }
     if (pendingAction === "older-week") {
       return handleMarkOlderThanAsRead(Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60)
+    }
+    if (pendingAction === "older-2-weeks") {
+      return handleMarkOlderThanAsRead(Math.floor(Date.now() / 1000) - 14 * 24 * 60 * 60)
     }
     return handleMarkAllAsRead()
   }
@@ -270,9 +288,24 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
               {polyglot.t("article_list.mark_as_read_menu_older_day")}
             </MenuItem>
 
+            <MenuItem key="older-than-two-days" onClick={() => openConfirm("older-2-days")}>
+              <IconClockCircle className="icon-right" />
+              {polyglot.t("article_list.mark_as_read_menu_older_two_days")}
+            </MenuItem>
+
+            <MenuItem key="older-than-three-days" onClick={() => openConfirm("older-3-days")}>
+              <IconClockCircle className="icon-right" />
+              {polyglot.t("article_list.mark_as_read_menu_older_three_days")}
+            </MenuItem>
+
             <MenuItem key="older-than-week" onClick={() => openConfirm("older-week")}>
               <IconClockCircle className="icon-right" />
               {polyglot.t("article_list.mark_as_read_menu_older_week")}
+            </MenuItem>
+
+            <MenuItem key="older-than-two-weeks" onClick={() => openConfirm("older-2-weeks")}>
+              <IconClockCircle className="icon-right" />
+              {polyglot.t("article_list.mark_as_read_menu_older_two_weeks")}
             </MenuItem>
 
             <MenuItem key="mark-all-as-read" onClick={() => openConfirm("all")}>
