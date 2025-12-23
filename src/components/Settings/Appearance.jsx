@@ -19,6 +19,7 @@ const handleConfigChange = (settingsChanges) => {
 const Appearance = () => {
   const {
     coverDisplayMode,
+    fontFamily,
     lightboxSlideAnimation,
     showDetailedRelativeTime,
     showEstimatedReadingTime,
@@ -26,6 +27,28 @@ const Appearance = () => {
     themeColor,
   } = useStore(settingsState)
   const { polyglot } = useStore(polyglotState)
+
+  const fontFamilyOptions = [
+    { label: polyglot.t("appearance.font_family_system"), value: "system-ui" },
+    { label: "Sans-serif", value: "sans-serif" },
+    { label: "Serif", value: "serif" },
+    { label: "Fira Sans", value: "'Fira Sans', sans-serif" },
+    { label: "Open Sans", value: "'Open Sans', sans-serif" },
+    { label: "Source Sans Pro", value: "'Source Sans Pro', sans-serif" },
+    { label: "Source Serif Pro", value: "'Source Serif Pro', serif" },
+    {
+      label: polyglot.t("appearance.font_family_noto_sans"),
+      value: "'Noto Sans SC', sans-serif",
+    },
+    {
+      label: polyglot.t("appearance.font_family_noto_serif"),
+      value: "'Noto Serif SC', serif",
+    },
+    {
+      label: polyglot.t("appearance.font_family_lxgw_wenkai"),
+      value: "'LXGW WenKai Screen', sans-serif",
+    },
+  ]
 
   return (
     <>
@@ -64,6 +87,25 @@ const Appearance = () => {
             />
           ))}
         </div>
+      </SettingItem>
+
+      <Divider />
+
+      <SettingItem
+        description={polyglot.t("appearance.font_family_description")}
+        title={polyglot.t("appearance.font_family_label")}
+      >
+        <Select
+          className="input-select"
+          value={fontFamily}
+          onChange={(value) => handleConfigChange({ fontFamily: value })}
+        >
+          {fontFamilyOptions.map(({ label, value }) => (
+            <Select.Option key={value} value={value}>
+              {label}
+            </Select.Option>
+          ))}
+        </Select>
       </SettingItem>
 
       <Divider />

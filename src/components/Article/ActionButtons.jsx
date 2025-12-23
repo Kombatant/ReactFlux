@@ -4,7 +4,6 @@ import {
   IconAlignLeft,
   IconArrowLeft,
   IconArrowRight,
-  IconCheck,
   IconClose,
   IconCloudDownload,
   IconLaunch,
@@ -85,14 +84,8 @@ const ActionButtons = () => {
   const { polyglot } = useStore(polyglotState)
   const headings = useStore(articleHeadingsState)
 
-  const {
-    articleWidth,
-    edgeToEdgeImages,
-    enableSwipeGesture,
-    fontSize,
-    fontFamily,
-    titleAlignment,
-  } = useStore(settingsState)
+  const { articleWidth, edgeToEdgeImages, enableSwipeGesture, fontSize, titleAlignment } =
+    useStore(settingsState)
 
   const nextContent = useStore(nextContentState)
   const prevContent = useStore(prevContentState)
@@ -122,28 +115,6 @@ const ActionButtons = () => {
 
   const isUnread = activeContent.status === "unread"
   const isStarred = activeContent.starred
-
-  const fontFamilyOptions = [
-    { label: polyglot.t("appearance.font_family_system"), value: "system-ui" },
-    { label: "Sans-serif", value: "sans-serif" },
-    { label: "Serif", value: "serif" },
-    { label: "Fira Sans", value: "'Fira Sans', sans-serif" },
-    { label: "Open Sans", value: "'Open Sans', sans-serif" },
-    { label: "Source Sans Pro", value: "'Source Sans Pro', sans-serif" },
-    { label: "Source Serif Pro", value: "'Source Serif Pro', serif" },
-    {
-      label: polyglot.t("appearance.font_family_noto_sans"),
-      value: "'Noto Sans SC', sans-serif",
-    },
-    {
-      label: polyglot.t("appearance.font_family_noto_serif"),
-      value: "'Noto Serif SC', serif",
-    },
-    {
-      label: polyglot.t("appearance.font_family_lxgw_wenkai"),
-      value: "'LXGW WenKai Screen', sans-serif",
-    },
-  ]
 
   const handleShare = async () => {
     if (!navigator.share) {
@@ -340,26 +311,6 @@ const ActionButtons = () => {
                 </div>
               </Menu.Item>
             )}
-
-            <Menu.SubMenu
-              key="font-family"
-              triggerProps={{ className: "font-family-submenu" }}
-              title={
-                <div className="settings-menu-item">
-                  <span>{polyglot.t("appearance.font_family_label")}</span>
-                  <span>{fontFamilyOptions.find((opt) => opt.value === fontFamily)?.label}</span>
-                </div>
-              }
-            >
-              {fontFamilyOptions.map(({ label, value }) => (
-                <Menu.Item key={value} onClick={() => updateSettings({ fontFamily: value })}>
-                  <div className="settings-menu-item">
-                    {label}
-                    {value === fontFamily && <IconCheck />}
-                  </div>
-                </Menu.Item>
-              ))}
-            </Menu.SubMenu>
 
             <Menu.Item key="font-size">
               <div className="settings-menu-item" onClick={(e) => e.stopPropagation()}>

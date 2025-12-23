@@ -2,7 +2,8 @@
 button,
 input,
 textarea {
-  font-family:
+  font-family: var(
+    --app-font-family,
     -apple-system,
     BlinkMacSystemFont,
     PingFang SC,
@@ -15,13 +16,16 @@ textarea {
     noto,
     segoe ui,
     Arial,
-    sans-serif;
+    sans-serif
+  );
 }
 
-html {
+html,
+body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family:
+  font-family: var(
+    --app-font-family,
     -apple-system,
     BlinkMacSystemFont,
     PingFang SC,
@@ -34,7 +38,8 @@ html {
     noto,
     segoe ui,
     Arial,
-    sans-serif;
+    sans-serif
+  );
 }
 
 html,

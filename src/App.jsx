@@ -40,7 +40,7 @@ const App = () => {
   const { isBelowLarge } = useScreenWidth()
 
   const { polyglot } = useStore(polyglotState)
-  const { language, sidebarWidth: storedSidebarWidth } = useStore(settingsState)
+  const { fontFamily, language, sidebarWidth: storedSidebarWidth } = useStore(settingsState)
   const locale = getLocale(language)
 
   const [sidebarWidth, setSidebarWidth] = useState(storedSidebarWidth ?? 240)
@@ -49,6 +49,19 @@ const App = () => {
   useEffect(() => {
     hideSpinner()
   }, [])
+
+  useEffect(() => {
+    const root = globalThis?.document?.documentElement
+    if (!root) {
+      return
+    }
+
+    if (fontFamily) {
+      root.style.setProperty("--app-font-family", fontFamily)
+    } else {
+      root.style.removeProperty("--app-font-family")
+    }
+  }, [fontFamily])
 
   const handleSidebarSplitterPointerDown = (event) => {
     if (event.pointerType === "mouse" && event.button !== 0) {
