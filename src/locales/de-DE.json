@@ -296,7 +296,7 @@
     "language_label": "Sprache",
     "language_description": "Sprache wählen:",
     "font_size_label": "Schriftgröße",
-    "article_width_label": "Artikelbreite",
+    "article_width_label": "Artikelbreite (%)",
     "edge_to_edge_images_label": "Bilder von Kante bis Kante",
     "font_family_label": "Artikelschriftart",
     "font_family_system": "Standard",

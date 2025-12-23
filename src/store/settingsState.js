@@ -47,6 +47,16 @@ export const settingsState = persistentAtom("settings", defaultValue, {
   },
   decode: (str) => {
     const storedValue = JSON.parse(str)
+
+    // Backward compatibility: older versions stored `articleWidth` as `ch` (50–100).
+    // The setting is now a percentage of the article pane (50–90, step 5).
+    if (typeof storedValue.articleWidth === "number") {
+      const raw = storedValue.articleWidth
+      const migrated = raw > 90 ? raw * 0.9 : raw
+      const clamped = Math.min(90, Math.max(50, migrated))
+      storedValue.articleWidth = Math.round(clamped / 5) * 5
+    }
+
     return { ...defaultValue, ...storedValue }
   },
 })

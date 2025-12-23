@@ -296,7 +296,7 @@
     "language_label": "语言",
     "language_description": "选择您的语言：",
     "font_size_label": "字体大小",
-    "article_width_label": "文章宽度",
+    "article_width_label": "文章宽度 (%)",
     "edge_to_edge_images_label": "全宽图片",
     "font_family_label": "文章字体",
     "font_family_system": "默认",

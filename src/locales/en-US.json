@@ -296,7 +296,7 @@
     "language_label": "Language",
     "language_description": "Choose your language:",
     "font_size_label": "Font size",
-    "article_width_label": "Article width",
+    "article_width_label": "Article width (%)",
     "edge_to_edge_images_label": "Edge-to-edge images",
     "font_family_label": "Article font",
     "font_family_system": "Default",
