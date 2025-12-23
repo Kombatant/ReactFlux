@@ -1,3 +1,14 @@
+# A few words about this fork
+
+This fork was created to add some stuff that I was sorely missing from the original excellent work the ReactFlux dev have done, such as:
+
+- Mark as read functionality based on days
+- Global font setting for the app
+- Resizable panes
+- Some theme changes I was applying with Tampermonkey up until now.
+
+I can bet some stuff are broken because of these additions. Using LLMs just for fun to make these additions probably didn't help either. So, the usual; use at your own peril etc.
+
 # ReactFlux
 
 Read in other languages: [Deutsch](docs/README.de-DE.md), [Español](docs/README.es-ES.md), [Français](docs/README.fr-FR.md), [简体中文](docs/README.zh-CN.md)
