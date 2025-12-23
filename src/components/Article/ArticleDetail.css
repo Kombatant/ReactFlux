@@ -207,6 +207,7 @@ p {
   min-height: 0;
   padding: 8px 10px;
   color: var(--color-text-2);
+  background: transparent;
 }
 
 /* 文章内容引用样式 */
