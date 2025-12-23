@@ -109,7 +109,7 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
     }
   }, [pendingAction, polyglot])
 
-  const updateUIAfterMarkAsRead = async (publishedBeforeUnix = null) => {
+  const updateUIAfterMarkAsRead = async (publishedBeforeUnix = null, successMessageKey) => {
     updateEntriesAsRead(publishedBeforeUnix)
 
     const countersData = await getCounters()
@@ -124,8 +124,12 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
       setUnreadTodayCount(0)
     }
 
+    const successTitle = successMessageKey
+      ? polyglot.t(successMessageKey)
+      : polyglot.t("article_list.mark_all_as_read_success")
+
     Notification.success({
-      title: polyglot.t("article_list.mark_all_as_read_success"),
+      title: successTitle,
     })
   }
 
@@ -152,7 +156,7 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
   const handleMarkAllAsRead = async () => {
     try {
       await (filterDate && info.from !== "today" ? handleFilteredMarkAsRead() : markAllAsRead())
-      await updateUIAfterMarkAsRead()
+      await updateUIAfterMarkAsRead(null, "article_list.mark_all_as_read_success")
     } catch (error) {
       console.error("Failed to mark all as read:", error)
       Notification.error({
@@ -162,7 +166,7 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
     }
   }
 
-  const handleMarkOlderThanAsRead = async (publishedBeforeUnix) => {
+  const handleMarkOlderThanAsRead = async (publishedBeforeUnix, successMessageKey) => {
     try {
       const starred = showStatus === "starred"
 
@@ -194,7 +198,7 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
         await updateEntriesStatus(unreadEntryIds, "read")
       }
 
-      await updateUIAfterMarkAsRead(publishedBeforeUnix)
+      await updateUIAfterMarkAsRead(publishedBeforeUnix, successMessageKey)
     } catch (error) {
       console.error("Failed to mark older entries as read:", error)
       Notification.error({
@@ -251,19 +255,34 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
 
   const handleConfirmOk = () => {
     if (pendingAction === "older-day") {
-      return handleMarkOlderThanAsRead(get24HoursAgoTimestamp())
+      return handleMarkOlderThanAsRead(
+        get24HoursAgoTimestamp(),
+        "article_list.mark_older_than_day_success",
+      )
     }
     if (pendingAction === "older-2-days") {
-      return handleMarkOlderThanAsRead(Math.floor(Date.now() / 1000) - 2 * 24 * 60 * 60)
+      return handleMarkOlderThanAsRead(
+        Math.floor(Date.now() / 1000) - 2 * 24 * 60 * 60,
+        "article_list.mark_older_than_two_days_success",
+      )
     }
     if (pendingAction === "older-3-days") {
-      return handleMarkOlderThanAsRead(Math.floor(Date.now() / 1000) - 3 * 24 * 60 * 60)
+      return handleMarkOlderThanAsRead(
+        Math.floor(Date.now() / 1000) - 3 * 24 * 60 * 60,
+        "article_list.mark_older_than_three_days_success",
+      )
     }
     if (pendingAction === "older-week") {
-      return handleMarkOlderThanAsRead(Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60)
+      return handleMarkOlderThanAsRead(
+        Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60,
+        "article_list.mark_older_than_week_success",
+      )
     }
     if (pendingAction === "older-2-weeks") {
-      return handleMarkOlderThanAsRead(Math.floor(Date.now() / 1000) - 14 * 24 * 60 * 60)
+      return handleMarkOlderThanAsRead(
+        Math.floor(Date.now() / 1000) - 14 * 24 * 60 * 60,
+        "article_list.mark_older_than_two_weeks_success",
+      )
     }
     return handleMarkAllAsRead()
   }
