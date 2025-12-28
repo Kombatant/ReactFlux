@@ -3,9 +3,15 @@
 This fork was created to add some stuff that I was sorely missing from the original excellent work the ReactFlux dev have done, such as:
 
 - Mark as read functionality based on days
+<img width="721" height="443" alt="image" src="https://github.com/user-attachments/assets/879e2465-92c1-4d52-84d8-964003ff61c6" />
+
 - Global font setting for the app
+<img width="1072" height="538" alt="image" src="https://github.com/user-attachments/assets/dc340b02-423f-4c12-96c5-12723b1ead10" />
+
 - Resizable panes
 - Some theme changes I was applying with Tampermonkey up until now.
+
+<img width="1991" height="1345" alt="image" src="https://github.com/user-attachments/assets/4e69e2a5-9019-4605-926b-b3424390feae" />
 
 I can bet some stuff are broken because of these additions. Using LLMs just for fun to make these additions probably didn't help either. So, the usual; use at your own peril etc.
 
