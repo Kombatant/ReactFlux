@@ -5,7 +5,7 @@ This fork was created to add some stuff that I was sorely missing from the origi
 - Mark as read functionality based on days
 <img width="721" height="443" alt="image" src="https://github.com/user-attachments/assets/879e2465-92c1-4d52-84d8-964003ff61c6" />
 
-- Global font setting for the app
+- Global font setting for the whole app (removed the one in the article menu + made the article width percentage-based)
 <img width="1072" height="538" alt="image" src="https://github.com/user-attachments/assets/dc340b02-423f-4c12-96c5-12723b1ead10" />
 
 - Resizable panes
