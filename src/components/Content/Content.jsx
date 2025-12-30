@@ -91,7 +91,8 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
         }
 
         if (String(info.from) === String(from) && String(info.id) === String(id)) {
-          if (info.from === "category") {
+          const fullRefreshTargets = ["category", "feed", "all", "today", "starred", "history"]
+          if (fullRefreshTargets.includes(String(info.from))) {
             fetchArticleListWithRelatedData()
           } else {
             fetchArticleListOnly()
