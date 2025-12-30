@@ -5,6 +5,7 @@ import "dayjs/locale/en"
 import "dayjs/locale/es"
 import "dayjs/locale/fr"
 import "dayjs/locale/zh-cn"
+import "dayjs/locale/el"
 import { map } from "nanostores"
 import Polyglot from "node-polyglot"
 import { useEffect } from "react"
@@ -18,6 +19,7 @@ const languageToLocale = {
   de: "de",
   es: "es",
   fr: "fr",
+  "el-GR": "el",
 }
 
 export const polyglotState = map({

@@ -15,6 +15,7 @@ const languageOptions = [
   { label: "Español", value: "es-ES" },
   { label: "Français", value: "fr-FR" },
   { label: "简体中文", value: "zh-CN" },
+  { label: "Ελληνικά", value: "el-GR" },
 ]
 
 const General = () => {
