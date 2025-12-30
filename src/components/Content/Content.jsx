@@ -81,6 +81,31 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
       : fetchAppData())
   }
 
+  // Listen for external refresh requests (e.g., clicking an already-active sidebar item)
+  useEffect(() => {
+    const handler = (e) => {
+      try {
+        const { from, id } = e.detail || {}
+        if (!from) {
+          return
+        }
+
+        if (String(info.from) === String(from) && String(info.id) === String(id)) {
+          if (info.from === "category") {
+            fetchArticleListWithRelatedData()
+          } else {
+            fetchArticleListOnly()
+          }
+        }
+      } catch (error) {
+        console.error("Error handling refresh event:", error)
+      }
+    }
+
+    globalThis.addEventListener("reactflux:refresh", handler)
+    return () => globalThis.removeEventListener("reactflux:refresh", handler)
+  }, [info, fetchArticleListOnly, fetchArticleListWithRelatedData])
+
   const fetchSingleEntry = async (entryId) => {
     const existingEntry = entries.find((entry) => entry.id === Number(entryId))
 

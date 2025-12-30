@@ -83,7 +83,17 @@ const CategoryTitle = ({
   const navigate = useNavigate()
 
   const handleNavigation = () => {
-    navigate(`/category/${category.id}`)
+    const targetPath = `/category/${category.id}`
+    const isSelected = path === targetPath || path.startsWith(`${targetPath}/`)
+    if (isSelected) {
+      globalThis.dispatchEvent(
+        new CustomEvent("reactflux:refresh", { detail: { from: "category", id: category.id } }),
+      )
+      setActiveContent(null)
+      return
+    }
+
+    navigate(targetPath)
     setActiveContent(null)
   }
 
@@ -188,6 +198,16 @@ const CustomMenuItem = ({ path, Icon, label, count }) => {
   const isSelected = location.pathname === path || location.pathname.startsWith(`${path}/`)
 
   const handleNavigation = () => {
+    if (isSelected) {
+      globalThis.dispatchEvent(
+        new CustomEvent("reactflux:refresh", {
+          detail: { from: path.replace("/", "") || "all", id: "" },
+        }),
+      )
+      setActiveContent(null)
+      return
+    }
+
     navigate(path)
     setActiveContent(null)
   }
@@ -304,7 +324,16 @@ const FeedMenuItem = ({ feed, onEditFeed, onRefreshFeed, onMarkAllAsRead, onDele
         style={{ position: "relative", overflow: "hidden" }}
         onClick={(e) => {
           e.stopPropagation()
-          navigate(`/feed/${feed.id}`)
+          const targetPath = `/feed/${feed.id}`
+          if (isSelected) {
+            globalThis.dispatchEvent(
+              new CustomEvent("reactflux:refresh", { detail: { from: "feed", id: feed.id } }),
+            )
+            setActiveContent(null)
+            return
+          }
+
+          navigate(targetPath)
           setActiveContent(null)
         }}
       >
