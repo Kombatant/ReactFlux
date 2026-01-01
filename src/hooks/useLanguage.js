@@ -20,6 +20,7 @@ const languageToLocale = {
   es: "es",
   fr: "fr",
   "el-GR": "el",
+  "en-CA": "en",
 }
 
 export const polyglotState = map({
@@ -36,9 +37,9 @@ const loadLanguage = async (language, polyglot) => {
     phrases = phrasesModule.default
   } catch (error) {
     console.error("Failed to load language:", error)
-    const fallbackModule = await import("@/locales/en-US.json")
+    const fallbackModule = await import("@/locales/en-CA.json")
     phrases = fallbackModule.default
-    locale = "en-US"
+    locale = "en-CA"
   }
 
   if (polyglot) {

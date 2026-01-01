@@ -21,6 +21,7 @@ import hideSpinner from "./utils/loading"
 
 const localMap = {
   "de-DE": deDE,
+  "en-CA": enUS,
   "es-ES": esES,
   "fr-FR": frFR,
   "zh-CN": zhCN,

@@ -8,6 +8,7 @@ export const colors = {
   Yellow: { light: "#FACC15", dark: "#FACC15" },
   Green: { light: "#16A34A", dark: "#22C55E" },
   Blue: { light: "#2563EB", dark: "#3B82F6" },
+  "YInMn Blue": { light: "#306AC0", dark: "#2B5AA8" },
   Violet: { light: "#722ED1", dark: "#8E51DA" },
 }
 

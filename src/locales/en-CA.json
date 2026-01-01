@@ -288,9 +288,9 @@
     "update_content_on_fetch_description": "Automatically update and save fetched content to database"
   },
   "appearance": {
-    "theme_color_label": "Theme color",
-    "theme_color_description": "Choose your theme color",
-    "theme_color_aria_label": "Change theme color to %{color}",
+    "theme_color_label": "Theme colour",
+    "theme_color_description": "Choose your theme colour",
+    "theme_color_aria_label": "Change theme colour to %{color}",
     "cover_display_mode_label": "Article cover display mode",
     "cover_display_mode_description": "Choose how article cover images are displayed",
     "cover_display_mode_auto": "Auto",

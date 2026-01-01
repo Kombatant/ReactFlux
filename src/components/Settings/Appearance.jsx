@@ -1,4 +1,4 @@
-import { Divider, Select, Switch } from "@arco-design/web-react"
+import { Divider, Select, Switch, Tooltip } from "@arco-design/web-react"
 import { useStore } from "@nanostores/react"
 
 import SettingItem from "./SettingItem"
@@ -57,35 +57,40 @@ const Appearance = () => {
         title={polyglot.t("appearance.theme_color_label")}
       >
         <div style={{ display: "flex" }}>
-          {Object.keys(colors).map((colorName) => (
-            <div
-              key={colorName}
-              role="button"
-              tabIndex={0}
-              aria-label={polyglot.t("appearance.theme_color_aria_label", {
-                color: colorName,
-              })}
-              style={{
-                width: "18px",
-                height: "18px",
-                borderRadius: "50%",
-                margin: "2px",
-                backgroundColor: getDisplayColorValue(colorName),
-                cursor: "pointer",
-                border: "3px solid var(--color-bg-3)",
-                outline:
-                  colorName === themeColor
-                    ? `1px solid ${getDisplayColorValue(colorName)}`
-                    : "none",
-              }}
-              onClick={() => handleConfigChange({ themeColor: colorName })}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  handleConfigChange({ themeColor: colorName })
-                }
-              }}
-            />
-          ))}
+          {Object.keys(colors).map((colorName) => {
+            const hex = colors[colorName]?.light || getDisplayColorValue(colorName)
+            const tooltip = `${colorName} — ${hex}`
+            return (
+              <Tooltip key={colorName} content={tooltip} position="tl">
+                <div
+                  role="button"
+                  tabIndex={0}
+                  aria-label={polyglot.t("appearance.theme_color_aria_label", {
+                    color: colorName,
+                  })}
+                  style={{
+                    width: "18px",
+                    height: "18px",
+                    borderRadius: "50%",
+                    margin: "2px",
+                    backgroundColor: getDisplayColorValue(colorName),
+                    cursor: "pointer",
+                    border: "3px solid var(--color-bg-3)",
+                    outline:
+                      colorName === themeColor
+                        ? `1px solid ${getDisplayColorValue(colorName)}`
+                        : "none",
+                  }}
+                  onClick={() => handleConfigChange({ themeColor: colorName })}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      handleConfigChange({ themeColor: colorName })
+                    }
+                  }}
+                />
+              </Tooltip>
+            )
+          })}
         </div>
       </SettingItem>
 
