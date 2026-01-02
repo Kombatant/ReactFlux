@@ -67,6 +67,55 @@ body[arco-theme="dark"][color-name="Orange"] {
   --color-bg-5: rgb(87 83 78);
 }
 
+/* YInMn Blue -- tuned neutral/backdrop so the blue primaries pop */
+body[color-name="YInMn Blue"] {
+  --gray-1: 250 251 253;
+  --gray-2: 244 246 250;
+  --gray-3: 230 235 245;
+  --gray-4: 200 210 225;
+  --gray-5: 170 185 205;
+  --gray-6: 135 155 180;
+  --gray-7: 100 125 155;
+  --gray-8: 65 95 135;
+  --gray-9: 36 66 110;
+  --gray-10: 15 34 70;
+
+  --color-bg-1: rgb(250 251 253);
+  --color-bg-2: rgb(244 246 250);
+  --color-bg-3: rgb(230 235 245);
+  --color-bg-4: rgb(200 210 225);
+  --color-bg-5: rgb(170 185 205);
+
+  /* Arco popup surfaces (Dropdown/Select/DatePicker/Popover/etc.) */
+  --color-bg-popup: var(--color-bg-3);
+}
+
+body[arco-theme="dark"][color-name="YInMn Blue"] {
+  /* Darker grays with an extremely subtle blue hint (still reads gray) */
+  --gray-1: 10 10 13;
+  --gray-2: 16 16 20;
+  --gray-3: 34 34 42;
+  --gray-4: 56 56 68;
+  --gray-5: 86 86 106;
+  --gray-6: 110 110 132;
+  --gray-7: 138 138 162;
+  --gray-8: 170 170 198;
+  --gray-9: 204 204 230;
+  --gray-10: 236 236 250;
+
+  --color-bg-1: rgb(6 6 8);
+  --color-bg-2: rgb(14 14 18);
+  --color-bg-3: rgb(26 26 36);
+  --color-bg-4: rgb(46 46 68);
+  --color-bg-5: rgb(72 72 96);
+
+  /* Arco popup surfaces (Dropdown/Select/DatePicker/Popover/etc.) */
+  --color-bg-popup: var(--color-bg-3);
+
+  /* Some menu variants use this instead of --color-bg-popup */
+  --color-menu-dark-bg: var(--color-bg-popup);
+}
+
 body[arco-theme="dark"] .arco-radio-button::after {
   background-color: transparent;
 }
