@@ -1,7 +1,6 @@
 import { Button, Dropdown, Menu, Notification, Popconfirm, Radio } from "@arco-design/web-react"
 import {
   IconAlignLeft,
-  IconCheck,
   IconClockCircle,
   IconRecord,
   IconRefresh,
@@ -18,6 +17,7 @@ import {
   getTodayEntries,
   updateEntriesStatus,
 } from "@/apis"
+import DoubleCheck from "@/components/icons/DoubleCheck"
 import CustomTooltip from "@/components/ui/CustomTooltip"
 import { polyglotState } from "@/hooks/useLanguage"
 import { contentState, setEntries } from "@/store/contentState"
@@ -303,32 +303,32 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
         droplist={
           <Menu>
             <MenuItem key="older-than-day" onClick={() => openConfirm("older-day")}>
-              <IconClockCircle className="icon-right" />
+              <DoubleCheck className="icon-right" />
               {polyglot.t("article_list.mark_as_read_menu_older_day")}
             </MenuItem>
 
             <MenuItem key="older-than-two-days" onClick={() => openConfirm("older-2-days")}>
-              <IconClockCircle className="icon-right" />
+              <DoubleCheck className="icon-right" />
               {polyglot.t("article_list.mark_as_read_menu_older_two_days")}
             </MenuItem>
 
             <MenuItem key="older-than-three-days" onClick={() => openConfirm("older-3-days")}>
-              <IconClockCircle className="icon-right" />
+              <DoubleCheck className="icon-right" />
               {polyglot.t("article_list.mark_as_read_menu_older_three_days")}
             </MenuItem>
 
             <MenuItem key="older-than-week" onClick={() => openConfirm("older-week")}>
-              <IconClockCircle className="icon-right" />
+              <DoubleCheck className="icon-right" />
               {polyglot.t("article_list.mark_as_read_menu_older_week")}
             </MenuItem>
 
             <MenuItem key="older-than-two-weeks" onClick={() => openConfirm("older-2-weeks")}>
-              <IconClockCircle className="icon-right" />
+              <DoubleCheck className="icon-right" />
               {polyglot.t("article_list.mark_as_read_menu_older_two_weeks")}
             </MenuItem>
 
             <MenuItem key="mark-all-as-read" onClick={() => openConfirm("all")}>
-              <IconCheck className="icon-right" />
+              <DoubleCheck className="icon-right" />
               {polyglot.t("article_list.mark_all_as_read_tooltip")}
             </MenuItem>
           </Menu>
@@ -345,7 +345,7 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
         >
           <CustomTooltip mini content={polyglot.t("article_list.mark_as_read_options_tooltip")}>
             <Button
-              icon={<IconCheck />}
+              icon={<DoubleCheck />}
               shape="circle"
               style={{
                 visibility: ["starred", "history"].includes(info.from) ? "hidden" : "visible",
