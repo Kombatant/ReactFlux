@@ -3,7 +3,7 @@
 This fork was created to add some stuff that I was sorely missing from the original excellent work the ReactFlux dev have done, such as:
 
 - Mark as read functionality based on days
-  <img width="721" height="443" alt="image" src="https://github.com/user-attachments/assets/879e2465-92c1-4d52-84d8-964003ff61c6" />
+  ![image](image.png)
 
 - Global font setting for the whole app (removed the one in the article menu + made the article width percentage-based)
   <img width="1078" height="546" alt="image" src="https://github.com/user-attachments/assets/1e5d9f25-95c7-4960-8f57-c724b4386829" />
