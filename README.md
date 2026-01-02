@@ -6,7 +6,7 @@ This fork was created to add some stuff that I was sorely missing from the origi
   <img width="721" height="443" alt="image" src="https://github.com/user-attachments/assets/879e2465-92c1-4d52-84d8-964003ff61c6" />
 
 - Global font setting for the whole app (removed the one in the article menu + made the article width percentage-based)
-  <img width="1072" height="538" alt="image" src="https://github.com/user-attachments/assets/dc340b02-423f-4c12-96c5-12723b1ead10" />
+  <img width="1078" height="546" alt="image" src="https://github.com/user-attachments/assets/1e5d9f25-95c7-4960-8f57-c724b4386829" />
 
 - Resizable panes
 - Some theme changes I was applying with Tampermonkey up until now.
