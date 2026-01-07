@@ -285,7 +285,20 @@
     "swipe_sensitivity_description": "Ajuster la sensibilité des gestes de balayage",
     "swipe_sensitivity_label": "Sensibilité du balayage",
     "update_content_on_fetch_label": "Enregistrer automatiquement le contenu récupéré",
-    "update_content_on_fetch_description": "Mettre à jour et enregistrer automatiquement le contenu récupéré dans la base de données"
+    "update_content_on_fetch_description": "Mettre à jour et enregistrer automatiquement le contenu récupéré dans la base de données",
+    "content": {
+      "label": "Contenu",
+      "feeds_label": "Flux",
+      "feeds_description": "Options liées aux flux, comme l'affichage des flux masqués et les filtres.",
+      "show_hidden_description": "Afficher tous les flux, y compris ceux masqués manuellement",
+      "feeds_show_unread_label": "Afficher uniquement les flux non lus",
+      "feeds_show_unread_description": "N'afficher que les flux contenant des éléments non lus.",
+      "import_export_label": "Importer / Exporter",
+      "article_label": "Article",
+      "article_description": "Options d'affichage des articles : alignement du titre, taille de la police et largeur de l'article.",
+      "article_font_size_label": "Taille de la police de l'article",
+      "title_alignment_description": "Choisissez l'alignement du titre de l'article."
+    }
   },
   "appearance": {
     "theme_color_label": "Couleur du thème",
@@ -315,7 +328,9 @@
     "font_family_noto_sans": "Noto Sans SC",
     "font_family_noto_serif": "Noto Serif SC",
     "font_family_lxgw_wenkai": "LXGW WenKai Screen",
-    "title_alignment_label": "Alignement du titre de l'article"
+    "title_alignment_label": "Alignement du titre de l'article",
+    "title_alignment_left": "Gauche",
+    "title_alignment_center": "Centré"
   },
   "hotkeys": {
     "key": "Touche",

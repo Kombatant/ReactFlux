@@ -285,7 +285,22 @@
     "swipe_sensitivity_description": "调整滑动手势的灵敏度",
     "swipe_sensitivity_label": "滑动灵敏度",
     "update_content_on_fetch_label": "获取原文时自动保存",
-    "update_content_on_fetch_description": "获取原文时自动更新并保存到数据库"
+    "update_content_on_fetch_description": "获取原文时自动更新并保存到数据库",
+    "content": {
+      "label": "内容",
+      "feeds_label": "订阅源",
+      "feeds_description": "与订阅源相关的选项，例如显示隐藏订阅源和筛选。",
+      "show_hidden_description": "显示所有订阅源，包括手动隐藏的那些",
+      "feeds_show_unread_label": "仅显示有未读项的订阅源",
+      "feeds_show_unread_description": "仅显示包含未读项的订阅源。",
+      "import_export_label": "导入/导出",
+      "article_label": "文章",
+      "article_description": "文章显示选项：标题对齐、字体大小和文章宽度。",
+      "article_font_size_label": "文章字体大小",
+      "title_alignment_description": "选择文章标题的对齐方式。",
+      "title_alignment_left": "左对齐",
+      "title_alignment_center": "居中"
+    }
   },
   "appearance": {
     "theme_color_label": "主题颜色",

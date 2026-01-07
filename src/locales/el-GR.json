@@ -285,7 +285,20 @@
     "swipe_sensitivity_description": "Ρυθμίστε την ευαισθησία της σάρωσης",
     "swipe_sensitivity_label": "Ευαισθησία σάρωσης",
     "update_content_on_fetch_label": "Αυτόματη αποθήκευση ανακτημένου περιεχομένου",
-    "update_content_on_fetch_description": "Αποθήκευση και ενημέρωση του περιεχομένου στη βάση δεδομένων"
+    "update_content_on_fetch_description": "Αποθήκευση και ενημέρωση του περιεχομένου στη βάση δεδομένων",
+    "content": {
+      "label": "Περιεχόμενο",
+      "feeds_label": "Ροές",
+      "feeds_description": "Επιλογές που αφορούν τις ροές, όπως εμφάνιση κρυφών ροών και φίλτρα.",
+      "show_hidden_description": "Εμφάνιση όλων των ροών, ακόμη και αυτών που αποκρύφθηκαν χειροκίνητα",
+      "feeds_show_unread_label": "Εμφάνιση μόνο μη αναγνωσμένων ροών",
+      "feeds_show_unread_description": "Εμφάνιση μόνο ροών που έχουν μη αναγνωσμένα στοιχεία.",
+      "import_export_label": "Εισαγωγή / Εξαγωγή",
+      "article_label": "Άρθρο",
+      "article_description": "Επιλογές εμφάνισης άρθρου: στοίχιση τίτλου, μέγεθος γραμματοσειράς και πλάτος άρθρου.",
+      "article_font_size_label": "Μέγεθος γραμματοσειράς άρθρου",
+      "title_alignment_description": "Επιλέξτε την στοίχιση του τίτλου του άρθρου."
+    }
   },
   "appearance": {
     "theme_color_label": "Χρώμα θέματος",
@@ -315,7 +328,9 @@
     "font_family_noto_sans": "Noto Sans SC",
     "font_family_noto_serif": "Noto Serif SC",
     "font_family_lxgw_wenkai": "LXGW WenKai Screen",
-    "title_alignment_label": "Στοίχιση τίτλου άρθρου"
+    "title_alignment_label": "Στοίχιση τίτλου άρθρου",
+    "title_alignment_left": "Αριστερά",
+    "title_alignment_center": "Κέντρο"
   },
   "hotkeys": {
     "key": "Πλήκτρο",

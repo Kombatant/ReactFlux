@@ -38,7 +38,7 @@ import { Virtualizer } from "virtua"
 import AddFeed from "./AddFeed.jsx"
 import Profile from "./Profile.jsx"
 
-import { exportOPML, importOPML } from "@/apis"
+// import OPML APIs moved to Settings Content
 import { markCategoryAsRead, refreshCategoryFeed } from "@/apis/categories"
 import EditCategoryModal from "@/components/ui/EditCategoryModal"
 import EditFeedModal from "@/components/ui/EditFeedModal"
@@ -47,6 +47,7 @@ import useAppData from "@/hooks/useAppData"
 import useCategoryOperations from "@/hooks/useCategoryOperations"
 import { useFeedOperations } from "@/hooks/useFeedOperations"
 import { polyglotState } from "@/hooks/useLanguage"
+import useModalToggle from "@/hooks/useModalToggle"
 import useScreenWidth from "@/hooks/useScreenWidth"
 import { contentState, setActiveContent, setEntries } from "@/store/contentState"
 import {
@@ -490,119 +491,7 @@ const downloadFile = (content, filename, type) => {
   globalThis.URL.revokeObjectURL(url)
 }
 
-const MoreOptionsDropdown = () => {
-  const { showHiddenFeeds, showUnreadFeedsOnly } = useStore(settingsState)
-  const { polyglot } = useStore(polyglotState)
-
-  const { fetchAppData } = useAppData()
-
-  const handleToggleFeedsVisibility = () => {
-    updateSettings({ showHiddenFeeds: !showHiddenFeeds })
-  }
-
-  const handleToggleUnreadFeedsOnly = () => {
-    updateSettings({ showUnreadFeedsOnly: !showUnreadFeedsOnly })
-  }
-
-  const handleImportOPML = async (e) => {
-    const file = e.target.files[0]
-    if (!file) {
-      return
-    }
-
-    try {
-      const fileContent = await readFileAsText(file)
-      const response = await importOPML(fileContent)
-
-      if (response.status === 201) {
-        Notification.success({
-          title: polyglot.t("sidebar.import_opml_success"),
-        })
-        await fetchAppData()
-      } else {
-        Notification.error({
-          title: polyglot.t("sidebar.import_opml_error"),
-        })
-      }
-    } catch (error) {
-      Notification.error({
-        title: polyglot.t("sidebar.import_opml_error"),
-        content: error.message,
-      })
-    }
-  }
-
-  const handleExportOPML = async () => {
-    try {
-      const opmlContent = await exportOPML()
-      downloadFile(opmlContent, "feeds.opml", "text/xml")
-      Notification.success({
-        title: polyglot.t("sidebar.export_opml_success"),
-      })
-    } catch (error) {
-      Notification.error({
-        title: polyglot.t("sidebar.export_opml_error"),
-        content: error.message,
-      })
-    }
-  }
-
-  return (
-    <>
-      <Dropdown
-        position="br"
-        trigger="click"
-        droplist={
-          <Menu>
-            <MenuItem key="1" onClick={handleToggleFeedsVisibility}>
-              {showHiddenFeeds ? (
-                <IconEyeInvisible className="icon-right" />
-              ) : (
-                <IconEye className="icon-right" />
-              )}
-              {showHiddenFeeds
-                ? polyglot.t("sidebar.hide_hidden_feeds")
-                : polyglot.t("sidebar.show_hidden_feeds")}
-            </MenuItem>
-            <MenuItem key="2" onClick={handleToggleUnreadFeedsOnly}>
-              {showUnreadFeedsOnly ? (
-                <IconMinusCircle className="icon-right" />
-              ) : (
-                <IconRecord className="icon-right" />
-              )}
-              {showUnreadFeedsOnly
-                ? polyglot.t("sidebar.show_read_feeds")
-                : polyglot.t("sidebar.hide_read_feeds")}
-            </MenuItem>
-            <Divider style={{ margin: "4px 0" }} />
-            <MenuItem key="3" onClick={() => document.querySelector("#opmlInput").click()}>
-              <IconUpload className="icon-right" />
-              {polyglot.t("sidebar.import_opml")}
-            </MenuItem>
-            <MenuItem key="4" onClick={handleExportOPML}>
-              <IconDownload className="icon-right" />
-              {polyglot.t("sidebar.export_opml")}
-            </MenuItem>
-          </Menu>
-        }
-      >
-        <Button
-          icon={<IconMoreVertical />}
-          shape="circle"
-          size="small"
-          style={{ marginTop: "1em", marginBottom: "0.5em" }}
-        />
-      </Dropdown>
-      <input
-        accept=".opml,.xml"
-        id="opmlInput"
-        style={{ display: "none" }}
-        type="file"
-        onChange={handleImportOPML}
-      />
-    </>
-  )
-}
+// Removed the three-dot options dropdown; Content settings are accessible via Settings.
 
 const updateAllEntriesAsRead = () => {
   setEntries((prev) => prev.map((entry) => ({ ...entry, status: "read" })))
@@ -738,7 +627,6 @@ const Sidebar = () => {
             </Typography.Title>
             <div style={{ display: "flex", gap: "8px", marginRight: "8px" }}>
               <AddFeed />
-              <MoreOptionsDropdown />
             </div>
           </div>
           <Skeleton animation={true} loading={!isCoreDataReady} text={{ rows: 6 }} />

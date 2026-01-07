@@ -130,7 +130,7 @@ const useKeyHandlers = () => {
   })
 
   const showHotkeysSettings = () => {
-    setSettingsTabsActiveTab("5")
+    setSettingsTabsActiveTab("6")
     setSettingsModalVisible(true)
   }
 

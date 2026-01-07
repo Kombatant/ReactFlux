@@ -285,7 +285,20 @@
     "swipe_sensitivity_description": "Adjust the sensitivity of swipe gestures",
     "swipe_sensitivity_label": "Swipe sensitivity",
     "update_content_on_fetch_label": "Auto-save fetched content",
-    "update_content_on_fetch_description": "Automatically update and save fetched content to database"
+    "update_content_on_fetch_description": "Automatically update and save fetched content to database",
+    "content": {
+      "label": "Content",
+      "feeds_label": "Feeds",
+      "feeds_description": "Feed-related options such as showing hidden feeds and filtering.",
+      "show_hidden_description": "Show all feeds, even the manually hidden ones",
+      "feeds_show_unread_label": "Show unread feeds only",
+      "feeds_show_unread_description": "Only display feeds that have unread items.",
+      "import_export_label": "Import / Export",
+      "article_label": "Article",
+      "article_description": "Article display options: title alignment, font size, and article width.",
+      "article_font_size_label": "Article Font Size",
+      "title_alignment_description": "Choose how the article title is aligned."
+    }
   },
   "appearance": {
     "theme_color_label": "Theme colour",
@@ -315,7 +328,9 @@
     "font_family_noto_sans": "Noto Sans SC",
     "font_family_noto_serif": "Noto Serif SC",
     "font_family_lxgw_wenkai": "LXGW WenKai Screen",
-    "title_alignment_label": "Article title alignment"
+    "title_alignment_label": "Article title alignment",
+    "title_alignment_left": "Left",
+    "title_alignment_center": "Center"
   },
   "hotkeys": {
     "key": "Key",

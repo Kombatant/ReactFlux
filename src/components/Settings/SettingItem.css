@@ -3,3 +3,16 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.setting-row {
+  gap: 16px;
+}
+
+.setting-row > header {
+  flex: 1 1 50%;
+  min-width: 220px;
+}
+
+.setting-row > *:not(header) {
+  flex: 0 0 auto;
+}

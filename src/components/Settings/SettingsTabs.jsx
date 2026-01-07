@@ -5,12 +5,14 @@ import {
   IconFolder,
   IconSkin,
   IconStorage,
+  IconUnorderedList,
 } from "@arco-design/web-react/icon"
 import { useStore } from "@nanostores/react"
 import SimpleBar from "simplebar-react"
 
 import Appearance from "./Appearance"
 import CategoryList from "./CategoryList"
+import Content from "./Content"
 import FeedList from "./FeedList"
 import General from "./General"
 import Hotkeys from "./Hotkeys"
@@ -57,7 +59,7 @@ const SettingsTabs = ({ activeTab, onTabChange }) => {
           key="1"
           title={
             <CustomTabTitle
-              icon={<IconFile style={{ fontSize: "20px" }} />}
+              icon={<IconUnorderedList style={{ fontSize: "20px" }} />}
               title={polyglot.t("settings.feeds")}
             />
           }
@@ -90,6 +92,17 @@ const SettingsTabs = ({ activeTab, onTabChange }) => {
           key="4"
           title={
             <CustomTabTitle
+              icon={<IconFile style={{ fontSize: "20px" }} />}
+              title={polyglot.t("settings.content.label")}
+            />
+          }
+        >
+          <Content />
+        </Tabs.TabPane>
+        <Tabs.TabPane
+          key="5"
+          title={
+            <CustomTabTitle
               icon={<IconSkin style={{ fontSize: "20px" }} />}
               title={polyglot.t("settings.appearance")}
             />
@@ -99,7 +112,7 @@ const SettingsTabs = ({ activeTab, onTabChange }) => {
         </Tabs.TabPane>
         {!isBelowMedium && (
           <Tabs.TabPane
-            key="5"
+            key="6"
             title={
               <CustomTabTitle
                 icon={<IconCommand style={{ fontSize: "20px" }} />}

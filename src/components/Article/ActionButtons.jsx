@@ -1,4 +1,4 @@
-import { Button, Divider, Dropdown, InputNumber, Menu, Radio, Switch } from "@arco-design/web-react"
+import { Button, Dropdown, InputNumber, Menu, Radio, Switch } from "@arco-design/web-react"
 import {
   IconAlignCenter,
   IconAlignLeft,
@@ -84,8 +84,7 @@ const ActionButtons = () => {
   const { polyglot } = useStore(polyglotState)
   const headings = useStore(articleHeadingsState)
 
-  const { articleWidth, edgeToEdgeImages, enableSwipeGesture, fontSize, titleAlignment } =
-    useStore(settingsState)
+  const { enableSwipeGesture } = useStore(settingsState)
 
   const nextContent = useStore(nextContentState)
   const prevContent = useStore(prevContentState)
@@ -278,73 +277,7 @@ const ActionButtons = () => {
               </div>
             </Menu.Item>
 
-            <Divider style={{ margin: "4px 0" }} />
-
-            <Menu.Item key="title-alignment">
-              <div className="settings-menu-item">
-                <span>{polyglot.t("appearance.title_alignment_label")}</span>
-                <Radio.Group
-                  name="title-alignment"
-                  type="button"
-                  value={titleAlignment}
-                  onChange={(value) => updateSettings({ titleAlignment: value })}
-                >
-                  <Radio value="left">
-                    <IconAlignLeft />
-                  </Radio>
-                  <Radio value="center">
-                    <IconAlignCenter />
-                  </Radio>
-                </Radio.Group>
-              </div>
-            </Menu.Item>
-
-            {isBelowMedium && (
-              <Menu.Item key="edge-to-edge-images">
-                <div className="settings-menu-item">
-                  <span>{polyglot.t("appearance.edge_to_edge_images_label")}</span>
-                  <Switch
-                    checked={edgeToEdgeImages}
-                    size="small"
-                    onChange={(value) => updateSettings({ edgeToEdgeImages: value })}
-                  />
-                </div>
-              </Menu.Item>
-            )}
-
-            <Menu.Item key="font-size">
-              <div className="settings-menu-item" onClick={(e) => e.stopPropagation()}>
-                <span>{polyglot.t("appearance.font_size_label")}</span>
-                <InputNumber
-                  max={1.25}
-                  min={0.75}
-                  size="small"
-                  step={0.05}
-                  style={{ width: 90 }}
-                  suffix="rem"
-                  value={fontSize}
-                  onChange={(value) => updateSettings({ fontSize: value })}
-                />
-              </div>
-            </Menu.Item>
-
-            {!isBelowMedium && (
-              <Menu.Item key="article-width">
-                <div className="settings-menu-item" onClick={(e) => e.stopPropagation()}>
-                  <span>{polyglot.t("appearance.article_width_label")}</span>
-                  <InputNumber
-                    max={90}
-                    min={50}
-                    size="small"
-                    step={5}
-                    style={{ width: 90 }}
-                    suffix="%"
-                    value={articleWidth}
-                    onChange={(value) => updateSettings({ articleWidth: value })}
-                  />
-                </div>
-              </Menu.Item>
-            )}
+            {/* Divider removed — no additional menu items below */}
           </Menu>
         }
         onVisibleChange={setDropdownVisible}

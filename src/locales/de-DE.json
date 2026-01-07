@@ -285,7 +285,20 @@
     "swipe_sensitivity_description": "Empfindlichkeit der Wischgesten anpassen",
     "swipe_sensitivity_label": "Wischempfindlichkeit",
     "update_content_on_fetch_label": "Abgerufene Inhalte automatisch speichern",
-    "update_content_on_fetch_description": "Abgerufene Inhalte automatisch aktualisieren und in der Datenbank speichern"
+    "update_content_on_fetch_description": "Abgerufene Inhalte automatisch aktualisieren und in der Datenbank speichern",
+    "content": {
+      "label": "Inhalt",
+      "feeds_label": "Feeds",
+      "feeds_description": "Feed-bezogene Optionen wie das Anzeigen versteckter Feeds und Filter.",
+      "show_hidden_description": "Alle Feeds anzeigen, einschließlich der manuell ausgeblendeten",
+      "feeds_show_unread_label": "Nur ungelesene Feeds anzeigen",
+      "feeds_show_unread_description": "Nur Feeds mit ungelesenen Einträgen anzeigen.",
+      "import_export_label": "Import / Export",
+      "article_label": "Artikel",
+      "article_description": "Anzeigeoptionen für Artikel: Titelausrichtung, Schriftgröße und Artikelbreite.",
+      "article_font_size_label": "Schriftgröße des Artikels",
+      "title_alignment_description": "Wählen Sie die Ausrichtung des Artikeltitels."
+    }
   },
   "appearance": {
     "theme_color_label": "Farbthema",
@@ -315,7 +328,9 @@
     "font_family_noto_sans": "Noto Sans SC",
     "font_family_noto_serif": "Noto Serif SC",
     "font_family_lxgw_wenkai": "LXGW WenKai Screen",
-    "title_alignment_label": "Ausrichtung des Artikeltitels"
+    "title_alignment_label": "Ausrichtung des Artikeltitels",
+    "title_alignment_left": "Links",
+    "title_alignment_center": "Zentriert"
   },
   "hotkeys": {
     "key": "Taste",

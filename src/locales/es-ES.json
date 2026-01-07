@@ -41,7 +41,21 @@
     "refresh_category_error": "Error al actualizar categoría",
     "delete_category_confirm_title": "Confirmar Eliminación de Categoría",
     "delete_category_confirm_content": "¿Está seguro de que desea eliminar la categoría '%{title}'? Esta acción no se puede deshacer.",
-    "feeds": "Feeds",
+    "update_content_on_fetch_label": "Guardar automáticamente el contenido obtenido",
+    "update_content_on_fetch_description": "Guardar automáticamente el contenido obtenido en la base de datos",
+    "content": {
+      "label": "Contenido",
+      "feeds_label": "Feeds",
+      "feeds_description": "Opciones relacionadas con las fuentes, como mostrar fuentes ocultas y filtros.",
+      "show_hidden_description": "Mostrar todos los feeds, incluso los ocultos manualmente",
+      "feeds_show_unread_label": "Mostrar solo fuentes no leídas",
+      "feeds_show_unread_description": "Mostrar solo fuentes que tienen elementos no leídos.",
+      "import_export_label": "Importar / Exportar",
+      "article_label": "Artículo",
+      "article_description": "Opciones de visualización del artículo: alineación del título, tamaño de fuente y ancho del artículo.",
+      "article_font_size_label": "Tamaño de fuente del artículo",
+      "title_alignment_description": "Elija cómo se alinea el título del artículo."
+    },
     "logout_success": "Se ha cerrado la sesión correctamente",
     "add_feed": "Añadir un feed",
     "show_hidden_feeds": "Mostrar feeds ocultos",
@@ -315,7 +329,9 @@
     "font_family_noto_sans": "Noto Sans SC",
     "font_family_noto_serif": "Noto Serif SC",
     "font_family_lxgw_wenkai": "LXGW WenKai Screen",
-    "title_alignment_label": "Alineación del título del artículo"
+    "title_alignment_label": "Alineación del título del artículo",
+    "title_alignment_left": "Izquierda",
+    "title_alignment_center": "Centrado"
   },
   "hotkeys": {
     "key": "Clave",
