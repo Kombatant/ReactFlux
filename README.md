@@ -5,13 +5,13 @@ This fork was created to add some stuff that I was sorely missing from the origi
 - Mark as read functionality based on days
   ![image](image.png)
 
-- Global font setting for the whole app (removed the one in the article menu + made the article width percentage-based)
-  <img width="1078" height="546" alt="image" src="https://github.com/user-attachments/assets/1e5d9f25-95c7-4960-8f57-c724b4386829" />
+- New Content section contains old feed + article three dot menu options, and global font setting for the whole app.
+  ![](images/reactflux_settings.png)
 
 - Resizable panes
 - Some theme changes I was applying with Tampermonkey up until now.
 
-<img width="1991" height="1345" alt="image" src="https://github.com/user-attachments/assets/4e69e2a5-9019-4605-926b-b3424390feae" />
+![](images/reactflux_main.png)
 
 - Some other stuff as well (Greek localization support, clicking on feeds/categories always refreshes the feed, etc.)
 
