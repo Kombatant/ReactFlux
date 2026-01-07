@@ -2,13 +2,13 @@
 
 This fork was created to add some stuff that I was sorely missing from the original excellent work the ReactFlux dev have done, such as:
 
+- Resizable panes
 - Mark as read functionality based on days
   ![image](image.png)
 
 - New Content section contains old feed + article three dot menu options, and global font setting for the whole app.
   ![](images/reactflux_settings.png)
 
-- Resizable panes
 - Some theme changes I was applying with Tampermonkey up until now.
 
 ![](images/reactflux_main.png)
