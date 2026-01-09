@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@arco-design/color": "^0.4.0",
-    "@arco-design/web-react": "^2.66.8",
+    "@arco-design/web-react": "^2.66.9",
     "@nanostores/persistent": "^1.2.0",
     "@nanostores/react": "^1.0.0",
     "canvas-confetti": "^1.9.4",
@@ -32,7 +32,7 @@
     "nanostores": "^1.1.0",
     "node-polyglot": "^2.6.0",
     "ofetch": "^1.5.1",
-    "plyr": "^3.8.3",
+    "plyr": "^3.8.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hotkeys-hook": "^5.2.1",
@@ -68,7 +68,7 @@
     "react-compiler-runtime": "19.1.0-rc.3",
     "rollup-plugin-visualizer": "^6.0.5",
     "simple-git-hooks": "2.13.1",
-    "vite": "^7.3.0",
+    "vite": "^7.3.1",
     "vite-plugin-pwa": "^1.2.0",
     "workbox-window": "^7.4.0"
   },
