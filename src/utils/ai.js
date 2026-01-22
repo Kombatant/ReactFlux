@@ -28,6 +28,11 @@ export const fetchProviderModels = async (provider, apiKey) => {
   }
 
   if (provider === AI_PROVIDERS.ANTHROPIC) {
+    const fallbackModels = [
+      { id: "claude-3-5-sonnet-latest", label: "Claude 3.5 Sonnet" },
+      { id: "claude-3-5-haiku-latest", label: "Claude 3.5 Haiku" },
+      { id: "claude-3-opus-20240229", label: "Claude 3 Opus" },
+    ]
     const response = await fetch("https://api.anthropic.com/v1/models", {
       headers: {
         "x-api-key": apiKey,
@@ -36,9 +41,19 @@ export const fetchProviderModels = async (provider, apiKey) => {
     })
     const data = await parseJsonSafely(response)
     if (!response.ok) {
-      throw new Error(parseErrorMessage(data, response.statusText))
+      return fallbackModels
     }
-    return (data?.models || []).map((model) => model?.id).filter(Boolean)
+    const parsedModels = (data?.models || [])
+      .map((model) => {
+        const id = model?.id
+        if (!id) {
+          return null
+        }
+        const label = model?.display_name || model?.name || id
+        return { id, label }
+      })
+      .filter(Boolean)
+    return parsedModels.length > 0 ? parsedModels : fallbackModels
   }
 
   if (provider === AI_PROVIDERS.GEMINI) {
@@ -51,12 +66,26 @@ export const fetchProviderModels = async (provider, apiKey) => {
     }
     return (data?.models || [])
       .filter((model) => (model?.supportedGenerationMethods || []).includes("generateContent"))
-      .map((model) => normalizeGeminiModel(model?.name))
-      .filter((name) => name && name.includes("gemini") && !name.includes("embedding"))
+      .map((model) => {
+        const id = normalizeGeminiModel(model?.name)
+        const label = model?.displayName?.trim() || id
+        return id
+          ? {
+              id,
+              label,
+            }
+          : null
+      })
+      .filter(Boolean)
+      .filter(({ id }) => id.includes("gemini") && !id.includes("embedding"))
   }
 
   if (provider === AI_PROVIDERS.PERPLEXITY) {
-    const fallbackModels = ["sonar", "sonar-pro", "sonar-reasoning"]
+    const fallbackModels = [
+      { id: "sonar", label: "Sonar" },
+      { id: "sonar-pro", label: "Sonar Pro" },
+      { id: "sonar-reasoning", label: "Sonar Reasoning" },
+    ]
     try {
       const response = await fetch("https://api.perplexity.ai/models", {
         headers: {
@@ -72,9 +101,16 @@ export const fetchProviderModels = async (provider, apiKey) => {
       const parsedModels = models
         .map((model) => {
           if (typeof model === "string") {
-            return model
+            return { id: model, label: model }
           }
-          return model?.id || model?.name
+          const id = model?.id || model?.name
+          if (!id) {
+            return null
+          }
+          return {
+            id,
+            label: model?.display_name || model?.name || id,
+          }
         })
         .filter(Boolean)
       return parsedModels.length > 0 ? parsedModels : fallbackModels

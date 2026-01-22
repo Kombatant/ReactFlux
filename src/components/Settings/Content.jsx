@@ -51,6 +51,10 @@ const Content = () => {
   const isProviderNone = settings.aiProvider === AI_PROVIDERS.NONE
   const currentApiKey = settings.aiApiKeys?.[settings.aiProvider] ?? ""
   const currentModel = settings.aiModels?.[settings.aiProvider] ?? ""
+  const normalizedModelOptions = modelOptions.map((model) =>
+    typeof model === "string" ? { id: model, label: model } : model,
+  )
+  const modelIds = normalizedModelOptions.map((model) => model.id)
 
   useEffect(() => {
     let isActive = true
@@ -118,12 +122,12 @@ const Content = () => {
       return
     }
 
-    if (!isProviderNone && modelOptions.length > 0 && !currentModel) {
+    if (!isProviderNone && modelIds.length > 0 && !currentModel) {
       updateSettings({
-        aiModel: modelOptions[0],
+        aiModel: modelIds[0],
         aiModels: {
           ...settings.aiModels,
-          [settings.aiProvider]: modelOptions[0],
+          [settings.aiProvider]: modelIds[0],
         },
       })
     }
@@ -131,6 +135,7 @@ const Content = () => {
     currentModel,
     isProviderNone,
     modelOptions,
+    modelIds,
     modelsError,
     modelsLoading,
     settings.aiModel,
@@ -168,6 +173,16 @@ const Content = () => {
     } finally {
       setImporting(false)
     }
+  }
+
+  const handleAiProviderChange = (value) => {
+    setModelOptions([])
+    setModelsLoading(false)
+    setModelsError(false)
+    updateSettings({
+      aiProvider: value,
+      aiModel: settings.aiModels?.[value] || "",
+    })
   }
 
   return (
@@ -229,12 +244,7 @@ const Content = () => {
         <Select
           className="input-select"
           value={settings.aiProvider}
-          onChange={(value) =>
-            updateSettings({
-              aiProvider: value,
-              aiModel: settings.aiModels?.[value] || "",
-            })
-          }
+          onChange={handleAiProviderChange}
         >
           <Select.Option value={AI_PROVIDERS.NONE}>
             {polyglot.t("settings.content.ai_provider_none")}
@@ -283,7 +293,7 @@ const Content = () => {
       >
         <Select
           className="input-select"
-          disabled={isProviderNone || modelOptions.length === 0}
+          disabled={isProviderNone || modelIds.length === 0}
           loading={modelsLoading}
           placeholder={polyglot.t("settings.content.ai_models_empty")}
           style={{ width: "30ch" }}
@@ -298,9 +308,9 @@ const Content = () => {
             })
           }
         >
-          {modelOptions.map((model) => (
-            <Select.Option key={model} value={model}>
-              {model}
+          {normalizedModelOptions.map((model) => (
+            <Select.Option key={model.id} value={model.id}>
+              {model.label}
             </Select.Option>
           ))}
         </Select>
