@@ -6,6 +6,7 @@ This fork was created to add some stuff that I was sorely missing from the origi
 - Mark as read functionality based on days
   ![image](image.png)
 
+- AI Summarization of articles
 - New Content section contains old feed + article three dot menu options, and global font setting for the whole app.
   ![](images/reactflux_settings.png)
 
