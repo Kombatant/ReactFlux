@@ -1,7 +1,15 @@
-import { Button, Divider, InputNumber, Notification, Select, Switch } from "@arco-design/web-react"
+import {
+  Button,
+  Divider,
+  Input,
+  InputNumber,
+  Notification,
+  Select,
+  Switch,
+} from "@arco-design/web-react"
 import { IconDownload, IconUpload } from "@arco-design/web-react/icon"
 import { useStore } from "@nanostores/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import SettingItem from "./SettingItem"
 import "./SettingItem.css"
@@ -9,6 +17,7 @@ import "./SettingItem.css"
 import { exportOPML, importOPML } from "@/apis"
 import { polyglotState } from "@/hooks/useLanguage"
 import { settingsState, updateSettings } from "@/store/settingsState"
+import { AI_PROVIDERS, fetchProviderModels } from "@/utils/ai"
 
 const readFileAsText = async (file) => {
   try {
@@ -35,6 +44,99 @@ const Content = () => {
   const settings = useStore(settingsState)
 
   const [importing, setImporting] = useState(false)
+  const [modelsLoading, setModelsLoading] = useState(false)
+  const [modelsError, setModelsError] = useState(false)
+  const [modelOptions, setModelOptions] = useState([])
+
+  const isProviderNone = settings.aiProvider === AI_PROVIDERS.NONE
+  const currentApiKey = settings.aiApiKeys?.[settings.aiProvider] ?? ""
+  const currentModel = settings.aiModels?.[settings.aiProvider] ?? ""
+
+  useEffect(() => {
+    let isActive = true
+
+    const loadModels = async () => {
+      if (isProviderNone) {
+        if (isActive) {
+          setModelOptions([])
+          setModelsLoading(false)
+          setModelsError(false)
+        }
+        return
+      }
+
+      if (!currentApiKey) {
+        if (isActive) {
+          setModelOptions([])
+          setModelsLoading(false)
+          setModelsError(false)
+        }
+        return
+      }
+
+      if (isActive) {
+        setModelOptions([])
+      }
+      setModelsLoading(true)
+      setModelsError(false)
+      try {
+        const detected = await fetchProviderModels(settings.aiProvider, currentApiKey)
+        if (isActive) {
+          setModelOptions(detected)
+        }
+      } catch {
+        if (isActive) {
+          setModelsError(true)
+        }
+      } finally {
+        if (isActive) {
+          setModelsLoading(false)
+        }
+      }
+    }
+
+    loadModels()
+
+    return () => {
+      isActive = false
+    }
+  }, [isProviderNone, currentApiKey, settings.aiProvider])
+
+  useEffect(() => {
+    if (isProviderNone && (settings.aiModel || currentModel)) {
+      updateSettings({
+        aiModel: "",
+        aiModels: {
+          ...settings.aiModels,
+          [settings.aiProvider]: "",
+        },
+      })
+      return
+    }
+
+    if (!isProviderNone && (modelsLoading || modelsError)) {
+      return
+    }
+
+    if (!isProviderNone && modelOptions.length > 0 && !currentModel) {
+      updateSettings({
+        aiModel: modelOptions[0],
+        aiModels: {
+          ...settings.aiModels,
+          [settings.aiProvider]: modelOptions[0],
+        },
+      })
+    }
+  }, [
+    currentModel,
+    isProviderNone,
+    modelOptions,
+    modelsError,
+    modelsLoading,
+    settings.aiModel,
+    settings.aiModels,
+    settings.aiProvider,
+  ])
 
   const handleExport = async () => {
     try {
@@ -116,6 +218,92 @@ const Content = () => {
             {polyglot.t("sidebar.export_opml")}
           </Button>
         </div>
+      </SettingItem>
+
+      <Divider />
+
+      <SettingItem
+        description={polyglot.t("settings.content.ai_provider_description")}
+        title={polyglot.t("settings.content.ai_provider_label")}
+      >
+        <Select
+          className="input-select"
+          value={settings.aiProvider}
+          onChange={(value) =>
+            updateSettings({
+              aiProvider: value,
+              aiModel: settings.aiModels?.[value] || "",
+            })
+          }
+        >
+          <Select.Option value={AI_PROVIDERS.NONE}>
+            {polyglot.t("settings.content.ai_provider_none")}
+          </Select.Option>
+          <Select.Option value={AI_PROVIDERS.ANTHROPIC}>
+            {polyglot.t("settings.content.ai_provider_anthropic")}
+          </Select.Option>
+          <Select.Option value={AI_PROVIDERS.GEMINI}>
+            {polyglot.t("settings.content.ai_provider_gemini")}
+          </Select.Option>
+          <Select.Option value={AI_PROVIDERS.PERPLEXITY}>
+            {polyglot.t("settings.content.ai_provider_perplexity")}
+          </Select.Option>
+        </Select>
+      </SettingItem>
+
+      <Divider />
+
+      <SettingItem
+        description={polyglot.t("settings.content.ai_api_key_description")}
+        title={polyglot.t("settings.content.ai_api_key_label")}
+      >
+        <Input.Password
+          allowClear
+          className="input-select"
+          disabled={isProviderNone}
+          placeholder={polyglot.t("settings.content.ai_api_key_label")}
+          style={{ width: "30ch" }}
+          value={currentApiKey}
+          onChange={(value) =>
+            updateSettings({
+              aiApiKeys: {
+                ...settings.aiApiKeys,
+                [settings.aiProvider]: value,
+              },
+            })
+          }
+        />
+      </SettingItem>
+
+      <Divider />
+
+      <SettingItem
+        description={polyglot.t("settings.content.ai_model_description")}
+        title={polyglot.t("settings.content.ai_model_label")}
+      >
+        <Select
+          className="input-select"
+          disabled={isProviderNone || modelOptions.length === 0}
+          loading={modelsLoading}
+          placeholder={polyglot.t("settings.content.ai_models_empty")}
+          style={{ width: "30ch" }}
+          value={currentModel || undefined}
+          onChange={(value) =>
+            updateSettings({
+              aiModel: value || "",
+              aiModels: {
+                ...settings.aiModels,
+                [settings.aiProvider]: value || "",
+              },
+            })
+          }
+        >
+          {modelOptions.map((model) => (
+            <Select.Option key={model} value={model}>
+              {model}
+            </Select.Option>
+          ))}
+        </Select>
       </SettingItem>
 
       <Divider />

@@ -16,7 +16,10 @@ import {
   setUnreadInfo,
   setUnreadTodayCount,
 } from "@/store/dataState"
+import { getSettings } from "@/store/settingsState"
+import { AI_PROVIDERS, formatSummaryHtml, summarizeWithProvider } from "@/utils/ai"
 import { checkIsInLast24Hours } from "@/utils/date"
+import { extractTextFromHtml } from "@/utils/dom"
 
 const updateEntries = (entries, updatedEntries) => {
   const updatedEntryIds = new Set(updatedEntries.map((entry) => entry.id))
@@ -148,6 +151,63 @@ const useEntryActions = () => {
     }
   }
 
+  const handleSummarizeContent = async () => {
+    const aiProvider = getSettings("aiProvider")
+    const aiApiKeys = getSettings("aiApiKeys") || {}
+    const aiApiKey = aiApiKeys?.[aiProvider] || ""
+    const aiModel = getSettings("aiModel")
+
+    if (!activeContent) {
+      return
+    }
+
+    if (aiProvider === AI_PROVIDERS.NONE) {
+      Message.warning(polyglot.t("actions.ai_summary_provider_missing"))
+      return
+    }
+
+    if (!aiApiKey) {
+      Message.warning(polyglot.t("actions.ai_summary_api_key_missing"))
+      return
+    }
+
+    if (!aiModel) {
+      Message.warning(polyglot.t("actions.ai_summary_model_missing"))
+      return
+    }
+
+    const textContent = extractTextFromHtml(activeContent.content)
+    if (!textContent) {
+      Message.error(polyglot.t("actions.ai_summary_error"))
+      return
+    }
+
+    const trimmedContent = textContent.slice(0, 12_000)
+
+    try {
+      const summary = await summarizeWithProvider({
+        provider: aiProvider,
+        apiKey: aiApiKey,
+        model: aiModel,
+        title: activeContent.title,
+        content: trimmedContent,
+      })
+
+      const summaryHtml = formatSummaryHtml(summary, polyglot.t("article_card.ai_summary_heading"))
+
+      if (!summaryHtml) {
+        Message.error(polyglot.t("actions.ai_summary_error"))
+        return
+      }
+
+      setActiveContent({ ...activeContent, content: summaryHtml })
+      Message.success(polyglot.t("actions.ai_summary_success"))
+    } catch (error) {
+      console.error("Failed to summarize content:", error)
+      Message.error(polyglot.t("actions.ai_summary_error"))
+    }
+  }
+
   const handleSaveToThirdPartyServices = async (entry) => {
     try {
       const response = await saveToThirdPartyServices(entry.id)
@@ -172,6 +232,7 @@ const useEntryActions = () => {
   return {
     handleEntryStatusUpdate,
     handleFetchContent,
+    handleSummarizeContent,
     handleOpenLinkExternally,
     handleSaveToThirdPartyServices,
     handleToggleStarred,

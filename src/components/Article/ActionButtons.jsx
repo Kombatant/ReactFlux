@@ -21,6 +21,7 @@ import { memo, useState } from "react"
 
 import ArticleTOC from "./ArticleTOC"
 
+import AiSpark from "@/components/icons/AiSpark"
 import CustomTooltip from "@/components/ui/CustomTooltip"
 import useEntryActions from "@/hooks/useEntryActions"
 import useKeyHandlers from "@/hooks/useKeyHandlers"
@@ -48,7 +49,7 @@ const DesktopButtons = memo(
         {commonButtons.status}
         {commonButtons.star}
         {commonButtons.fetch}
-        {commonButtons.toc}
+        {commonButtons.summary}
         {hasIntegrations && (
           <CustomTooltip
             mini
@@ -57,6 +58,7 @@ const DesktopButtons = memo(
             <Button icon={<IconSave />} shape="circle" onClick={handleSaveToThirdPartyServices} />
           </CustomTooltip>
         )}
+        {commonButtons.toc}
         {commonButtons.more}
       </div>
     </>
@@ -72,6 +74,7 @@ const MobileButtons = memo(({ commonButtons, hasHeadings }) => (
     {commonButtons.close}
     {commonButtons.next}
     {!hasHeadings && commonButtons.fetch}
+    {commonButtons.summary}
     {commonButtons.toc}
     {commonButtons.more}
   </div>
@@ -84,7 +87,7 @@ const ActionButtons = () => {
   const { polyglot } = useStore(polyglotState)
   const headings = useStore(articleHeadingsState)
 
-  const { enableSwipeGesture } = useStore(settingsState)
+  const { aiProvider, enableSwipeGesture } = useStore(settingsState)
 
   const nextContent = useStore(nextContentState)
   const prevContent = useStore(prevContentState)
@@ -92,16 +95,19 @@ const ActionButtons = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false)
   const [isFetchedOriginal, setIsFetchedOriginal] = useState(false)
   const [lastActiveContentId, setLastActiveContentId] = useState(activeContent?.id)
+  const [isSummarizing, setIsSummarizing] = useState(false)
 
   if (activeContent?.id !== lastActiveContentId) {
     setLastActiveContentId(activeContent?.id)
     setIsFetchedOriginal(false)
+    setIsSummarizing(false)
   }
 
   const hasHeadings = headings.length > 0
 
   const {
     handleFetchContent,
+    handleSummarizeContent,
     handleSaveToThirdPartyServices,
     handleToggleStarred,
     handleToggleStatus,
@@ -114,6 +120,8 @@ const ActionButtons = () => {
 
   const isUnread = activeContent.status === "unread"
   const isStarred = activeContent.starred
+  const hasAiSummary = activeContent?.content?.includes("ai-summary")
+  const isSummaryDisabled = aiProvider === "none" || hasAiSummary
 
   const handleShare = async () => {
     if (!navigator.share) {
@@ -211,6 +219,21 @@ const ActionButtons = () => {
           onClick={async () => {
             await handleFetchContent()
             setIsFetchedOriginal(true)
+          }}
+        />
+      </CustomTooltip>
+    ),
+    summary: (
+      <CustomTooltip mini content={polyglot.t("article_card.summarize_tooltip")}>
+        <Button
+          disabled={isSummaryDisabled}
+          icon={<AiSpark />}
+          loading={isSummarizing}
+          shape="circle"
+          onClick={async () => {
+            setIsSummarizing(true)
+            await handleSummarizeContent()
+            setIsSummarizing(false)
           }}
         />
       </CustomTooltip>

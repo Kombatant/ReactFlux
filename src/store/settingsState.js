@@ -3,6 +3,19 @@ import { persistentAtom } from "@nanostores/persistent"
 import { getBrowserLanguage } from "@/utils/locales"
 
 const defaultValue = {
+  aiApiKey: "",
+  aiApiKeys: {
+    anthropic: "",
+    gemini: "",
+    perplexity: "",
+  },
+  aiModels: {
+    anthropic: "",
+    gemini: "",
+    perplexity: "",
+  },
+  aiModel: "",
+  aiProvider: "none",
   articleWidth: 75,
   sidebarWidth: 240,
   entryListWidth: 420,
@@ -65,6 +78,40 @@ export const settingsState = persistentAtom("settings", defaultValue, {
 
     if (typeof storedValue.entryListWidth === "number") {
       storedValue.entryListWidth = Math.min(900, Math.max(280, storedValue.entryListWidth))
+    }
+
+    if (
+      storedValue.aiProvider &&
+      !["none", "anthropic", "gemini", "perplexity"].includes(storedValue.aiProvider)
+    ) {
+      storedValue.aiProvider = "none"
+      storedValue.aiModel = ""
+    }
+
+    if (!storedValue.aiApiKeys || typeof storedValue.aiApiKeys !== "object") {
+      storedValue.aiApiKeys = {}
+    }
+
+    if (
+      storedValue.aiApiKey &&
+      storedValue.aiProvider &&
+      storedValue.aiProvider !== "none" &&
+      !storedValue.aiApiKeys[storedValue.aiProvider]
+    ) {
+      storedValue.aiApiKeys[storedValue.aiProvider] = storedValue.aiApiKey
+    }
+
+    if (!storedValue.aiModels || typeof storedValue.aiModels !== "object") {
+      storedValue.aiModels = {}
+    }
+
+    if (
+      storedValue.aiModel &&
+      storedValue.aiProvider &&
+      storedValue.aiProvider !== "none" &&
+      !storedValue.aiModels[storedValue.aiProvider]
+    ) {
+      storedValue.aiModels[storedValue.aiProvider] = storedValue.aiModel
     }
 
     return { ...defaultValue, ...storedValue }

@@ -31,3 +31,14 @@ export const scrollToHeading = (heading) => {
     }
   }
 }
+
+export const extractTextFromHtml = (html) => {
+  if (!html) {
+    return ""
+  }
+
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(html, "text/html")
+  const textContent = doc.body?.textContent || ""
+  return textContent.replaceAll(/\s+/g, " ").trim()
+}
