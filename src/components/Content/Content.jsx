@@ -76,9 +76,13 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
   }
 
   const fetchArticleListWithRelatedData = async () => {
-    await (isAppDataReady
-      ? Promise.all([fetchArticleList(getEntries), fetchFeedRelatedData()])
-      : fetchAppData())
+    if (!isAppDataReady) {
+      await fetchAppData()
+      return
+    }
+
+    await fetchArticleList(getEntries)
+    await fetchFeedRelatedData()
   }
 
   // Listen for external refresh requests (e.g., clicking an already-active sidebar item)
