@@ -18,6 +18,15 @@
 }
 
 .action-buttons .arco-btn-secondary:not(.arco-btn-disabled) {
+  background-color: transparent;
+}
+
+/* Make all action buttons transparent by default but keep hover/focus effect */
+.action-buttons .arco-btn:not(.arco-btn-disabled) {
+  background-color: transparent;
+}
+.action-buttons .arco-btn:not(.arco-btn-disabled):hover,
+.action-buttons .arco-btn:not(.arco-btn-disabled):focus {
   background-color: var(--color-bg-1);
 }
 

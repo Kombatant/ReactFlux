@@ -9,3 +9,12 @@
 .entry-panel .arco-btn-secondary {
   background-color: transparent;
 }
+
+/* Ensure mark-as-read and refresh buttons are transparent but show background on hover/focus */
+.entry-panel .arco-btn:not(.arco-btn-disabled) {
+  background-color: transparent;
+}
+.entry-panel .arco-btn:not(.arco-btn-disabled):hover,
+.entry-panel .arco-btn:not(.arco-btn-disabled):focus {
+  background-color: var(--color-bg-1) !important;
+}

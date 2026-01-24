@@ -48,6 +48,14 @@
   background-color: transparent;
 }
 
+/* Restore background on hover/focus for toolbar buttons */
+.search-and-sort-bar .button-group button:not(.arco-btn-disabled):hover,
+.search-and-sort-bar .button-group button:not(.arco-btn-disabled):focus,
+.search-and-sort-bar .button-group .arco-btn:not(.arco-btn-disabled):hover,
+.search-and-sort-bar .button-group .arco-btn:not(.arco-btn-disabled):focus {
+  background-color: var(--color-bg-1) !important;
+}
+
 .calendar-actions {
   display: flex;
   justify-content: space-between;
