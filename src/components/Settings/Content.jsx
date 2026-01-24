@@ -13,8 +13,10 @@ import { useEffect, useState } from "react"
 
 import SettingItem from "./SettingItem"
 import "./SettingItem.css"
+import "./Content.css"
 
 import { exportOPML, importOPML } from "@/apis"
+import AiSpark from "@/components/icons/AiSpark"
 import { polyglotState } from "@/hooks/useLanguage"
 import { settingsState, updateSettings } from "@/store/settingsState"
 import { AI_PROVIDERS, fetchProviderModels } from "@/utils/ai"
@@ -255,87 +257,99 @@ const Content = () => {
 
       <Divider />
 
-      <SettingItem
-        description={polyglot.t("settings.content.ai_provider_description")}
-        title={polyglot.t("settings.content.ai_provider_label")}
-      >
-        <Select
-          className="input-select"
-          value={settings.aiProvider}
-          onChange={handleAiProviderChange}
+      <div className="ai-settings-group">
+        <div className="ai-settings-group__header">
+          <div className="ai-settings-group__title">
+            <AiSpark className="ai-settings-group__icon" />
+            <span>{polyglot.t("settings.content.ai_group_label")}</span>
+          </div>
+          <div className="ai-settings-group__description">
+            {polyglot.t("settings.content.ai_group_description")}
+          </div>
+        </div>
+
+        <SettingItem
+          description={polyglot.t("settings.content.ai_provider_description")}
+          title={polyglot.t("settings.content.ai_provider_label")}
         >
-          <Select.Option value={AI_PROVIDERS.NONE}>
-            {polyglot.t("settings.content.ai_provider_none")}
-          </Select.Option>
-          <Select.Option value={AI_PROVIDERS.ANTHROPIC}>
-            {polyglot.t("settings.content.ai_provider_anthropic")}
-          </Select.Option>
-          <Select.Option value={AI_PROVIDERS.GEMINI}>
-            {polyglot.t("settings.content.ai_provider_gemini")}
-          </Select.Option>
-          <Select.Option value={AI_PROVIDERS.OLLAMA}>
-            {polyglot.t("settings.content.ai_provider_ollama")}
-          </Select.Option>
-          <Select.Option value={AI_PROVIDERS.LM_STUDIO}>
-            {polyglot.t("settings.content.ai_provider_lmstudio")}
-          </Select.Option>
-          <Select.Option value={AI_PROVIDERS.PERPLEXITY}>
-            {polyglot.t("settings.content.ai_provider_perplexity")}
-          </Select.Option>
-        </Select>
-      </SettingItem>
-
-      <Divider />
-
-      <SettingItem description={apiCredentialDescription} title={apiCredentialLabel}>
-        <ApiCredentialInput
-          allowClear
-          className="input-select"
-          disabled={isProviderNone}
-          placeholder={apiCredentialPlaceholder}
-          style={{ width: "30ch" }}
-          value={currentApiKey}
-          onChange={(value) =>
-            updateSettings({
-              aiApiKeys: {
-                ...settings.aiApiKeys,
-                [settings.aiProvider]: value,
-              },
-            })
-          }
-        />
-      </SettingItem>
-
-      <Divider />
-
-      <SettingItem
-        description={polyglot.t("settings.content.ai_model_description")}
-        title={polyglot.t("settings.content.ai_model_label")}
-      >
-        <Select
-          className="input-select"
-          disabled={isProviderNone || modelIds.length === 0}
-          loading={modelsLoading}
-          placeholder={polyglot.t("settings.content.ai_models_empty")}
-          style={{ width: "30ch" }}
-          value={currentModel || undefined}
-          onChange={(value) =>
-            updateSettings({
-              aiModel: value || "",
-              aiModels: {
-                ...settings.aiModels,
-                [settings.aiProvider]: value || "",
-              },
-            })
-          }
-        >
-          {normalizedModelOptions.map((model) => (
-            <Select.Option key={model.id} value={model.id}>
-              {model.label}
+          <Select
+            className="input-select"
+            value={settings.aiProvider}
+            onChange={handleAiProviderChange}
+          >
+            <Select.Option value={AI_PROVIDERS.NONE}>
+              {polyglot.t("settings.content.ai_provider_none")}
             </Select.Option>
-          ))}
-        </Select>
-      </SettingItem>
+            <Select.Option value={AI_PROVIDERS.ANTHROPIC}>
+              {polyglot.t("settings.content.ai_provider_anthropic")}
+            </Select.Option>
+            <Select.Option value={AI_PROVIDERS.GEMINI}>
+              {polyglot.t("settings.content.ai_provider_gemini")}
+            </Select.Option>
+            <Select.Option value={AI_PROVIDERS.OLLAMA}>
+              {polyglot.t("settings.content.ai_provider_ollama")}
+            </Select.Option>
+            <Select.Option value={AI_PROVIDERS.LM_STUDIO}>
+              {polyglot.t("settings.content.ai_provider_lmstudio")}
+            </Select.Option>
+            <Select.Option value={AI_PROVIDERS.PERPLEXITY}>
+              {polyglot.t("settings.content.ai_provider_perplexity")}
+            </Select.Option>
+          </Select>
+        </SettingItem>
+
+        <Divider className="ai-settings-group__divider" />
+
+        <SettingItem description={apiCredentialDescription} title={apiCredentialLabel}>
+          <ApiCredentialInput
+            allowClear
+            className="input-select"
+            disabled={isProviderNone}
+            placeholder={apiCredentialPlaceholder}
+            style={{ width: "30ch" }}
+            value={currentApiKey}
+            onChange={(value) =>
+              updateSettings({
+                aiApiKeys: {
+                  ...settings.aiApiKeys,
+                  [settings.aiProvider]: value,
+                },
+              })
+            }
+          />
+        </SettingItem>
+
+        <Divider className="ai-settings-group__divider" />
+
+        <SettingItem
+          description={polyglot.t("settings.content.ai_model_description")}
+          title={polyglot.t("settings.content.ai_model_label")}
+        >
+          <Select
+            className="input-select"
+            disabled={isProviderNone || modelIds.length === 0}
+            loading={modelsLoading}
+            placeholder={polyglot.t("settings.content.ai_models_empty")}
+            style={{ width: "30ch" }}
+            value={currentModel || undefined}
+            onChange={(value) =>
+              updateSettings({
+                aiModel: value || "",
+                aiModels: {
+                  ...settings.aiModels,
+                  [settings.aiProvider]: value || "",
+                },
+              })
+            }
+          >
+            {normalizedModelOptions.map((model) => (
+              <Select.Option key={model.id} value={model.id}>
+                {model.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </SettingItem>
+      </div>
 
       <Divider />
 

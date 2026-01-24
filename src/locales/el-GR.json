@@ -298,6 +298,8 @@
       "label": "Περιεχόμενο",
       "feeds_label": "Ροές",
       "feeds_description": "Επιλογές που αφορούν τις ροές, όπως εμφάνιση κρυφών ροών και φίλτρα.",
+      "ai_group_label": "Περιλήψεις AI",
+      "ai_group_description": "Ρυθμίστε πάροχο, διαπιστευτήρια και μοντέλο για περιλήψεις.",
       "ai_api_key_description": "Χρησιμοποιείται για τον επιλεγμένο πάροχο.",
       "ai_api_key_label": "Κλειδί API",
       "ai_ollama_url_label": "URL Ollama",

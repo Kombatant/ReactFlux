@@ -298,6 +298,8 @@
       "label": "Contenu",
       "feeds_label": "Flux",
       "feeds_description": "Options liées aux flux, comme l'affichage des flux masqués et les filtres.",
+      "ai_group_label": "Résumés IA",
+      "ai_group_description": "Configurez le fournisseur, les identifiants et le modèle pour les résumés.",
       "ai_api_key_description": "Utilisée pour le fournisseur sélectionné.",
       "ai_api_key_label": "Clé API",
       "ai_ollama_url_label": "URL Ollama",

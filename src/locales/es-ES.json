@@ -312,6 +312,8 @@
       "label": "Contenido",
       "feeds_label": "Feeds",
       "feeds_description": "Opciones relacionadas con las fuentes, como mostrar fuentes ocultas y filtros.",
+      "ai_group_label": "Resúmenes con IA",
+      "ai_group_description": "Configura proveedor, credenciales y modelo para los resúmenes.",
       "ai_api_key_description": "Se usa para el proveedor seleccionado.",
       "ai_api_key_label": "Clave de API",
       "ai_ollama_url_label": "URL de Ollama",

@@ -298,6 +298,8 @@
       "label": "Content",
       "feeds_label": "Feeds",
       "feeds_description": "Feed-related options such as showing hidden feeds and filtering.",
+      "ai_group_label": "AI summarization",
+      "ai_group_description": "Configure provider, credentials, and model for summaries.",
       "ai_api_key_description": "Used to call the selected provider.",
       "ai_api_key_label": "API key",
       "ai_ollama_url_label": "Ollama URL",

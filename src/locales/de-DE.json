@@ -298,6 +298,8 @@
       "label": "Inhalt",
       "feeds_label": "Feeds",
       "feeds_description": "Feed-bezogene Optionen wie das Anzeigen versteckter Feeds und Filter.",
+      "ai_group_label": "KI-Zusammenfassung",
+      "ai_group_description": "Anbieter, Zugangsdaten und Modell für Zusammenfassungen konfigurieren.",
       "ai_api_key_description": "Wird für den ausgewählten Anbieter verwendet.",
       "ai_api_key_label": "API-Schlüssel",
       "ai_ollama_url_label": "Ollama-URL",

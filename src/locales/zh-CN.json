@@ -298,6 +298,8 @@
       "label": "内容",
       "feeds_label": "订阅源",
       "feeds_description": "与订阅源相关的选项，例如显示隐藏订阅源和筛选。",
+      "ai_group_label": "AI 摘要",
+      "ai_group_description": "为摘要配置提供商、凭据和模型。",
       "ai_api_key_description": "用于所选提供商。",
       "ai_api_key_label": "API 密钥",
       "ai_ollama_url_label": "Ollama URL",
