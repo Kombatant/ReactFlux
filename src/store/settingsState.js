@@ -8,11 +8,15 @@ const defaultValue = {
     anthropic: "",
     gemini: "",
     perplexity: "",
+    ollama: "",
+    lmstudio: "",
   },
   aiModels: {
     anthropic: "",
     gemini: "",
     perplexity: "",
+    ollama: "",
+    lmstudio: "",
   },
   aiModel: "",
   aiProvider: "none",
@@ -82,7 +86,9 @@ export const settingsState = persistentAtom("settings", defaultValue, {
 
     if (
       storedValue.aiProvider &&
-      !["none", "anthropic", "gemini", "perplexity"].includes(storedValue.aiProvider)
+      !["none", "anthropic", "gemini", "perplexity", "ollama", "lmstudio"].includes(
+        storedValue.aiProvider,
+      )
     ) {
       storedValue.aiProvider = "none"
       storedValue.aiModel = ""

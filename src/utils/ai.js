@@ -3,6 +3,8 @@ export const AI_PROVIDERS = {
   ANTHROPIC: "anthropic",
   GEMINI: "gemini",
   PERPLEXITY: "perplexity",
+  OLLAMA: "ollama",
+  LM_STUDIO: "lmstudio",
 }
 
 const normalizeGeminiModel = (model) => model?.replace(/^models\//, "")
@@ -20,6 +22,23 @@ const parseErrorMessage = (data, fallback) => {
     return fallback
   }
   return data?.error?.message || data?.message || fallback
+}
+
+const normalizeBaseUrl = (value) => (value || "").trim().replace(/\/+$/, "")
+
+const buildOllamaUrl = (baseUrl, path) => {
+  const base = normalizeBaseUrl(baseUrl)
+  const suffix = path.startsWith("/") ? path : `/${path}`
+  return `${base}${suffix}`
+}
+
+const buildLmStudioUrl = (baseUrl, path) => {
+  const base = normalizeBaseUrl(baseUrl)
+  const suffix = path.startsWith("/") ? path : `/${path}`
+  if (base.endsWith("/v1")) {
+    return `${base}${suffix}`
+  }
+  return `${base}/v1${suffix}`
 }
 
 export const fetchProviderModels = async (provider, apiKey) => {
@@ -119,6 +138,40 @@ export const fetchProviderModels = async (provider, apiKey) => {
     }
   }
 
+  if (provider === AI_PROVIDERS.OLLAMA) {
+    const response = await fetch(buildOllamaUrl(apiKey, "/api/tags"))
+    const data = await parseJsonSafely(response)
+    if (!response.ok) {
+      throw new Error(parseErrorMessage(data, response.statusText))
+    }
+    return (data?.models || [])
+      .map((model) => {
+        const id = model?.name || model?.model
+        if (!id) {
+          return null
+        }
+        return { id, label: id }
+      })
+      .filter(Boolean)
+  }
+
+  if (provider === AI_PROVIDERS.LM_STUDIO) {
+    const response = await fetch(buildLmStudioUrl(apiKey, "/models"))
+    const data = await parseJsonSafely(response)
+    if (!response.ok) {
+      throw new Error(parseErrorMessage(data, response.statusText))
+    }
+    return (data?.data || [])
+      .map((model) => {
+        const id = model?.id || model?.name
+        if (!id) {
+          return null
+        }
+        return { id, label: id }
+      })
+      .filter(Boolean)
+  }
+
   return []
 }
 
@@ -149,6 +202,10 @@ const extractGeminiText = (data) => {
 }
 
 const extractPerplexityText = (data) => data?.choices?.[0]?.message?.content || ""
+
+const extractOllamaText = (data) => data?.response || data?.message?.content || ""
+
+const extractLmStudioText = (data) => data?.choices?.[0]?.message?.content || ""
 
 export const summarizeWithProvider = async ({ provider, apiKey, model, title, content }) => {
   if (provider === AI_PROVIDERS.ANTHROPIC) {
@@ -219,6 +276,47 @@ export const summarizeWithProvider = async ({ provider, apiKey, model, title, co
       throw new Error(parseErrorMessage(data, response.statusText))
     }
     return extractPerplexityText(data)
+  }
+
+  if (provider === AI_PROVIDERS.OLLAMA) {
+    const response = await fetch(buildOllamaUrl(apiKey, "/api/generate"), {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        model,
+        prompt: buildSummaryPrompt(title, content),
+        stream: false,
+      }),
+    })
+    const data = await parseJsonSafely(response)
+    if (!response.ok) {
+      throw new Error(parseErrorMessage(data, response.statusText))
+    }
+    return extractOllamaText(data)
+  }
+
+  if (provider === AI_PROVIDERS.LM_STUDIO) {
+    const response = await fetch(buildLmStudioUrl(apiKey, "/chat/completions"), {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 1800,
+        messages: [
+          { role: "system", content: "You are a helpful assistant." },
+          { role: "user", content: buildSummaryPrompt(title, content) },
+        ],
+      }),
+    })
+    const data = await parseJsonSafely(response)
+    if (!response.ok) {
+      throw new Error(parseErrorMessage(data, response.statusText))
+    }
+    return extractLmStudioText(data)
   }
 
   throw new Error("unsupported_provider")

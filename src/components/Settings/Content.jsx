@@ -49,12 +49,30 @@ const Content = () => {
   const [modelOptions, setModelOptions] = useState([])
 
   const isProviderNone = settings.aiProvider === AI_PROVIDERS.NONE
+  const isOllamaProvider = settings.aiProvider === AI_PROVIDERS.OLLAMA
+  const isLmStudioProvider = settings.aiProvider === AI_PROVIDERS.LM_STUDIO
   const currentApiKey = settings.aiApiKeys?.[settings.aiProvider] ?? ""
   const currentModel = settings.aiModels?.[settings.aiProvider] ?? ""
   const normalizedModelOptions = modelOptions.map((model) =>
     typeof model === "string" ? { id: model, label: model } : model,
   )
   const modelIds = normalizedModelOptions.map((model) => model.id)
+  const apiCredentialLabel = isOllamaProvider
+    ? polyglot.t("settings.content.ai_ollama_url_label")
+    : isLmStudioProvider
+      ? polyglot.t("settings.content.ai_lmstudio_url_label")
+      : polyglot.t("settings.content.ai_api_key_label")
+  const apiCredentialDescription = isOllamaProvider
+    ? polyglot.t("settings.content.ai_ollama_url_description")
+    : isLmStudioProvider
+      ? polyglot.t("settings.content.ai_lmstudio_url_description")
+      : polyglot.t("settings.content.ai_api_key_description")
+  const apiCredentialPlaceholder = isOllamaProvider
+    ? polyglot.t("settings.content.ai_ollama_url_placeholder")
+    : isLmStudioProvider
+      ? polyglot.t("settings.content.ai_lmstudio_url_placeholder")
+      : polyglot.t("settings.content.ai_api_key_label")
+  const ApiCredentialInput = isOllamaProvider || isLmStudioProvider ? Input : Input.Password
 
   useEffect(() => {
     let isActive = true
@@ -255,6 +273,12 @@ const Content = () => {
           <Select.Option value={AI_PROVIDERS.GEMINI}>
             {polyglot.t("settings.content.ai_provider_gemini")}
           </Select.Option>
+          <Select.Option value={AI_PROVIDERS.OLLAMA}>
+            {polyglot.t("settings.content.ai_provider_ollama")}
+          </Select.Option>
+          <Select.Option value={AI_PROVIDERS.LM_STUDIO}>
+            {polyglot.t("settings.content.ai_provider_lmstudio")}
+          </Select.Option>
           <Select.Option value={AI_PROVIDERS.PERPLEXITY}>
             {polyglot.t("settings.content.ai_provider_perplexity")}
           </Select.Option>
@@ -263,15 +287,12 @@ const Content = () => {
 
       <Divider />
 
-      <SettingItem
-        description={polyglot.t("settings.content.ai_api_key_description")}
-        title={polyglot.t("settings.content.ai_api_key_label")}
-      >
-        <Input.Password
+      <SettingItem description={apiCredentialDescription} title={apiCredentialLabel}>
+        <ApiCredentialInput
           allowClear
           className="input-select"
           disabled={isProviderNone}
-          placeholder={polyglot.t("settings.content.ai_api_key_label")}
+          placeholder={apiCredentialPlaceholder}
           style={{ width: "30ch" }}
           value={currentApiKey}
           onChange={(value) =>
