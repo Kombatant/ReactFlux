@@ -76,7 +76,8 @@
     "settings_reset_confirm": "Confirmar el restablecimiento",
     "settings_reset_description": "¿Está seguro de que desea restablecer su configuración? Esta acción no se puede deshacer.",
     "logout_confirm": "Confirmar el cierre de sesión",
-    "logout_description": "¿Está seguro de que desea cerrar sesión? Esta acción no se puede deshacer."
+    "logout_description": "¿Está seguro de que desea cerrar sesión? Esta acción no se puede deshacer.",
+    "update_available_tooltip": "Actualización disponible"
   },
   "actions": {
     "check": "Comprobar",

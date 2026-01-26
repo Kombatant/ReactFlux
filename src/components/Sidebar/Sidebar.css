@@ -34,6 +34,25 @@
   height: 48px;
 }
 
+.menu-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-header-actions .arco-btn:not(.arco-btn-disabled) {
+  background-color: transparent;
+}
+
+.menu-header-actions .arco-btn:not(.arco-btn-disabled):hover,
+.menu-header-actions .arco-btn:not(.arco-btn-disabled):focus {
+  background-color: var(--color-bg-1);
+}
+
+.update-available-button .arco-icon {
+  color: var(--color-danger-6);
+}
+
 .menu-header .avatar {
   margin-right: 10px;
   background-color: var(--color-text-1);

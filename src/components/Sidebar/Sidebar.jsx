@@ -40,6 +40,7 @@ import Profile from "./Profile.jsx"
 
 // import OPML APIs moved to Settings Content
 import { markCategoryAsRead, refreshCategoryFeed } from "@/apis/categories"
+import CustomTooltip from "@/components/ui/CustomTooltip"
 import EditCategoryModal from "@/components/ui/EditCategoryModal"
 import EditFeedModal from "@/components/ui/EditFeedModal"
 import FeedIcon from "@/components/ui/FeedIcon"
@@ -59,6 +60,7 @@ import {
 } from "@/store/dataState"
 import { settingsState, updateSettings } from "@/store/settingsState"
 import { expandedCategoriesState, setExpandedCategories } from "@/store/sidebarState"
+import { GITHUB_REPO_PATH } from "@/utils/constants"
 
 import "./Sidebar.css"
 
@@ -497,7 +499,7 @@ const updateAllEntriesAsRead = () => {
   setEntries((prev) => prev.map((entry) => ({ ...entry, status: "read" })))
 }
 
-const Sidebar = () => {
+const Sidebar = ({ hasUpdate }) => {
   const { isCoreDataReady } = useStore(dataState)
   const { polyglot } = useStore(polyglotState)
   const expandedCategories = useStore(expandedCategoriesState)
@@ -609,7 +611,22 @@ const Sidebar = () => {
                 ReactFlux
               </Typography.Title>
             </span>
-            <Profile />
+            <div className="menu-header-actions">
+              {hasUpdate ? (
+                <CustomTooltip mini content={polyglot.t("sidebar.update_available_tooltip")}>
+                  <Button
+                    className="update-available-button"
+                    icon={<IconDownload />}
+                    shape="circle"
+                    size="small"
+                    onClick={() =>
+                      globalThis.open(`https://github.com/${GITHUB_REPO_PATH}`, "_blank")
+                    }
+                  />
+                </CustomTooltip>
+              ) : null}
+              <Profile />
+            </div>
           </div>
           <Typography.Title className="section-title" heading={6} style={{ paddingLeft: "12px" }}>
             {polyglot.t("sidebar.articles")}
