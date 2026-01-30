@@ -29,10 +29,18 @@ function useVersionCheck() {
           return
         }
 
-        const data = await ofetch(`https://api.github.com/repos/${GITHUB_REPO_PATH}/commits/main`)
+        const remoteVersionInfoUrl = `https://raw.githubusercontent.com/${GITHUB_REPO_PATH}/main/src/version-info.json`
+        const remoteBuildInfo = await ofetch(remoteVersionInfoUrl, {
+          cache: "no-store",
+        })
+
+        if (buildInfo.gitHash && remoteBuildInfo.gitHash) {
+          setHasUpdate(buildInfo.gitHash !== remoteBuildInfo.gitHash)
+          return
+        }
 
         const currentGitTimestamp = getTimestamp(buildInfo.gitDate)
-        const latestGitTimestamp = getTimestamp(data.commit.committer.date)
+        const latestGitTimestamp = getTimestamp(remoteBuildInfo.gitDate)
 
         setHasUpdate(currentGitTimestamp < latestGitTimestamp)
       } catch (error) {
