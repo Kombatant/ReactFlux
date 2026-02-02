@@ -141,6 +141,8 @@
     "mark_all_as_read_error": "No se pudo marcar todo como leído",
     "mark_all_as_read_confirm": "¿Marcar todo como leído?",
     "mark_all_as_read_tooltip": "Marcar todo como leído",
+    "mark_today_as_read_tooltip": "Marcar hoy como leído",
+    "mark_today_as_read_confirm": "¿Marcar los artículos de hoy como leídos?",
     "mark_as_read_options_tooltip": "Opciones para marcar como leído",
     "mark_as_read_menu_older_day": "Hace más de un día",
     "mark_as_read_menu_older_two_days": "Hace más de dos días",

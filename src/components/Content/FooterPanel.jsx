@@ -84,6 +84,10 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
   const [pendingAction, setPendingAction] = useState(null)
 
   const confirmTitle = useMemo(() => {
+    if (pendingAction === "all" && info.from === "today") {
+      return polyglot.t("article_list.mark_today_as_read_confirm")
+    }
+
     switch (pendingAction) {
       case "older-day": {
         return polyglot.t("article_list.mark_older_than_day_confirm")
@@ -107,7 +111,7 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
         return ""
       }
     }
-  }, [pendingAction, polyglot])
+  }, [pendingAction, polyglot, info.from])
 
   const updateUIAfterMarkAsRead = async (publishedBeforeUnix = null, successMessageKey) => {
     updateEntriesAsRead(publishedBeforeUnix)
@@ -296,45 +300,7 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
 
   return (
     <div className="entry-panel">
-      <Dropdown
-        popupVisible={dropdownVisible}
-        position="tr"
-        trigger="click"
-        droplist={
-          <Menu>
-            <MenuItem key="older-than-day" onClick={() => openConfirm("older-day")}>
-              <DoubleCheck className="icon-right" />
-              {polyglot.t("article_list.mark_as_read_menu_older_day")}
-            </MenuItem>
-
-            <MenuItem key="older-than-two-days" onClick={() => openConfirm("older-2-days")}>
-              <DoubleCheck className="icon-right" />
-              {polyglot.t("article_list.mark_as_read_menu_older_two_days")}
-            </MenuItem>
-
-            <MenuItem key="older-than-three-days" onClick={() => openConfirm("older-3-days")}>
-              <DoubleCheck className="icon-right" />
-              {polyglot.t("article_list.mark_as_read_menu_older_three_days")}
-            </MenuItem>
-
-            <MenuItem key="older-than-week" onClick={() => openConfirm("older-week")}>
-              <DoubleCheck className="icon-right" />
-              {polyglot.t("article_list.mark_as_read_menu_older_week")}
-            </MenuItem>
-
-            <MenuItem key="older-than-two-weeks" onClick={() => openConfirm("older-2-weeks")}>
-              <DoubleCheck className="icon-right" />
-              {polyglot.t("article_list.mark_as_read_menu_older_two_weeks")}
-            </MenuItem>
-
-            <MenuItem key="mark-all-as-read" onClick={() => openConfirm("all")}>
-              <DoubleCheck className="icon-right" />
-              {polyglot.t("article_list.mark_all_as_read_tooltip")}
-            </MenuItem>
-          </Menu>
-        }
-        onVisibleChange={setDropdownVisible}
-      >
+      {info.from === "today" ? (
         <Popconfirm
           focusLock
           popupVisible={confirmVisible}
@@ -343,17 +309,70 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
           onOk={handleConfirmOk}
           onVisibleChange={handleConfirmVisibleChange}
         >
-          <CustomTooltip mini content={polyglot.t("article_list.mark_as_read_options_tooltip")}>
-            <Button
-              icon={<DoubleCheck />}
-              shape="circle"
-              style={{
-                visibility: ["starred", "history"].includes(info.from) ? "hidden" : "visible",
-              }}
-            />
+          <CustomTooltip mini content={polyglot.t("article_list.mark_today_as_read_tooltip")}>
+            <Button icon={<DoubleCheck />} shape="circle" onClick={() => openConfirm("all")} />
           </CustomTooltip>
         </Popconfirm>
-      </Dropdown>
+      ) : (
+        <Dropdown
+          popupVisible={dropdownVisible}
+          position="tr"
+          trigger="click"
+          droplist={
+            <Menu>
+              <MenuItem key="older-than-day" onClick={() => openConfirm("older-day")}>
+                <DoubleCheck className="icon-right" />
+                {polyglot.t("article_list.mark_as_read_menu_older_day")}
+              </MenuItem>
+
+              <MenuItem key="older-than-two-days" onClick={() => openConfirm("older-2-days")}>
+                <DoubleCheck className="icon-right" />
+                {polyglot.t("article_list.mark_as_read_menu_older_two_days")}
+              </MenuItem>
+
+              <MenuItem key="older-than-three-days" onClick={() => openConfirm("older-3-days")}>
+                <DoubleCheck className="icon-right" />
+                {polyglot.t("article_list.mark_as_read_menu_older_three_days")}
+              </MenuItem>
+
+              <MenuItem key="older-than-week" onClick={() => openConfirm("older-week")}>
+                <DoubleCheck className="icon-right" />
+                {polyglot.t("article_list.mark_as_read_menu_older_week")}
+              </MenuItem>
+
+              <MenuItem key="older-than-two-weeks" onClick={() => openConfirm("older-2-weeks")}>
+                <DoubleCheck className="icon-right" />
+                {polyglot.t("article_list.mark_as_read_menu_older_two_weeks")}
+              </MenuItem>
+
+              <MenuItem key="mark-all-as-read" onClick={() => openConfirm("all")}>
+                <DoubleCheck className="icon-right" />
+                {polyglot.t("article_list.mark_all_as_read_tooltip")}
+              </MenuItem>
+            </Menu>
+          }
+          onVisibleChange={setDropdownVisible}
+        >
+          <Popconfirm
+            focusLock
+            popupVisible={confirmVisible}
+            title={confirmTitle}
+            triggerProps={{ disabled: true }}
+            onOk={handleConfirmOk}
+            onVisibleChange={handleConfirmVisibleChange}
+          >
+            <CustomTooltip mini content={polyglot.t("article_list.mark_as_read_options_tooltip")}>
+              <Button
+                icon={<DoubleCheck />}
+                shape="circle"
+                style={{
+                  visibility: ["starred", "history"].includes(info.from) ? "hidden" : "visible",
+                }}
+              />
+            </CustomTooltip>
+          </Popconfirm>
+        </Dropdown>
+      )}
 
       <Radio.Group
         style={{ visibility: info.from === "history" ? "hidden" : "visible" }}

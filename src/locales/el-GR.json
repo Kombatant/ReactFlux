@@ -127,6 +127,8 @@
     "mark_all_as_read_error": "Αποτυχία σήμανσης όλων ως αναγνωσμένα",
     "mark_all_as_read_confirm": "Σημειώστε όλα ως αναγνωσμένα;",
     "mark_all_as_read_tooltip": "Σήμανση όλων ως αναγνωσμένα",
+    "mark_today_as_read_tooltip": "Σήμανση των σημερινών ως αναγνωσμένα",
+    "mark_today_as_read_confirm": "Σημειώστε τα σημερινά άρθρα ως αναγνωσμένα;",
     "mark_as_read_options_tooltip": "Επιλογές σήμανσης ως αναγνωσμένο",
     "mark_as_read_menu_older_day": "Παλαιότερα της ημέρας",
     "mark_as_read_menu_older_two_days": "Παλαιότερα των δύο ημερών",

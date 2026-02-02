@@ -127,6 +127,8 @@
     "mark_all_as_read_error": "无法标记所有文章为已读",
     "mark_all_as_read_confirm": "标记所有文章为已读？",
     "mark_all_as_read_tooltip": "标记所有文章为已读",
+    "mark_today_as_read_tooltip": "将今天标记为已读",
+    "mark_today_as_read_confirm": "将今天的文章标记为已读？",
     "mark_as_read_options_tooltip": "标记为已读选项",
     "mark_as_read_menu_older_day": "一天前",
     "mark_as_read_menu_older_two_days": "两天前",

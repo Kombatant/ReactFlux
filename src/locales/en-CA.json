@@ -127,6 +127,8 @@
     "mark_all_as_read_error": "Failed to mark all as read",
     "mark_all_as_read_confirm": "Mark all as read?",
     "mark_all_as_read_tooltip": "Mark all as read",
+    "mark_today_as_read_tooltip": "Mark Today as read",
+    "mark_today_as_read_confirm": "Mark today's articles as read?",
     "mark_as_read_options_tooltip": "Mark As Read options",
     "mark_as_read_menu_older_day": "Older than a day",
     "mark_as_read_menu_older_two_days": "Older than two days",
