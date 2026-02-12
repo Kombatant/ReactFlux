@@ -74,6 +74,26 @@ See how ReactFlux looks in different themes:
 2. Directly use our [online demo instance](https://reactflux.pages.dev) or deploy ReactFlux using one of the methods below
 3. Log in using your Miniflux username and password or API key (recommended)
 
+### Update Notification Source (Self-hosting/Forks)
+
+The "update available" icon compares your current build metadata with a remote `version-info.json`.
+
+By default it checks:
+
+`https://raw.githubusercontent.com/Kombatant/ReactFlux/main/src/version-info.json`
+
+If you use a fork, another branch, or your own release pipeline, set:
+
+`VITE_VERSION_INFO_URL=https://your-source/version-info.json`
+
+Then rebuild so the setting is embedded in the app.
+
+For troubleshooting, you can also enable:
+
+`VITE_VERSION_CHECK_DEBUG=true`
+
+This prints version-check decisions and compared metadata in the browser console.
+
 ## Deployment
 
 ### Cloudflare Pages
