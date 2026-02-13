@@ -63,7 +63,9 @@
     "settings_reset_description": "Sicher, dass die Einstellungen zurückgesetzt werden sollen? Diese Aktion kann nicht rückgängig gemacht werden.",
     "logout_confirm": "Ausloggen bestätigen",
     "logout_description": "Sicher, dass sich ausgeloggt werden soll? Diese Aktion kann nicht rückgängig gemacht werden.",
-    "update_available_tooltip": "Aktualisierte Version verfügbar"
+    "update_available_tooltip": "Aktualisierte Version verfügbar",
+    "build_number_title": "Build-Nummer",
+    "build_number_content": "Build-Commit: %{build}"
   },
   "actions": {
     "check": "Ansehen",

@@ -63,7 +63,9 @@
     "settings_reset_description": "Are you sure you want to reset your settings? This action cannot be undone.",
     "logout_confirm": "Confirm Logout",
     "logout_description": "Are you sure you want to logout? This action cannot be undone.",
-    "update_available_tooltip": "Updated build available"
+    "update_available_tooltip": "Updated build available",
+    "build_number_title": "Build Number",
+    "build_number_content": "Build commit: %{build}"
   },
   "actions": {
     "check": "Check",

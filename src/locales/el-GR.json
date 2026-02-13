@@ -63,7 +63,9 @@
     "settings_reset_description": "Είστε σίγουροι ότι θέλετε να επαναφέρετε τις ρυθμίσεις; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
     "logout_confirm": "Επιβεβαίωση αποσύνδεσης",
     "logout_description": "Είστε σίγουροι ότι θέλετε να αποσυνδεθείτε; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
-    "update_available_tooltip": "Διαθέσιμη ενημερωμένη έκδοση"
+    "update_available_tooltip": "Διαθέσιμη ενημερωμένη έκδοση",
+    "build_number_title": "Αριθμός Build",
+    "build_number_content": "Commit build: %{build}"
   },
   "actions": {
     "check": "Έλεγχος",
