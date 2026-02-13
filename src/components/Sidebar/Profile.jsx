@@ -22,6 +22,7 @@ import { resetData } from "@/store/dataState"
 import { resetFeedIcons } from "@/store/feedIconsState"
 import { resetSettings, settingsState, updateSettings } from "@/store/settingsState"
 import { GITHUB_REPO_PATH } from "@/utils/constants"
+import buildInfo from "@/version-info.json"
 import "./Profile.css"
 
 export default function Profile() {
@@ -59,6 +60,43 @@ export default function Profile() {
           title: polyglot.t("sidebar.logout_success"),
         })
       },
+    })
+  }
+
+  const handleAbout = () => {
+    Modal.info({
+      title: <b>About Reactflux...</b>,
+      content: (
+        <div>
+          <div>
+            Lovingly forked from{" "}
+            <a href="https://github.com/electh/ReactFlux" rel="noopener noreferrer" target="_blank">
+              https://github.com/electh/ReactFlux
+            </a>
+          </div>
+          <p></p>
+          <div>
+            <strong>Author:</strong> Pete &quot;Kombatant&quot; Vagiakos
+          </div>
+          <div>
+            <b>Build number:</b> {buildInfo.gitHash}
+          </div>
+          <div>
+            <b>Build date:</b> {buildInfo.gitDate}
+          </div>
+          <div>
+            <b>Github:</b>{" "}
+            <a
+              href="https://github.com/Kombatant/ReactFlux"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              https://github.com/Kombatant/ReactFlux
+            </a>
+          </div>
+        </div>
+      ),
+      okText: "OK",
     })
   }
 
@@ -111,11 +149,16 @@ export default function Profile() {
                 {polyglot.t("sidebar.report_issue")}
               </Menu.Item>
               <Divider style={{ margin: "4px 0" }} />
-              <Menu.Item key="3" onClick={handleResetSettings}>
+              <Menu.Item key="3" onClick={handleAbout}>
+                <IconInfoCircleFill className="icon-right" />
+                {polyglot.t("sidebar.about")}
+              </Menu.Item>
+              <Divider style={{ margin: "4px 0" }} />
+              <Menu.Item key="4" onClick={handleResetSettings}>
                 <IconRefresh className="icon-right" />
                 {polyglot.t("sidebar.reset_settings")}
               </Menu.Item>
-              <Menu.Item key="4" onClick={handleLogout}>
+              <Menu.Item key="5" onClick={handleLogout}>
                 <IconPoweroff className="icon-right" />
                 {polyglot.t("sidebar.logout")}
               </Menu.Item>

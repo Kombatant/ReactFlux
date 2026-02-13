@@ -71,15 +71,14 @@
     "settings": "Ajustes",
     "miniflux_settings": "Ajustes de Miniflux",
     "report_issue": "Reportar un problema",
+    "about": "About...",
     "reset_settings": "Restablecer ajustes",
     "logout": "Cerrar sesión",
     "settings_reset_confirm": "Confirmar el restablecimiento",
     "settings_reset_description": "¿Está seguro de que desea restablecer su configuración? Esta acción no se puede deshacer.",
     "logout_confirm": "Confirmar el cierre de sesión",
     "logout_description": "¿Está seguro de que desea cerrar sesión? Esta acción no se puede deshacer.",
-    "update_available_tooltip": "Actualización disponible",
-    "build_number_title": "Número de Build",
-    "build_number_content": "Commit del build: %{build}"
+    "update_available_tooltip": "Actualización disponible"
   },
   "actions": {
     "check": "Comprobar",

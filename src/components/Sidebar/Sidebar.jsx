@@ -6,7 +6,6 @@ import {
   Dropdown,
   Form,
   Menu,
-  Modal,
   Notification,
   Skeleton,
   Typography,
@@ -62,7 +61,6 @@ import {
 import { settingsState, updateSettings } from "@/store/settingsState"
 import { expandedCategoriesState, setExpandedCategories } from "@/store/sidebarState"
 import { GITHUB_REPO_PATH } from "@/utils/constants"
-import buildInfo from "@/version-info.json"
 
 import "./Sidebar.css"
 
@@ -600,23 +598,12 @@ const Sidebar = ({ hasUpdate }) => {
     await markFeedAsRead(feed)
   }
 
-  const handleShowBuildNumber = () => {
-    Modal.info({
-      title: polyglot.t("sidebar.build_number_title"),
-      content: <p>{polyglot.t("sidebar.build_number_content", { build: buildInfo.gitHash })}</p>,
-      okText: "OK",
-    })
-  }
-
   return (
     <div className="sidebar-container">
       <SimpleBar style={{ maxHeight: "100%" }}>
         <Menu hasCollapseButton={false} selectedKeys={selectedKeys}>
           <div className="menu-header">
-            <span
-              style={{ display: "flex", alignItems: "center" }}
-              onDoubleClick={handleShowBuildNumber}
-            >
+            <span style={{ display: "flex", alignItems: "center" }}>
               <Avatar className="avatar" size={32}>
                 <IconBook style={{ color: "var(--color-bg-1)" }} />
               </Avatar>

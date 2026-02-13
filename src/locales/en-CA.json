@@ -57,15 +57,14 @@
     "settings": "Settings",
     "miniflux_settings": "Miniflux Settings",
     "report_issue": "Report an issue",
+    "about": "About...",
     "reset_settings": "Reset Settings",
     "logout": "Logout",
     "settings_reset_confirm": "Confirm Reset",
     "settings_reset_description": "Are you sure you want to reset your settings? This action cannot be undone.",
     "logout_confirm": "Confirm Logout",
     "logout_description": "Are you sure you want to logout? This action cannot be undone.",
-    "update_available_tooltip": "Updated build available",
-    "build_number_title": "Build Number",
-    "build_number_content": "Build commit: %{build}"
+    "update_available_tooltip": "Updated build available"
   },
   "actions": {
     "check": "Check",
