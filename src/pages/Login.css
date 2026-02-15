@@ -1,10 +1,14 @@
 .background {
-  background-image: url("./images/background.jpg");
+  background-image: url("./images/background-light.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   width: 50%;
   height: 100%;
+}
+
+body[arco-theme="dark"] .background {
+  background-image: url("./images/background-dark.jpg");
 }
 
 .form-panel {
@@ -13,10 +17,14 @@
   justify-content: center;
   align-items: center;
   z-index: 2;
-  background-color: var(--color-bg-1);
+  background-color: #fff;
   width: 50%;
   height: 100%;
   overflow-y: auto;
+}
+
+body[arco-theme="dark"] .form-panel {
+  background-color: #17171a;
 }
 
 .login-form {
