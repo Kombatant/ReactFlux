@@ -608,7 +608,7 @@ const Sidebar = ({ hasUpdate }) => {
                 <IconBook style={{ color: "var(--color-bg-1)" }} />
               </Avatar>
               <Typography.Title heading={6} style={{ margin: 0 }}>
-                ReactFlux
+                ::ReactFlux
               </Typography.Title>
             </span>
             <div className="menu-header-actions">
