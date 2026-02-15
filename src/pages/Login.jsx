@@ -101,7 +101,11 @@ const Login = () => {
       <div className="page-layout">
         <div className="form-panel">
           <div className="login-form">
-            <Typography.Title heading={1}>{polyglot.t("login.apptitle")}</Typography.Title>
+            <Typography.Title heading={1}>
+              {
+                // polyglot.t("login.apptitle")
+              }
+            </Typography.Title>
             <Typography.Title heading={3}>
               {polyglot.t("login.login_to_your_server")}
             </Typography.Title>
