@@ -1,4 +1,3 @@
-import { Message } from "@arco-design/web-react"
 import { useStore } from "@nanostores/react"
 
 import { polyglotState } from "./useLanguage"
@@ -14,6 +13,7 @@ import {
   prevContentState,
 } from "@/store/contentState"
 import { ANIMATION_DURATION_MS } from "@/utils/constants"
+import { Message } from "@/utils/feedback"
 import { extractImageSources } from "@/utils/images"
 
 const findAdjacentUnreadEntry = (currentIndex, direction, entries) => {

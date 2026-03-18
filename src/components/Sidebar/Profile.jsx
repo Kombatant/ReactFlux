@@ -1,4 +1,4 @@
-import { Button, Divider, Dropdown, Menu, Modal, Notification, Radio } from "@arco-design/web-react"
+import { Button, Divider, Dropdown, Menu, Modal, Radio } from "@arco-design/web-react"
 import {
   IconDesktop,
   IconExclamationCircle,
@@ -22,6 +22,7 @@ import { resetData } from "@/store/dataState"
 import { resetFeedIcons } from "@/store/feedIconsState"
 import { resetSettings, settingsState, updateSettings } from "@/store/settingsState"
 import { GITHUB_REPO_PATH } from "@/utils/constants"
+import { Notification } from "@/utils/feedback"
 import buildInfo from "@/version-info.json"
 import "./Profile.css"
 

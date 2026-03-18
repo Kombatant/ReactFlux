@@ -1,4 +1,3 @@
-import { Message } from "@arco-design/web-react"
 import { useStore } from "@nanostores/react"
 import { createContext, useCallback, useMemo, useRef } from "react"
 import { useLocation, useNavigate } from "react-router"
@@ -9,6 +8,7 @@ import { polyglotState } from "@/hooks/useLanguage"
 import { setActiveContent, setIsArticleLoading } from "@/store/contentState"
 import { settingsState } from "@/store/settingsState"
 import { ANIMATION_DURATION_MS } from "@/utils/constants"
+import { Message } from "@/utils/feedback"
 import { buildEntryDetailPath, extractBasePath, isEntryDetailPath } from "@/utils/url"
 
 const Context = createContext()

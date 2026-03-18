@@ -1,12 +1,4 @@
-import {
-  Button,
-  Divider,
-  Input,
-  InputNumber,
-  Notification,
-  Select,
-  Switch,
-} from "@arco-design/web-react"
+import { Button, Divider, Input, InputNumber, Select, Switch } from "@arco-design/web-react"
 import { IconDownload, IconUpload } from "@arco-design/web-react/icon"
 import { useStore } from "@nanostores/react"
 import { useEffect, useState } from "react"
@@ -20,6 +12,7 @@ import AiSpark from "@/components/icons/AiSpark"
 import { polyglotState } from "@/hooks/useLanguage"
 import { settingsState, updateSettings } from "@/store/settingsState"
 import { AI_PROVIDERS, fetchProviderModels } from "@/utils/ai"
+import { Notification } from "@/utils/feedback"
 
 const readFileAsText = async (file) => {
   try {

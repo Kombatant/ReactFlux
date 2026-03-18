@@ -1,4 +1,4 @@
-import { Message, Modal, Notification } from "@arco-design/web-react"
+import { Modal } from "@arco-design/web-react"
 
 import { deleteFeed, getFeedEntries, refreshFeed } from "@/apis"
 import { markFeedAsRead as markFeedAsReadAPI } from "@/apis/feeds"
@@ -6,6 +6,7 @@ import { polyglotState } from "@/hooks/useLanguage"
 import { contentState, setEntries } from "@/store/contentState"
 import { setFeedsData, setUnreadInfo } from "@/store/dataState"
 import { getUTCDate } from "@/utils/date"
+import { Message, Notification } from "@/utils/feedback"
 
 export const updateFeedStatus = (feed, isSuccessful, targetFeedId = null) => {
   if (targetFeedId === null || targetFeedId === feed.id) {

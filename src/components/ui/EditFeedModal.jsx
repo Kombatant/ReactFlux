@@ -1,19 +1,11 @@
-import {
-  Form,
-  Input,
-  Link,
-  Message,
-  Modal,
-  Notification,
-  Select,
-  Switch,
-} from "@arco-design/web-react"
+import { Form, Input, Link, Modal, Select, Switch } from "@arco-design/web-react"
 import { useStore } from "@nanostores/react"
 
 import { updateFeed } from "@/apis"
 import { polyglotState } from "@/hooks/useLanguage"
 import { authState } from "@/store/authState"
 import { categoriesState, setFeedsData } from "@/store/dataState"
+import { Message, Notification } from "@/utils/feedback"
 
 const EditFeedModal = ({
   visible,

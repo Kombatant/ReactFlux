@@ -1,13 +1,4 @@
-import {
-  Button,
-  Divider,
-  Form,
-  Input,
-  Link,
-  Message,
-  Notification,
-  Typography,
-} from "@arco-design/web-react"
+import { Button, Divider, Form, Input, Link, Typography } from "@arco-design/web-react"
 import useForm from "@arco-design/web-react/es/Form/useForm"
 import { IconHome, IconLock, IconUser } from "@arco-design/web-react/icon"
 import { useStore } from "@nanostores/react"
@@ -20,6 +11,7 @@ import useTheme from "@/hooks/useTheme"
 import { authState, setAuth } from "@/store/authState"
 import { settingsState } from "@/store/settingsState"
 import isValidAuth from "@/utils/auth"
+import { Message, Notification } from "@/utils/feedback"
 import { handleEnterKeyToSubmit, validateAndFormatFormFields } from "@/utils/form"
 import hideSpinner from "@/utils/loading"
 import "./Login.css"

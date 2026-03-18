@@ -1,4 +1,4 @@
-import { Button, Notification, Typography } from "@arco-design/web-react"
+import { Button, Typography } from "@arco-design/web-react"
 import { IconEmpty, IconLeft, IconRight } from "@arco-design/web-react/icon"
 import { useStore } from "@nanostores/react"
 import { AnimatePresence } from "framer-motion"
@@ -32,6 +32,7 @@ import {
 import { dataState } from "@/store/dataState"
 import { duplicateHotkeysState } from "@/store/hotkeysState"
 import { settingsState, updateSettings } from "@/store/settingsState"
+import { Notification } from "@/utils/feedback"
 
 import "./Content.css"
 

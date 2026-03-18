@@ -1,4 +1,4 @@
-import { Button, Message, Select } from "@arco-design/web-react"
+import { Button, Select } from "@arco-design/web-react"
 import { IconCopy } from "@arco-design/web-react/icon"
 import { useStore } from "@nanostores/react"
 import hljs from "highlight.js"
@@ -8,6 +8,7 @@ import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import CustomTooltip from "@/components/ui/CustomTooltip"
 import { polyglotState } from "@/hooks/useLanguage"
 import { ANIMATION_DURATION_MS } from "@/utils/constants"
+import { Message } from "@/utils/feedback"
 import { LANGUAGE_DISPLAY_NAMES, SUPPORTED_LANGUAGES, SyntaxHighlighter } from "@/utils/highlighter"
 import "./CodeBlock.css"
 

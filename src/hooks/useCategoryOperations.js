@@ -1,8 +1,9 @@
-import { Message, Modal, Notification } from "@arco-design/web-react"
+import { Modal } from "@arco-design/web-react"
 
 import { addCategory, deleteCategory, updateCategory } from "@/apis/categories"
 import { polyglotState } from "@/hooks/useLanguage"
 import { setCategoriesData, setFeedsData } from "@/store/dataState"
+import { Message, Notification } from "@/utils/feedback"
 
 const useCategoryOperations = (useNotification = false) => {
   const { polyglot } = polyglotState.get()

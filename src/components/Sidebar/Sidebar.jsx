@@ -6,7 +6,6 @@ import {
   Dropdown,
   Form,
   Menu,
-  Notification,
   Skeleton,
   Typography,
 } from "@arco-design/web-react"
@@ -61,6 +60,7 @@ import {
 import { settingsState, updateSettings } from "@/store/settingsState"
 import { expandedCategoriesState, setExpandedCategories } from "@/store/sidebarState"
 import { GITHUB_REPO_PATH } from "@/utils/constants"
+import { Notification } from "@/utils/feedback"
 
 import "./Sidebar.css"
 

@@ -2,7 +2,6 @@ import {
   Button,
   Form,
   Input,
-  Message,
   Modal,
   Select,
   Space,
@@ -27,6 +26,7 @@ import useScreenWidth from "@/hooks/useScreenWidth"
 import { dataState, setFeedsData } from "@/store/dataState"
 import { settingsState } from "@/store/settingsState"
 import { generateRelativeTime } from "@/utils/date"
+import { Message } from "@/utils/feedback"
 import { filterByQuery } from "@/utils/kmp"
 import createSetter from "@/utils/nanostores"
 import sleep from "@/utils/time"

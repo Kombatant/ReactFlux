@@ -1,4 +1,3 @@
-import { Message, Notification } from "@arco-design/web-react"
 import { useStore } from "@nanostores/react"
 import Confetti from "canvas-confetti"
 
@@ -20,6 +19,7 @@ import { getSettings } from "@/store/settingsState"
 import { AI_PROVIDERS, formatSummaryHtml, summarizeWithProvider } from "@/utils/ai"
 import { checkIsInLast24Hours } from "@/utils/date"
 import { extractTextFromHtml } from "@/utils/dom"
+import { Message, Notification } from "@/utils/feedback"
 
 const updateEntries = (entries, updatedEntries) => {
   const updatedEntryIds = new Set(updatedEntries.map((entry) => entry.id))

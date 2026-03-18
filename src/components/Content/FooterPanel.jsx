@@ -1,4 +1,4 @@
-import { Button, Dropdown, Menu, Notification, Popconfirm, Radio } from "@arco-design/web-react"
+import { Button, Dropdown, Menu, Popconfirm, Radio } from "@arco-design/web-react"
 import {
   IconAlignLeft,
   IconClockCircle,
@@ -24,6 +24,7 @@ import { contentState, setEntries } from "@/store/contentState"
 import { dataState, setUnreadInfo, setUnreadTodayCount } from "@/store/dataState"
 import { settingsState, updateSettings } from "@/store/settingsState"
 import { get24HoursAgoTimestamp } from "@/utils/date"
+import { Notification } from "@/utils/feedback"
 import "./FooterPanel.css"
 
 const getUnixSecondsFromDateString = (dateString) => {

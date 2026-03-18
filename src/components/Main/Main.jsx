@@ -1,4 +1,4 @@
-import { Form, Input, Message, Modal, Select, Switch } from "@arco-design/web-react"
+import { Form, Input, Modal, Select, Switch } from "@arco-design/web-react"
 import { useStore } from "@nanostores/react"
 import { useEffect, useState } from "react"
 import { Outlet, useLocation, useNavigate } from "react-router"
@@ -11,6 +11,7 @@ import { polyglotState } from "@/hooks/useLanguage"
 import useModalToggle from "@/hooks/useModalToggle"
 import useScreenWidth from "@/hooks/useScreenWidth"
 import { categoriesState, feedsState } from "@/store/dataState"
+import { Message } from "@/utils/feedback"
 import { includesIgnoreCase } from "@/utils/filter"
 import "./Main.css"
 
