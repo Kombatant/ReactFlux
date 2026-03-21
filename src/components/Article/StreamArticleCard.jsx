@@ -185,7 +185,13 @@ const StreamArticleCard = ({ entry, handleEntryClick }) => {
       </div>
 
       <Typography.Title className="stream-story-title" heading={4}>
-        {currentEntry.title}
+        <button
+          className="stream-story-title-link"
+          type="button"
+          onClick={withStopPropagation(() => handleOpenLinkExternally(currentEntry))}
+        >
+          {currentEntry.title}
+        </button>
       </Typography.Title>
       <div className="stream-story-expanded">
         <div className="stream-story-meta">

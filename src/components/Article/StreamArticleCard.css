@@ -77,6 +77,21 @@
   color: var(--color-text-1);
 }
 
+.stream-story-title-link {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-align: left;
+}
+
+.stream-story-title-link:hover,
+.stream-story-title-link:focus-visible {
+  text-decoration: underline;
+}
+
 .stream-story-expanded {
   margin-top: 4px;
   padding-top: 18px;
