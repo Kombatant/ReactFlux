@@ -390,7 +390,7 @@ const Content = () => {
       <SettingItem title={polyglot.t("appearance.article_width_label")}>
         <InputNumber
           className="input-select"
-          max={90}
+          max={100}
           min={50}
           size="small"
           step={5}

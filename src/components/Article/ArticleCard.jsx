@@ -290,7 +290,9 @@ const ArticleCard = ({ entry, handleEntryClick, children }) => {
               </div>
             </div>
 
-            <h3 className="card-title">{entry.title}</h3>
+            <h3 className={isUnread ? "card-title" : "card-title card-title-read"}>
+              {entry.title}
+            </h3>
           </div>
 
           {entry.coverSource && !hasError && isImageLoaded && isWideImage && (

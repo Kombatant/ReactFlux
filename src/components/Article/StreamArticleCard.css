@@ -75,6 +75,11 @@
 .stream-story-title.arco-typography {
   margin: 16px 0 14px;
   color: var(--color-text-1);
+  margin-inline: auto;
+}
+
+.stream-story-title-read.arco-typography {
+  color: var(--color-text-3);
 }
 
 .stream-story-title-link {
@@ -82,9 +87,11 @@
   border: 0;
   color: inherit;
   cursor: pointer;
+  display: block;
   font: inherit;
   padding: 0;
-  text-align: left;
+  text-align: inherit;
+  width: 100%;
 }
 
 .stream-story-title-link:hover,
@@ -106,6 +113,7 @@
   color: var(--color-text-4);
   font-size: 0.85rem;
   margin-bottom: 8px;
+  margin-inline: auto;
 }
 
 .stream-story-category {
@@ -124,7 +132,6 @@
 .stream-story-card .article-body p,
 .stream-story-card .article-body li {
   color: var(--color-text-2);
-  font-size: 1rem;
 }
 
 .stream-story-card .article-body h1,

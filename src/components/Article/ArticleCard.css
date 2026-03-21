@@ -139,6 +139,10 @@
   overflow: hidden;
 }
 
+.card-title-read {
+  color: var(--color-text-3);
+}
+
 .card-wrapper {
   position: relative;
   border-radius: var(--border-radius-medium);

@@ -19,6 +19,7 @@ import CustomTooltip from "@/components/ui/CustomTooltip"
 import FeedIcon from "@/components/ui/FeedIcon"
 import useEntryActions from "@/hooks/useEntryActions"
 import { polyglotState } from "@/hooks/useLanguage"
+import useScreenWidth from "@/hooks/useScreenWidth"
 import { contentState } from "@/store/contentState"
 import { dataState } from "@/store/dataState"
 import { settingsState } from "@/store/settingsState"
@@ -38,9 +39,16 @@ const StreamArticleCard = ({ entry, handleEntryClick }) => {
   const navigate = useNavigate()
   const { activeContent } = useStore(contentState)
   const { hasIntegrations } = useStore(dataState)
-  const { aiProvider, showDetailedRelativeTime, showEstimatedReadingTime, showFeedIcon } =
-    useStore(settingsState)
+  const {
+    aiProvider,
+    articleWidth,
+    showDetailedRelativeTime,
+    showEstimatedReadingTime,
+    showFeedIcon,
+    titleAlignment,
+  } = useStore(settingsState)
   const { polyglot } = useStore(polyglotState)
+  const { isBelowMedium } = useScreenWidth()
 
   const {
     handleFetchContent,
@@ -61,6 +69,7 @@ const StreamArticleCard = ({ entry, handleEntryClick }) => {
   const [summarizingEntryId, setSummarizingEntryId] = useState(null)
   const isFetchingOriginal = fetchingEntryId === currentEntry.id
   const isSummarizing = summarizingEntryId === currentEntry.id
+  const contentMaxWidth = isBelowMedium ? "100%" : `${articleWidth}%`
 
   const selectEntry = () => {
     if (!isSelected) {
@@ -184,7 +193,11 @@ const StreamArticleCard = ({ entry, handleEntryClick }) => {
         </div>
       </div>
 
-      <Typography.Title className="stream-story-title" heading={4}>
+      <Typography.Title
+        className={isUnread ? "stream-story-title" : "stream-story-title stream-story-title-read"}
+        heading={4}
+        style={{ maxWidth: contentMaxWidth, textAlign: titleAlignment }}
+      >
         <button
           className="stream-story-title-link"
           type="button"
@@ -194,7 +207,7 @@ const StreamArticleCard = ({ entry, handleEntryClick }) => {
         </button>
       </Typography.Title>
       <div className="stream-story-expanded">
-        <div className="stream-story-meta">
+        <div className="stream-story-meta" style={{ maxWidth: contentMaxWidth }}>
           <Tag
             className="stream-story-category"
             size="small"
@@ -210,7 +223,7 @@ const StreamArticleCard = ({ entry, handleEntryClick }) => {
             <span>{generateReadingTime(currentEntry.reading_time)}</span>
           ) : null}
         </div>
-        <ArticleBodyRenderer entry={currentEntry} maxWidth="100%" />
+        <ArticleBodyRenderer entry={currentEntry} maxWidth={contentMaxWidth} />
       </div>
     </article>
   )
