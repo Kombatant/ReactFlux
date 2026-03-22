@@ -9,20 +9,23 @@ import {
   IconStarFill,
 } from "@arco-design/web-react/icon"
 import { useStore } from "@nanostores/react"
-import { memo, useMemo, useState } from "react"
+import { memo, useEffect, useMemo, useRef, useState } from "react"
 import { useNavigate } from "react-router"
 
 import ArticleBodyRenderer from "./ArticleBodyRenderer"
 
+import { updateEntriesStatus } from "@/apis"
 import AiSpark from "@/components/icons/AiSpark"
 import CustomTooltip from "@/components/ui/CustomTooltip"
 import FeedIcon from "@/components/ui/FeedIcon"
 import useEntryActions from "@/hooks/useEntryActions"
 import { polyglotState } from "@/hooks/useLanguage"
 import useScreenWidth from "@/hooks/useScreenWidth"
+import { contentState } from "@/store/contentState"
 import { dataState } from "@/store/dataState"
 import { settingsState } from "@/store/settingsState"
 import { generateReadableDate, generateReadingTime, generateRelativeTime } from "@/utils/date"
+import { Message } from "@/utils/feedback"
 
 import "./StreamArticleCard.css"
 
@@ -46,9 +49,11 @@ const hasExpandedSelection = () => {
 const StreamArticleCard = ({ activeEntry, entry, handleEntryClick, isSelected }) => {
   const navigate = useNavigate()
   const { hasIntegrations } = useStore(dataState)
+  const { infoFrom } = useStore(contentState)
   const {
     aiProvider,
     articleWidth,
+    markReadOnScroll,
     showDetailedRelativeTime,
     showEstimatedReadingTime,
     showFeedIcon,
@@ -59,6 +64,7 @@ const StreamArticleCard = ({ activeEntry, entry, handleEntryClick, isSelected })
   const { isBelowMedium } = useScreenWidth()
 
   const {
+    handleEntryStatusUpdate,
     handleFetchContent,
     handleOpenLinkExternally,
     handleSaveToThirdPartyServices,
@@ -78,6 +84,77 @@ const StreamArticleCard = ({ activeEntry, entry, handleEntryClick, isSelected })
   const isSummarizing = summarizingEntryId === currentEntry.id
   const contentMaxWidth = isBelowMedium ? "100%" : `${articleWidth}%`
   const previewText = useMemo(() => currentEntry.previewText || "", [currentEntry.previewText])
+  const cardRef = useRef(null)
+  const wasVisible = useRef(false)
+
+  useEffect(() => {
+    wasVisible.current = false
+
+    if (
+      !markReadOnScroll ||
+      infoFrom === "history" ||
+      currentEntry.status !== "unread" ||
+      typeof IntersectionObserver !== "function"
+    ) {
+      return
+    }
+
+    const element = cardRef.current
+    const rootElement = element?.closest(".simplebar-content-wrapper")
+
+    if (!element || !rootElement) {
+      return
+    }
+
+    let isCancelled = false
+
+    const markEntryAsRead = () => {
+      handleEntryStatusUpdate(currentEntry, "read")
+      updateEntriesStatus([currentEntry.id], "read").catch(() => {
+        Message.error(polyglot.t("content.mark_as_read_error"))
+
+        if (!isCancelled) {
+          handleEntryStatusUpdate(currentEntry, "unread")
+        }
+      })
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const observerEntry of entries) {
+          const { boundingClientRect, rootBounds, isIntersecting } = observerEntry
+
+          if (isIntersecting) {
+            wasVisible.current = true
+            continue
+          }
+
+          if (
+            wasVisible.current &&
+            rootBounds &&
+            boundingClientRect.top < rootBounds.top &&
+            currentEntry.status === "unread"
+          ) {
+            wasVisible.current = false
+            observer.unobserve(observerEntry.target)
+            markEntryAsRead()
+          }
+        }
+      },
+      {
+        root: rootElement,
+        threshold: 0.2,
+      },
+    )
+
+    observer.observe(element)
+
+    return () => {
+      isCancelled = true
+      wasVisible.current = false
+      observer.disconnect()
+    }
+  }, [currentEntry, handleEntryStatusUpdate, infoFrom, markReadOnScroll, polyglot])
 
   const selectEntry = () => {
     if (!isSelected) {
@@ -99,6 +176,7 @@ const StreamArticleCard = ({ activeEntry, entry, handleEntryClick, isSelected })
 
   return (
     <article
+      ref={cardRef}
       data-entry-id={entry.id}
       tabIndex={0}
       className={
