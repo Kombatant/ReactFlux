@@ -678,26 +678,6 @@ const SearchAndSortBar = ({ info, markAllAsRead, refreshArticleList, variant = "
           </div>
         </div>
         <div className="button-group">
-          {infoFrom === "history" ? null : (
-            <ToolbarMenuButton
-              icon={currentStatus.icon}
-              label={currentStatus.label}
-              tooltip={currentStatus.label}
-            >
-              {statusOptions.map((option) => (
-                <Menu.Item
-                  key={option.value}
-                  className="toolbar-menu-item"
-                  onClick={() => updateSettings({ showStatus: option.value })}
-                >
-                  <span className="toolbar-menu-item-label">
-                    {option.icon}
-                    <span>{option.label}</span>
-                  </span>
-                </Menu.Item>
-              ))}
-            </ToolbarMenuButton>
-          )}
           <ActiveButton
             active={!!filterString}
             icon={<IconSearch />}
@@ -734,6 +714,28 @@ const SearchAndSortBar = ({ info, markAllAsRead, refreshArticleList, variant = "
             onChange={(v) => setFilterDate(v)}
             onVisibleChange={setCalendarVisible}
           />
+          {infoFrom === "history" ? null : (
+            <ToolbarMenuButton
+              icon={currentStatus.icon}
+              label={currentStatus.label}
+              tooltip={currentStatus.label}
+            >
+              {statusOptions.map((option) => (
+                <Menu.Item
+                  key={option.value}
+                  className="toolbar-menu-item"
+                  onClick={() => updateSettings({ showStatus: option.value })}
+                >
+                  <span className="toolbar-menu-item-label">
+                    {option.icon}
+                    <span>{option.label}</span>
+                  </span>
+                </Menu.Item>
+              ))}
+            </ToolbarMenuButton>
+          )}
+          <MarkReadControl info={info} markAllAsRead={markAllAsRead} />
+          <LayoutModeSelect layoutMode={layoutMode} layoutOptions={layoutOptions} />
           <CustomTooltip
             mini
             content={
@@ -749,8 +751,6 @@ const SearchAndSortBar = ({ info, markAllAsRead, refreshArticleList, variant = "
               onClick={toggleOrderDirection}
             />
           </CustomTooltip>
-          <MarkReadControl info={info} markAllAsRead={markAllAsRead} />
-          <LayoutModeSelect layoutMode={layoutMode} layoutOptions={layoutOptions} />
         </div>
         <SearchModal
           value={modalInputValue}
