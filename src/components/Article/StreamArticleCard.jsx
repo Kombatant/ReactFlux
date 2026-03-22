@@ -34,6 +34,15 @@ const withStopPropagation = (callback) => (event) => {
   callback()
 }
 
+const hasExpandedSelection = () => {
+  if (globalThis.window === undefined) {
+    return false
+  }
+
+  const selection = globalThis.window.getSelection()
+  return Boolean(selection && !selection.isCollapsed && selection.toString().trim())
+}
+
 const StreamArticleCard = ({ activeEntry, entry, handleEntryClick, isSelected }) => {
   const navigate = useNavigate()
   const { hasIntegrations } = useStore(dataState)
@@ -78,6 +87,10 @@ const StreamArticleCard = ({ activeEntry, entry, handleEntryClick, isSelected })
 
   const handleCardClick = (event) => {
     if (isInteractiveTarget(event.target)) {
+      return
+    }
+
+    if (hasExpandedSelection()) {
       return
     }
 
@@ -200,7 +213,15 @@ const StreamArticleCard = ({ activeEntry, entry, handleEntryClick, isSelected })
         <button
           className="stream-story-title-link"
           type="button"
-          onClick={withStopPropagation(() => handleOpenLinkExternally(currentEntry))}
+          onClick={(event) => {
+            event.stopPropagation()
+
+            if (hasExpandedSelection()) {
+              return
+            }
+
+            handleOpenLinkExternally(currentEntry)
+          }}
         >
           {currentEntry.title}
         </button>
