@@ -621,7 +621,7 @@ const SearchAndSortBar = ({ info, markAllAsRead, refreshArticleList, variant = "
   )
 
   useEffect(() => {
-    if (infoFrom === "starred" && showStatus !== "unread") {
+    if (infoFrom === "starred" && showStatus === "starred") {
       updateSettings({ showStatus: "all" })
     }
   }, [infoFrom, showStatus])

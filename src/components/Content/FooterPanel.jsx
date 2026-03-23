@@ -1,7 +1,7 @@
 import { Button, Dropdown, Menu, Popconfirm, Radio } from "@arco-design/web-react"
 import { IconAlignLeft, IconRecord, IconRefresh, IconStarFill } from "@arco-design/web-react/icon"
 import { useStore } from "@nanostores/react"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 
 import {
   getAllEntries,
@@ -206,12 +206,6 @@ const FooterPanel = ({ info, refreshArticleList, markAllAsRead }) => {
       })
     }
   }
-
-  useEffect(() => {
-    if (info.from === "starred" && showStatus !== "unread") {
-      updateSettings({ showStatus: "all" })
-    }
-  }, [info.from, showStatus])
 
   const openConfirm = (action) => {
     setPendingAction(action)

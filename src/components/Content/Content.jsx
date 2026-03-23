@@ -70,12 +70,17 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
   const { navigateToNextArticle, navigateToPreviousArticle, showHotkeysSettings } = useKeyHandlers()
 
   const { fetchAppData, fetchFeedRelatedData } = useAppData()
-  const { fetchArticleList } = useArticleList(info, getEntries)
+  const { fetchArticleList } = useArticleList(info)
   const { isBelowMedium } = useScreenWidth()
 
   const [entryListWidth, setEntryListWidth] = useState(storedEntryListWidth ?? 420)
   const [isResizingEntryList, setIsResizingEntryList] = useState(false)
   const contentSplitRef = useRef(null)
+  const hasAppliedOrderChange = useRef(false)
+  const hasAppliedFilterChange = useRef(false)
+  const infoFromRef = useRef(info.from)
+  const fetchArticleListOnlyRef = useRef(null)
+  const fetchArticleListWithRelatedDataRef = useRef(null)
 
   const focusFirstStreamCard = useCallback(() => {
     if (layoutMode !== "stream" || isBelowMedium) {
@@ -121,7 +126,10 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
   const fetchArticleListOnly = useCallback(
     async (options = {}) => {
       const { focusFirstInStream = false } = options
-      await (isAppDataReady ? fetchArticleList(getEntries) : fetchAppData())
+      if (!isAppDataReady) {
+        await fetchAppData()
+      }
+      await fetchArticleList(getEntries)
       if (focusFirstInStream) {
         focusFirstStreamCard()
       }
@@ -132,16 +140,16 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
   const fetchArticleListWithRelatedData = useCallback(
     async (options = {}) => {
       const { focusFirstInStream = false } = options
+      const needsAppData = !isAppDataReady
+
       if (!isAppDataReady) {
         await fetchAppData()
-        if (focusFirstInStream) {
-          focusFirstStreamCard()
-        }
-        return
       }
 
       await fetchArticleList(getEntries)
-      await fetchFeedRelatedData()
+      if (!needsAppData) {
+        await fetchFeedRelatedData()
+      }
       if (focusFirstInStream) {
         focusFirstStreamCard()
       }
@@ -155,6 +163,18 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
       focusFirstStreamCard,
     ],
   )
+
+  useEffect(() => {
+    infoFromRef.current = info.from
+  }, [info.from])
+
+  useEffect(() => {
+    fetchArticleListOnlyRef.current = fetchArticleListOnly
+  }, [fetchArticleListOnly])
+
+  useEffect(() => {
+    fetchArticleListWithRelatedDataRef.current = fetchArticleListWithRelatedData
+  }, [fetchArticleListWithRelatedData])
 
   // Listen for external refresh requests (e.g., clicking an already-active sidebar item)
   useEffect(() => {
@@ -271,25 +291,33 @@ const Content = ({ info, getEntries, markAllAsRead }) => {
   useEffect(() => {
     setInfoFrom(info.from)
     setInfoId(info.id)
-    if (activeContent) {
-      setActiveContent(null)
-    }
+    setActiveContent(null)
     if (info.from === "category") {
-      fetchArticleListWithRelatedData({ focusFirstInStream: true })
+      fetchArticleListWithRelatedDataRef.current?.({ focusFirstInStream: true })
     } else {
-      fetchArticleListOnly({ focusFirstInStream: true })
+      fetchArticleListOnlyRef.current?.({ focusFirstInStream: true })
     }
   }, [info])
 
   useEffect(() => {
-    if (["starred", "history"].includes(info.from)) {
+    if (!hasAppliedOrderChange.current) {
+      hasAppliedOrderChange.current = true
       return
     }
-    fetchArticleListOnly()
+
+    if (["starred", "history"].includes(infoFromRef.current)) {
+      return
+    }
+    fetchArticleListOnlyRef.current?.()
   }, [orderBy])
 
   useEffect(() => {
-    fetchArticleListOnly()
+    if (!hasAppliedFilterChange.current) {
+      hasAppliedFilterChange.current = true
+      return
+    }
+
+    fetchArticleListOnlyRef.current?.()
   }, [filterDate, filterString, orderDirection, showStatus])
 
   useEffect(() => {

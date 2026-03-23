@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react"
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 
 import {
   contentState,
@@ -9,7 +9,6 @@ import {
   setTotal,
 } from "@/store/contentState"
 import {
-  dataState,
   setHistoryCount,
   setStarredCount,
   setUnreadInfo,
@@ -29,9 +28,8 @@ const handleResponses = (response) => {
   }
 }
 
-const useArticleList = (info, getEntries) => {
+const useArticleList = (info) => {
   const { filterDate, filterString } = useStore(contentState)
-  const { isAppDataReady } = useStore(dataState)
   const { showStatus } = useStore(settingsState)
 
   const isLoading = useRef(false)
@@ -110,12 +108,6 @@ const useArticleList = (info, getEntries) => {
       setIsArticleListReady(true)
     }
   }
-
-  useEffect(() => {
-    if (isAppDataReady) {
-      fetchArticleList(getEntries)
-    }
-  }, [isAppDataReady])
 
   return { fetchArticleList }
 }

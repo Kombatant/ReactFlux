@@ -2,6 +2,7 @@ import { getTodayEntries, updateEntriesStatus } from "@/apis"
 import Content from "@/components/Content/Content"
 
 const getEntries = (status, _starred, filterParams) => getTodayEntries(status, filterParams)
+const info = { from: "today", id: "" }
 
 const markTodayAsRead = async () => {
   const unreadResponse = await getTodayEntries("unread")
@@ -19,13 +20,7 @@ const markTodayAsRead = async () => {
 }
 
 const Today = () => {
-  return (
-    <Content
-      getEntries={getEntries}
-      info={{ from: "today", id: "" }}
-      markAllAsRead={markTodayAsRead}
-    />
-  )
+  return <Content getEntries={getEntries} info={info} markAllAsRead={markTodayAsRead} />
 }
 
 export default Today
