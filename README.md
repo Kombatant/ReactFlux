@@ -3,7 +3,7 @@
 > [!IMPORTANT]  
 > Used various LLMs as a playground for code generation and assistance in forking/structuring/coding the project.
 
-This fork was initially created to add some stuff that I was sorely missing from the original excellent work the ReactFlux devs had already done. It now continues as ReloadedFlux, since the scope of the changes has expanded significantl. Here are some note worthy additions:
+This fork was initially created to add some stuff that I was sorely missing from the original excellent work the ReactFlux devs had already done. It now continues as ReloadedFlux, since the scope of the changes has expanded significantly. Here are some note worthy additions:
 
 - New layout option with a left sidebar for feeds and categories, and a right sidebar for article content. The original layout is still available as an option.
   ![](images/reloadedflux_expandedlayout.png)
