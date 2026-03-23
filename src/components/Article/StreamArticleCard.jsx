@@ -26,6 +26,7 @@ import { dataState } from "@/store/dataState"
 import { settingsState } from "@/store/settingsState"
 import { generateReadableDate, generateReadingTime, generateRelativeTime } from "@/utils/date"
 import { Message } from "@/utils/feedback"
+import { getEntryImageSources, preloadImageMetadata } from "@/utils/images"
 
 import "./StreamArticleCard.css"
 
@@ -46,7 +47,7 @@ const hasExpandedSelection = () => {
   return Boolean(selection && !selection.isCollapsed && selection.toString().trim())
 }
 
-const StreamArticleCard = ({ activeEntry, entry, handleEntryClick, isSelected }) => {
+const StreamArticleCard = ({ activeEntry, entry, handleEntryClick, isSelected, shouldPreload }) => {
   const navigate = useNavigate()
   const { hasIntegrations } = useStore(dataState)
   const { infoFrom } = useStore(contentState)
@@ -155,6 +156,16 @@ const StreamArticleCard = ({ activeEntry, entry, handleEntryClick, isSelected })
       observer.disconnect()
     }
   }, [currentEntry, handleEntryStatusUpdate, infoFrom, markReadOnScroll, polyglot])
+
+  useEffect(() => {
+    if (!shouldPreload || isSelected) {
+      return
+    }
+
+    for (const imageSource of getEntryImageSources(entry)) {
+      void preloadImageMetadata(imageSource)
+    }
+  }, [entry, isSelected, shouldPreload])
 
   const selectEntry = () => {
     if (!isSelected) {

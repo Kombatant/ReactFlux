@@ -4,6 +4,70 @@ export const extractImageSources = (htmlString) => {
   return [...images].map((img) => img.getAttribute("src"))
 }
 
+export const getEntryImageSources = (entry) =>
+  entry.imageSources ?? extractImageSources(entry.content)
+
+const cachedImageMetadata = new Map()
+const pendingImageMetadata = new Map()
+
+export const getCachedImageMetadata = (src) => {
+  if (!src) {
+    return null
+  }
+
+  return cachedImageMetadata.get(src) ?? null
+}
+
+export const preloadImageMetadata = (src) => {
+  if (!src || typeof Image !== "function") {
+    return Promise.resolve(null)
+  }
+
+  const cachedMetadata = cachedImageMetadata.get(src)
+  if (cachedMetadata) {
+    return Promise.resolve(cachedMetadata)
+  }
+
+  const pendingMetadata = pendingImageMetadata.get(src)
+  if (pendingMetadata) {
+    return pendingMetadata
+  }
+
+  const metadataPromise = new Promise((resolve) => {
+    const img = new Image()
+
+    const clearPending = () => {
+      pendingImageMetadata.delete(src)
+      img.removeEventListener("load", handleLoad)
+      img.removeEventListener("error", handleError)
+    }
+
+    const handleLoad = () => {
+      const metadata = {
+        height: img.naturalHeight || img.height,
+        width: img.naturalWidth || img.width,
+      }
+
+      cachedImageMetadata.set(src, metadata)
+      clearPending()
+      resolve(metadata)
+    }
+
+    const handleError = () => {
+      clearPending()
+      resolve(null)
+    }
+
+    img.decoding = "async"
+    img.addEventListener("load", handleLoad)
+    img.addEventListener("error", handleError)
+    img.src = src
+  })
+
+  pendingImageMetadata.set(src, metadataPromise)
+  return metadataPromise
+}
+
 const extractPreviewText = (doc) => {
   const textContent = doc.body?.textContent || ""
   return textContent.replaceAll(/\s+/g, " ").trim()

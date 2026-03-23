@@ -14,6 +14,9 @@ import { contentState, filteredEntriesState } from "@/store/contentState"
 
 import "./StoryStream.css"
 
+const STREAM_PRELOAD_AHEAD_COUNT = 3
+const STREAM_VIRTUAL_OVERSCAN = 6
+
 const StoryStream = ({
   cardsRef,
   entryListRef,
@@ -50,6 +53,10 @@ const StoryStream = ({
   }, [checkAndLoadMore])
 
   const hasEntries = filteredEntries.length > 0
+  const activeEntryIndex = useMemo(
+    () => filteredEntries.findIndex((entry) => entry.id === activeContent?.id),
+    [activeContent?.id, filteredEntries],
+  )
 
   return (
     <div className="article-container story-stream-layout">
@@ -78,7 +85,7 @@ const StoryStream = ({
         {isArticleListReady && hasEntries ? (
           <Virtualizer
             ref={streamVirtualizerRef}
-            overscan={2}
+            overscan={STREAM_VIRTUAL_OVERSCAN}
             scrollRef={cardsRef}
             onScroll={() => {
               const element = cardsRef.current
@@ -87,13 +94,18 @@ const StoryStream = ({
               }
             }}
           >
-            {filteredEntries.map((entry) => (
+            {filteredEntries.map((entry, index) => (
               <StreamArticleCard
                 key={entry.id}
                 activeEntry={activeContent?.id === entry.id ? activeContent : null}
                 entry={entry}
                 handleEntryClick={handleEntryClick}
                 isSelected={activeContent?.id === entry.id}
+                shouldPreload={
+                  activeEntryIndex !== -1 &&
+                  index > activeEntryIndex &&
+                  index <= activeEntryIndex + STREAM_PRELOAD_AHEAD_COUNT
+                }
               />
             ))}
             {loadMoreVisible ? (

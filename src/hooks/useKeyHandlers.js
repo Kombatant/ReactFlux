@@ -14,7 +14,7 @@ import { extractImageSources } from "@/utils/images"
 
 const STREAM_CARD_TOP_OFFSET_FALLBACK = 18
 const STREAM_SCROLL_ALIGNMENT_TOLERANCE = 4
-const STREAM_SCROLL_INITIAL_ALIGNMENT_DELAY_MS = 140
+const STREAM_SCROLL_INITIAL_ALIGNMENT_DELAY_MS = 220
 const STREAM_SCROLL_MAX_SETTLE_TIME_MS = 1800
 const STREAM_SCROLL_STABLE_FRAME_TARGET = 6
 
@@ -153,8 +153,9 @@ const useKeyHandlers = () => {
 
     const task = streamAlignmentTaskRef.current
     const sessionId = task.sessionId + 1
-    let hasAppliedInitialScroll = false
     let stableFrameCount = 0
+    let lastTargetScrollTop = null
+    let shouldSkipNextScroll = skipInitialScroll
 
     task.sessionId = sessionId
 
@@ -180,6 +181,11 @@ const useKeyHandlers = () => {
 
         stableFrameCount = 0
 
+        if (streamAlignmentTaskRef.current.delayTimeoutId !== null) {
+          globalThis.clearTimeout(streamAlignmentTaskRef.current.delayTimeoutId)
+          streamAlignmentTaskRef.current.delayTimeoutId = null
+        }
+
         if (streamAlignmentTaskRef.current.frameId !== null) {
           globalThis.cancelAnimationFrame(streamAlignmentTaskRef.current.frameId)
         }
@@ -189,6 +195,21 @@ const useKeyHandlers = () => {
 
       observer.observe(selectedCard)
       streamAlignmentTaskRef.current.resizeObserver = observer
+    }
+
+    const scheduleAlignmentRetry = () => {
+      if (streamAlignmentTaskRef.current.delayTimeoutId !== null) {
+        globalThis.clearTimeout(streamAlignmentTaskRef.current.delayTimeoutId)
+      }
+
+      streamAlignmentTaskRef.current.delayTimeoutId = globalThis.setTimeout(() => {
+        if (!isCurrentSession()) {
+          return
+        }
+
+        streamAlignmentTaskRef.current.delayTimeoutId = null
+        streamAlignmentTaskRef.current.frameId = globalThis.requestAnimationFrame(settleAlignment)
+      }, STREAM_SCROLL_INITIAL_ALIGNMENT_DELAY_MS)
     }
 
     function settleAlignment() {
@@ -207,38 +228,43 @@ const useKeyHandlers = () => {
       ensureResizeObserver(selectedCard)
       focusStreamCard(selectedCard)
 
-      if (!hasAppliedInitialScroll) {
-        hasAppliedInitialScroll = true
-        stableFrameCount = 0
-        if (!skipInitialScroll) {
-          scrollStreamCardIntoView(selectedCard, scrollElement)
-        }
-        streamAlignmentTaskRef.current.delayTimeoutId = globalThis.setTimeout(() => {
-          if (!isCurrentSession()) {
-            return
-          }
-
-          streamAlignmentTaskRef.current.delayTimeoutId = null
-          streamAlignmentTaskRef.current.frameId = globalThis.requestAnimationFrame(settleAlignment)
-        }, STREAM_SCROLL_INITIAL_ALIGNMENT_DELAY_MS)
-        return
-      }
-
+      const targetScrollTop = getStreamCardScrollTop(selectedCard, scrollElement)
+      const targetScrollDelta =
+        lastTargetScrollTop === null ? 0 : Math.abs(targetScrollTop - lastTargetScrollTop)
       const topDelta = getStreamCardTopDelta(selectedCard, scrollElement)
 
-      if (topDelta > STREAM_SCROLL_ALIGNMENT_TOLERANCE) {
-        scrollStreamCardIntoView(selectedCard, scrollElement, "auto")
+      lastTargetScrollTop = targetScrollTop
+
+      if (targetScrollDelta > STREAM_SCROLL_ALIGNMENT_TOLERANCE) {
         stableFrameCount = 0
       } else {
         stableFrameCount += 1
       }
 
-      if (stableFrameCount >= STREAM_SCROLL_STABLE_FRAME_TARGET) {
-        clearPendingStreamAlignment()
+      if (topDelta <= STREAM_SCROLL_ALIGNMENT_TOLERANCE) {
+        if (stableFrameCount >= STREAM_SCROLL_STABLE_FRAME_TARGET) {
+          clearPendingStreamAlignment()
+        } else {
+          streamAlignmentTaskRef.current.frameId = globalThis.requestAnimationFrame(settleAlignment)
+        }
         return
       }
 
-      streamAlignmentTaskRef.current.frameId = globalThis.requestAnimationFrame(settleAlignment)
+      if (stableFrameCount < STREAM_SCROLL_STABLE_FRAME_TARGET) {
+        streamAlignmentTaskRef.current.frameId = globalThis.requestAnimationFrame(settleAlignment)
+        return
+      }
+
+      stableFrameCount = 0
+
+      if (shouldSkipNextScroll) {
+        shouldSkipNextScroll = false
+        scheduleAlignmentRetry()
+        return
+      }
+
+      scrollStreamCardIntoView(selectedCard, scrollElement)
+      scheduleAlignmentRetry()
     }
 
     streamAlignmentTaskRef.current.frameId = globalThis.requestAnimationFrame(settleAlignment)

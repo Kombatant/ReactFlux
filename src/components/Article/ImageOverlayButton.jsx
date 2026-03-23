@@ -6,6 +6,7 @@ import ImageLinkTag from "./ImageLinkTag"
 
 import { settingsState } from "@/store/settingsState"
 import { MIN_THUMBNAIL_SIZE } from "@/utils/constants"
+import { getCachedImageMetadata, preloadImageMetadata } from "@/utils/images"
 
 import "./ImageOverlayButton.css"
 
@@ -44,6 +45,16 @@ const ImageComponent = ({ imgNode, isIcon, isBigImage, index, togglePhotoSlider 
 const findImageNode = (node, isLinkWrapper) =>
   isLinkWrapper ? node.children.find((child) => child.type === "tag" && child.name === "img") : node
 
+const getImagePresentation = (metadata) => {
+  const isSmall = Math.max(metadata.width, metadata.height) <= MIN_THUMBNAIL_SIZE
+  const isLarge = metadata.width > 768
+
+  return {
+    isBigImage: isLarge && !isSmall,
+    isIcon: isSmall,
+  }
+}
+
 const ImageOverlayButton = ({ node, index, togglePhotoSlider, isLinkWrapper = false }) => {
   const [isIcon, setIsIcon] = useState(false)
   const [isBigImage, setIsBigImage] = useState(false)
@@ -55,25 +66,31 @@ const ImageOverlayButton = ({ node, index, togglePhotoSlider, isLinkWrapper = fa
 
     const imgNode = findImageNode(node, isLinkWrapper)
     const imgSrc = imgNode.attribs.src
-    const img = new Image()
-    img.src = imgSrc
 
-    const handleLoad = () => {
-      if (isSubscribed) {
-        const isSmall = Math.max(img.width, img.height) <= MIN_THUMBNAIL_SIZE
-        const isLarge = img.width > 768
+    const applyMetadata = (metadata) => {
+      const presentation = getImagePresentation(metadata)
+      setIsIcon(presentation.isIcon)
+      setIsBigImage(presentation.isBigImage)
+    }
 
-        setIsIcon(isSmall)
-        setIsBigImage(isLarge && !isSmall)
+    const cachedMetadata = getCachedImageMetadata(imgSrc)
+    if (cachedMetadata) {
+      applyMetadata(cachedMetadata)
+      return
+    }
+
+    const loadImageMetadata = async () => {
+      const metadata = await preloadImageMetadata(imgSrc)
+
+      if (isSubscribed && metadata) {
+        applyMetadata(metadata)
       }
     }
 
-    img.addEventListener("load", handleLoad)
+    void loadImageMetadata()
 
     return () => {
       isSubscribed = false
-      img.src = ""
-      img.removeEventListener("load", handleLoad)
     }
   }, [node, isLinkWrapper])
 
