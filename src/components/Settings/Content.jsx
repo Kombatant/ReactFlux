@@ -412,7 +412,7 @@ const Content = () => {
           max={100}
           min={50}
           size="small"
-          step={5}
+          step={2}
           style={{ width: 120 }}
           suffix="%"
           value={settings.articleWidth}

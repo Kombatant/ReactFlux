@@ -72,7 +72,7 @@ export const settingsState = persistentAtom("settings", defaultValue, {
     // Keep the saved article width within the supported percentage range.
     if (typeof storedValue.articleWidth === "number") {
       const clamped = Math.min(100, Math.max(50, storedValue.articleWidth))
-      storedValue.articleWidth = Math.round(clamped / 5) * 5
+      storedValue.articleWidth = Math.round(clamped)
     }
 
     if (typeof storedValue.sidebarWidth === "number") {
