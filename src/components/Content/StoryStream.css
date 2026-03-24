@@ -19,8 +19,11 @@
 
 .story-stream-list .simplebar-content-wrapper {
   overflow-anchor: none;
-  scroll-behavior: smooth;
   scroll-padding-block: 18px;
+}
+
+.story-stream-list.animations-enabled .simplebar-content-wrapper {
+  scroll-behavior: smooth;
 }
 
 .story-stream-empty {

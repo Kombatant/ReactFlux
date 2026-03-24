@@ -311,7 +311,7 @@ const getHtmlParserOptions = (imageSources, togglePhotoSlider) => {
 }
 
 const ArticleBodyRenderer = ({ entry, lightboxState = null, maxWidth = "100%" }) => {
-  const { articleWidth, edgeToEdgeImages, fontFamily, fontSize, lightboxSlideAnimation } =
+  const { animationsEnabled, articleWidth, edgeToEdgeImages, fontFamily, fontSize } =
     useStore(settingsState)
 
   const [localPhotoSliderVisible, setLocalPhotoSliderVisible] = useState(false)
@@ -345,9 +345,7 @@ const ArticleBodyRenderer = ({ entry, lightboxState = null, maxWidth = "100%" })
     [entry.content, htmlParserOptions],
   )
 
-  const lightboxAnimationConfig = lightboxSlideAnimation
-    ? { fade: 250 }
-    : { fade: 250, navigation: 0 }
+  const lightboxAnimationConfig = animationsEnabled ? { fade: 250 } : { fade: 250, navigation: 0 }
   const { coverSource, mediaPlayerEnclosure, isMedia } = entry
 
   useEffect(() => {

@@ -36,7 +36,13 @@ const getStreamCardScrollTop = (selectedCard, scrollElement) => {
   return Math.max(0, scrollElement.scrollTop + selectedRect.top - containerRect.top - topOffset)
 }
 
-const scrollStreamCardIntoView = (selectedCard, scrollElement, behavior = "smooth") => {
+const getAnimationScrollBehavior = () => (settingsState.get().animationsEnabled ? "smooth" : "auto")
+
+const scrollStreamCardIntoView = (
+  selectedCard,
+  scrollElement,
+  behavior = getAnimationScrollBehavior(),
+) => {
   scrollElement.scrollTo({
     behavior,
     top: getStreamCardScrollTop(selectedCard, scrollElement),
@@ -339,7 +345,7 @@ const useKeyHandlers = () => {
             streamVirtualizerRef.current.scrollToIndex(targetIndex, {
               align: "start",
               offset: -topOffset,
-              smooth: true,
+              smooth: settingsState.get().animationsEnabled,
             })
           }
         }
@@ -353,7 +359,7 @@ const useKeyHandlers = () => {
 
       if (selectedCard) {
         selectedCard.scrollIntoView({
-          behavior: "smooth",
+          behavior: getAnimationScrollBehavior(),
           block: "center",
         })
       }

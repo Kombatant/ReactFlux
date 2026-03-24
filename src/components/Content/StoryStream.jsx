@@ -11,6 +11,7 @@ import SearchAndSortBar from "@/components/Article/SearchAndSortBar"
 import StreamArticleCard from "@/components/Article/StreamArticleCard"
 import useLoadMore from "@/hooks/useLoadMore"
 import { contentState, filteredEntriesState } from "@/store/contentState"
+import { settingsState } from "@/store/settingsState"
 
 import "./StoryStream.css"
 
@@ -29,6 +30,7 @@ const StoryStream = ({
 }) => {
   const { activeContent, isArticleListReady, loadMoreVisible } = useStore(contentState)
   const filteredEntries = useStore(filteredEntriesState)
+  const { animationsEnabled } = useStore(settingsState)
   const { loadingMore, handleLoadMore } = useLoadMore()
   const canLoadMore = loadMoreVisible && isArticleListReady && !loadingMore
 
@@ -70,7 +72,7 @@ const StoryStream = ({
       </div>
       <SimpleBar
         ref={entryListRef}
-        className="entry-list story-stream-list"
+        className={`entry-list story-stream-list ${animationsEnabled ? "animations-enabled" : ""}`}
         scrollableNodeProps={{
           ref: cardsRef,
         }}

@@ -19,10 +19,10 @@ const handleConfigChange = (settingsChanges) => {
 
 const Appearance = () => {
   const {
+    animationsEnabled,
     coverDisplayMode,
     fontFamily,
     layoutMode,
-    lightboxSlideAnimation,
     showDetailedRelativeTime,
     showEstimatedReadingTime,
     showFeedIcon,
@@ -187,10 +187,10 @@ const Appearance = () => {
         title={polyglot.t("appearance.lightbox_animation_label")}
       >
         <Switch
-          checked={lightboxSlideAnimation}
+          checked={animationsEnabled}
           onChange={(checked) =>
             handleConfigChange({
-              lightboxSlideAnimation: checked,
+              animationsEnabled: checked,
             })
           }
         />

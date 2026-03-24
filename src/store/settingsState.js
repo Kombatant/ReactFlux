@@ -20,6 +20,7 @@ const defaultValue = {
   },
   aiModel: "",
   aiProvider: "none",
+  animationsEnabled: true,
   articleWidth: 75,
   sidebarWidth: 240,
   entryListWidth: 420,
@@ -32,7 +33,6 @@ const defaultValue = {
   fontSize: 1.05,
   homePage: "all",
   language: getBrowserLanguage(),
-  lightboxSlideAnimation: true,
   layoutMode: "classic",
   markReadBy: "view",
   markReadOnScroll: false,
@@ -68,6 +68,13 @@ export const settingsState = persistentAtom("settings", defaultValue, {
   },
   decode: (str) => {
     const storedValue = JSON.parse(str)
+
+    if (
+      typeof storedValue.animationsEnabled !== "boolean" &&
+      typeof storedValue.lightboxSlideAnimation === "boolean"
+    ) {
+      storedValue.animationsEnabled = storedValue.lightboxSlideAnimation
+    }
 
     // Keep the saved article width within the supported percentage range.
     if (typeof storedValue.articleWidth === "number") {
