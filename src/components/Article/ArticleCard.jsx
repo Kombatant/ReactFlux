@@ -11,6 +11,7 @@ import {
 import { useStore } from "@nanostores/react"
 import { useEffect, useMemo, useRef, useState } from "react"
 
+import { updateEntriesStatus } from "@/apis"
 import FeedIcon from "@/components/ui/FeedIcon"
 import useEntryActions from "@/hooks/useEntryActions"
 import { polyglotState } from "@/hooks/useLanguage"
@@ -19,6 +20,7 @@ import { dataState } from "@/store/dataState"
 import { settingsState } from "@/store/settingsState"
 import { WIDE_IMAGE_RATIO } from "@/utils/constants"
 import { generateReadingTime, generateRelativeTime } from "@/utils/date"
+import { Message } from "@/utils/feedback"
 import "./ArticleCard.css"
 
 const ArticleCardImage = ({ entry, isWideImage }) => {
@@ -62,6 +64,7 @@ const ArticleCard = ({ entry, handleEntryClick, children }) => {
   const isStarred = entry.starred
 
   const {
+    handleEntryStatusUpdate,
     handleSaveToThirdPartyServices,
     handleToggleStarred,
     handleToggleStatus,
@@ -76,9 +79,36 @@ const ArticleCard = ({ entry, handleEntryClick, children }) => {
   const cardRef = useRef(null)
 
   useEffect(() => {
+    wasVisible.current = false
+
     // If the article is read or scroll marking is not enabled, no observation needed
-    if (!isUnread || !markReadOnScroll || infoFrom === "history") {
+    if (
+      !isUnread ||
+      !markReadOnScroll ||
+      infoFrom === "history" ||
+      typeof IntersectionObserver !== "function"
+    ) {
       return
+    }
+
+    const element = cardRef.current
+    const rootElement = element?.closest(".simplebar-content-wrapper")
+
+    if (!element || !rootElement) {
+      return
+    }
+
+    let isCancelled = false
+
+    const markEntryAsRead = () => {
+      handleEntryStatusUpdate(entry, "read")
+      updateEntriesStatus([entry.id], "read").catch(() => {
+        Message.error(polyglot.t("content.mark_as_read_error"))
+
+        if (!isCancelled) {
+          handleEntryStatusUpdate(entry, "unread")
+        }
+      })
     }
 
     const observer = new IntersectionObserver(
@@ -89,32 +119,39 @@ const ArticleCard = ({ entry, handleEntryClick, children }) => {
           // Record status when the article enters the viewport
           if (isIntersecting) {
             wasVisible.current = true
-          } else if (wasVisible.current && boundingClientRect.top < rootBounds.top) {
+          } else if (wasVisible.current && rootBounds && boundingClientRect.top < rootBounds.top) {
             // Only mark as read when the card is completely above the viewport top and was previously visible
-            handleToggleStatus(entry)
+            wasVisible.current = false
             observer.unobserve(observerEntry.target)
+            markEntryAsRead()
           }
         }
       },
       {
-        // Set the root element as the scroll container
-        root: document.querySelector(".entry-list"),
+        // Observe relative to the actual scroll container, not the outer SimpleBar wrapper.
+        root: rootElement,
         // Set threshold to 0.2
         threshold: 0.2,
       },
     )
 
-    const element = cardRef.current
-    if (element) {
-      observer.observe(element)
-    }
+    observer.observe(element)
 
     return () => {
-      if (element) {
-        observer.unobserve(element)
-      }
+      isCancelled = true
+      wasVisible.current = false
+      observer.disconnect()
     }
-  }, [entry, markReadOnScroll, infoFrom, isUnread, isImageLoaded, isWideImage])
+  }, [
+    entry,
+    handleEntryStatusUpdate,
+    isImageLoaded,
+    isUnread,
+    isWideImage,
+    infoFrom,
+    markReadOnScroll,
+    polyglot,
+  ])
 
   useEffect(() => {
     let isSubscribed = true
