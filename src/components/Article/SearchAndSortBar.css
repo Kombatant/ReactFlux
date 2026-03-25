@@ -10,6 +10,7 @@
   --classic-layout-selector-width: 156px;
   justify-content: space-between;
   background-color: rgb(var(--color-bg-1));
+  min-height: 44px;
   padding: 8px 0;
 }
 
@@ -142,13 +143,16 @@
 
 .search-and-sort-bar.classic-toolbar .layout-selector-slot {
   position: absolute;
-  top: 50%;
+  top: 0;
+  bottom: 0;
   left: 50%;
   z-index: 1;
+  display: flex;
+  align-items: center;
   width: var(--classic-layout-selector-width);
   max-width: var(--classic-layout-selector-width);
   margin-left: 0;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
 }
 
 .layout-mode-option {
@@ -176,10 +180,15 @@
   border-radius: 14px;
   padding: 0 12px;
   background-color: rgb(var(--color-fill-2));
+  color: var(--color-text-2);
 }
 
 .search-and-sort-bar.classic-toolbar .layout-mode-select .arco-select-view {
   border-color: transparent;
+  min-height: 28px;
+  height: 28px;
+  border-radius: 999px;
+  padding: 0 10px;
 }
 
 .search-and-sort-bar.stream-toolbar .layout-mode-select .arco-select-view {
@@ -189,6 +198,11 @@
 .search-and-sort-bar .layout-mode-select .arco-select-view-value {
   display: inline-flex;
   align-items: center;
+}
+
+.search-and-sort-bar .layout-mode-select .arco-select-view-value .layout-mode-option svg,
+.search-and-sort-bar .layout-mode-select .arco-select-view-suffix {
+  color: var(--color-text-3);
 }
 
 .search-and-sort-bar .layout-mode-select .arco-select-view-suffix {
