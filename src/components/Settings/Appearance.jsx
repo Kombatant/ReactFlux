@@ -33,6 +33,8 @@ const Appearance = () => {
 
   const fontFamilyOptions = [
     { label: polyglot.t("appearance.font_family_system"), value: "system-ui" },
+    { label: "Inter", value: "'Inter', sans-serif" },
+    { label: "Lato", value: "'Lato', sans-serif" },
     { label: "Sans-serif", value: "sans-serif" },
     { label: "Serif", value: "serif" },
     { label: "Fira Sans", value: "'Fira Sans', sans-serif" },

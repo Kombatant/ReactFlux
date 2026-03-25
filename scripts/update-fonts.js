@@ -26,6 +26,18 @@ const FONT_FAMILIES = [
     styles: ["normal"],
   },
   {
+    name: "Inter",
+    dir: "inter",
+    weights: [400],
+    styles: ["normal"],
+  },
+  {
+    name: "Lato",
+    dir: "lato",
+    weights: [400],
+    styles: ["normal"],
+  },
+  {
     name: "Noto Sans",
     dir: "noto-sans",
     weights: [400],
