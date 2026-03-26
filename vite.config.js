@@ -10,15 +10,9 @@ const { dirname, resolve } = path
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const ReactCompilerConfig = { target: "18" }
-
 export default defineConfig({
   plugins: [
-    viteReact({
-      babel: {
-        plugins: [["babel-plugin-react-compiler", ReactCompilerConfig]],
-      },
-    }),
+    viteReact(),
     VitePWA({
       registerType: "autoUpdate",
       devOptions: {
@@ -33,6 +27,7 @@ export default defineConfig({
     // }),
   ],
   resolve: {
+    dedupe: ["react", "react-dom", "react-router"],
     alias: {
       "@": resolve(__dirname, "./src"),
     },

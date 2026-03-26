@@ -10,7 +10,19 @@ import router from "./routes"
 import { registerLanguages } from "./utils/highlighter"
 import "./theme.css"
 
-registerSW({ immediate: true })
+if ("serviceWorker" in navigator) {
+  if (import.meta.env.DEV) {
+    try {
+      const registrations = await navigator.serviceWorker.getRegistrations()
+      await Promise.all(registrations.map((registration) => registration.unregister()))
+    } catch (error) {
+      console.error("Failed to unregister service workers in development:", error)
+    }
+  } else {
+    registerSW({ immediate: true })
+  }
+}
+
 registerLanguages()
 
 ReactDOM.createRoot(document.querySelector("#root")).render(<RouterProvider router={router} />)
