@@ -42,3 +42,5 @@ dist-ssr
 stats.html
 src/version-info.json
 public/version-info.json
+.codex
+.gitignore
