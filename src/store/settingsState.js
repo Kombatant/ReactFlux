@@ -35,6 +35,7 @@ const defaultValue = {
   language: getBrowserLanguage(),
   layoutMode: "classic",
   markReadBy: "view",
+  markReadAfterSeconds: 3,
   markReadOnScroll: false,
   orderBy: "created_at",
   orderDirection: "desc",
@@ -88,6 +89,13 @@ export const settingsState = persistentAtom("settings", defaultValue, {
 
     if (typeof storedValue.entryListWidth === "number") {
       storedValue.entryListWidth = Math.min(900, Math.max(280, storedValue.entryListWidth))
+    }
+
+    if (typeof storedValue.markReadAfterSeconds === "number") {
+      storedValue.markReadAfterSeconds = Math.min(
+        5,
+        Math.max(1, Math.round(storedValue.markReadAfterSeconds)),
+      )
     }
 
     if (storedValue.layoutMode && !["classic", "stream"].includes(storedValue.layoutMode)) {

@@ -12,11 +12,10 @@ import { Message } from "@/utils/feedback"
 import { buildEntryDetailPath, extractBasePath, isEntryDetailPath } from "@/utils/url"
 
 const Context = createContext()
-const MARK_READ_ON_VIEW_DELAY_MS = 3000
 
 export const ContextProvider = ({ children }) => {
   const { polyglot } = useStore(polyglotState)
-  const { markReadBy } = useStore(settingsState)
+  const { markReadAfterSeconds, markReadBy } = useStore(settingsState)
 
   const entryDetailRef = useRef(null)
   const entryListRef = useRef(null)
@@ -104,9 +103,15 @@ export const ContextProvider = ({ children }) => {
         }
 
         markEntryAsRead(entry, { restoreActiveOnError: true })
-      }, MARK_READ_ON_VIEW_DELAY_MS)
+      }, markReadAfterSeconds * 1000)
     },
-    [clearPendingMarkAsRead, flushPendingMarkAsRead, markEntryAsRead, markReadBy],
+    [
+      clearPendingMarkAsRead,
+      flushPendingMarkAsRead,
+      markEntryAsRead,
+      markReadAfterSeconds,
+      markReadBy,
+    ],
   )
 
   useEffect(() => cancelPendingMarkAsRead, [cancelPendingMarkAsRead])
