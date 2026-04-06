@@ -263,12 +263,14 @@
   color: inherit;
 }
 
+.toolbar-dropdown-menu .toolbar-menu-item-label,
 .search-and-sort-bar .toolbar-menu-item-label {
   display: inline-flex;
   align-items: center;
   gap: 10px;
 }
 
+.toolbar-dropdown-menu .toolbar-menu-item-label svg,
 .search-and-sort-bar .toolbar-menu-item-label svg,
 .search-and-sort-bar .toolbar-button-label svg {
   flex: 0 0 auto;
@@ -283,6 +285,7 @@
   white-space: nowrap;
 }
 
+.toolbar-dropdown-menu .toolbar-menu-item,
 .search-and-sort-bar .toolbar-menu-item {
   min-height: 38px;
   padding: 8px 12px !important;

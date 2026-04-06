@@ -181,7 +181,11 @@ const ToolbarActionButton = ({ active = false, icon, label, tooltip, onClick, cl
 )
 
 const ToolbarMenuButton = ({ icon, label, tooltip, children, className = "" }) => (
-  <Dropdown droplist={<Menu>{children}</Menu>} position="bl" trigger="click">
+  <Dropdown
+    droplist={<Menu className="toolbar-dropdown-menu">{children}</Menu>}
+    position="bl"
+    trigger="click"
+  >
     <CustomTooltip mini content={tooltip}>
       <Button
         className={`toolbar-action-button toolbar-menu-button ${className}`.trim()}
