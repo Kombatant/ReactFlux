@@ -20,8 +20,8 @@
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0) 100%),
     rgb(var(--color-bg-1));
-  gap: 8px 16px;
-  padding: 6px 0;
+  gap: 12px 20px;
+  padding: 10px 0 8px;
 }
 
 .search-and-sort-bar .toolbar-main {
@@ -110,11 +110,32 @@
 }
 
 .search-and-sort-bar.stream-toolbar .button-group {
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   flex-wrap: nowrap;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 14px;
   margin: 0 6px;
+}
+
+.search-and-sort-bar .stream-primary-controls,
+.search-and-sort-bar .stream-secondary-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-and-sort-bar .stream-secondary-controls {
+  position: relative;
+  padding-left: 16px;
+}
+
+.search-and-sort-bar .stream-secondary-controls::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 24px;
+  background-color: var(--color-border-2);
 }
 
 .search-and-sort-bar .count-label {
@@ -210,7 +231,7 @@
 }
 
 .search-and-sort-bar .toolbar-menu-button {
-  max-width: 180px;
+  max-width: 220px;
   padding: 2px 8px !important;
   color: var(--color-text-2);
   font-size: 0.95rem;
@@ -218,10 +239,28 @@
   line-height: 1;
 }
 
+.search-and-sort-bar.stream-toolbar .toolbar-action-button {
+  min-height: 32px;
+  border-radius: 999px;
+  padding: 0 12px !important;
+  background-color: rgb(var(--color-fill-2));
+  color: var(--color-text-2);
+}
+
+.search-and-sort-bar.stream-toolbar .toolbar-action-button.is-active {
+  background-color: rgb(var(--primary-6));
+  color: rgb(var(--gray-1));
+}
+
 .search-and-sort-bar .toolbar-button-label {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+}
+
+.search-and-sort-bar .toolbar-button-caret {
+  font-size: 12px;
+  color: inherit;
 }
 
 .search-and-sort-bar .toolbar-menu-item-label {
@@ -234,6 +273,14 @@
 .search-and-sort-bar .toolbar-button-label svg {
   flex: 0 0 auto;
   font-size: 1rem;
+}
+
+.search-and-sort-bar.stream-toolbar .toolbar-button-label {
+  gap: 8px;
+}
+
+.search-and-sort-bar.stream-toolbar .toolbar-button-label > span:last-child {
+  white-space: nowrap;
 }
 
 .search-and-sort-bar .toolbar-menu-item {
@@ -264,6 +311,17 @@
 .search-and-sort-bar .toolbar-menu-button:not(.arco-btn-disabled):hover,
 .search-and-sort-bar .toolbar-menu-button:not(.arco-btn-disabled):focus {
   border-radius: 999px;
+}
+
+.search-and-sort-bar.stream-toolbar .toolbar-action-button:not(.arco-btn-disabled):hover,
+.search-and-sort-bar.stream-toolbar .toolbar-action-button:not(.arco-btn-disabled):focus {
+  background-color: rgb(var(--color-fill-3)) !important;
+}
+
+.search-and-sort-bar.stream-toolbar .toolbar-action-button.is-active:not(.arco-btn-disabled):hover,
+.search-and-sort-bar.stream-toolbar .toolbar-action-button.is-active:not(.arco-btn-disabled):focus {
+  background-color: rgb(var(--primary-5)) !important;
+  color: rgb(var(--gray-1));
 }
 
 .search-and-sort-bar .button-group .arco-btn-size-small.arco-btn-shape-circle {
@@ -314,6 +372,19 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: 10px;
+  }
+
+  .search-and-sort-bar .stream-primary-controls,
+  .search-and-sort-bar .stream-secondary-controls {
+    flex-wrap: wrap;
+  }
+
+  .search-and-sort-bar .stream-secondary-controls {
+    padding-left: 0;
+  }
+
+  .search-and-sort-bar .stream-secondary-controls::before {
+    display: none;
   }
 
   .search-and-sort-bar.classic-toolbar {

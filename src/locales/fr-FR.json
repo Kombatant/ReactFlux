@@ -117,9 +117,13 @@
   "article_list": {
     "sort_direction_desc": "Les plus récents en premier",
     "sort_direction_asc": "Les plus anciens en premier",
+    "sort_label": "Tri",
+    "view_label": "Vue",
     "filter_status_all": "Tout",
+    "filter_status_all_items": "Tous les articles",
     "filter_status_starred": "Favoris",
     "filter_status_unread": "Non lus",
+    "filter_status_unread_only": "Non lus uniquement",
     "mark_all_as_read_success": "Tous les articles marqués comme lus",
     "mark_older_than_day_success": "Articles datant de plus d’un jour marqués comme lus",
     "mark_older_than_two_days_success": "Articles datant de plus de deux jours marqués comme lus",

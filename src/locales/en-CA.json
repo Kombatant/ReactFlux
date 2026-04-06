@@ -117,9 +117,13 @@
   "article_list": {
     "sort_direction_desc": "Newest first",
     "sort_direction_asc": "Oldest first",
+    "sort_label": "Sort",
+    "view_label": "View",
     "filter_status_all": "All",
+    "filter_status_all_items": "All items",
     "filter_status_starred": "Starred",
     "filter_status_unread": "Unread",
+    "filter_status_unread_only": "Unread only",
     "mark_all_as_read_success": "All articles marked as read",
     "mark_older_than_day_success": "Articles older than a day marked as read",
     "mark_older_than_two_days_success": "Articles older than two days marked as read",

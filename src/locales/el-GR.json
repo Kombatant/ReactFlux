@@ -117,9 +117,13 @@
   "article_list": {
     "sort_direction_desc": "Πρώτα τα νεότερα",
     "sort_direction_asc": "Πρώτα τα παλαιότερα",
+    "sort_label": "Ταξινόμηση",
+    "view_label": "Προβολή",
     "filter_status_all": "Όλα",
+    "filter_status_all_items": "Όλα τα άρθρα",
     "filter_status_starred": "Αγαπημένα",
     "filter_status_unread": "Μη αναγνωσμένα",
+    "filter_status_unread_only": "Μόνο μη αναγνωσμένα",
     "mark_all_as_read_success": "Όλα τα άρθρα σημειώθηκαν ως αναγνωσμένα",
     "mark_older_than_day_success": "Άρθρα παλαιότερα της ημέρας σημειώθηκαν ως αναγνωσμένα",
     "mark_older_than_two_days_success": "Άρθρα παλαιότερα των δύο ημερών σημειώθηκαν ως αναγνωσμένα",
