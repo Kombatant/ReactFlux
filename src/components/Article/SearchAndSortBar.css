@@ -285,10 +285,18 @@
   white-space: nowrap;
 }
 
+.toolbar-dropdown-menu {
+  padding: 4px !important;
+}
+
 .toolbar-dropdown-menu .toolbar-menu-item,
 .search-and-sort-bar .toolbar-menu-item {
-  min-height: 38px;
-  padding: 8px 12px !important;
+  min-height: 36px;
+  padding: 0 12px !important;
+  margin: 0 !important;
+  line-height: 36px;
+  display: flex;
+  align-items: center;
 }
 
 .search-and-sort-bar .button-group button {
