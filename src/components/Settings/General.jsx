@@ -27,6 +27,7 @@ const General = () => {
     homePage,
     language,
     layoutMode,
+    markReadAfterSeconds,
     markReadBy,
     markReadOnScroll,
     orderBy,
@@ -185,6 +186,33 @@ const General = () => {
             {polyglot.t("settings.mark_read_manually")}
           </Select.Option>
         </Select>
+      </SettingItem>
+
+      <Divider />
+
+      <SettingItem
+        description={polyglot.t("settings.mark_read_after_description")}
+        disabled={markReadBy !== "view"}
+        disabledLabel={polyglot.t("settings.disabled_label")}
+        disabledReason={polyglot.t("settings.mark_read_after_disabled_reason")}
+        title={polyglot.t("settings.mark_read_after_label")}
+      >
+        <InputNumber
+          className="input-select"
+          disabled={markReadBy !== "view"}
+          max={5}
+          min={1}
+          size="small"
+          step={1}
+          style={{ width: 120 }}
+          suffix={polyglot.t("settings.seconds_suffix")}
+          value={markReadAfterSeconds}
+          onChange={(value) =>
+            updateSettings({
+              markReadAfterSeconds: typeof value === "number" ? value : 3,
+            })
+          }
+        />
       </SettingItem>
 
       <Divider />

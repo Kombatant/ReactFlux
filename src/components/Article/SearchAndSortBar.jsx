@@ -15,6 +15,7 @@ import {
   IconArrowLeft,
   IconArrowRight,
   IconCalendar,
+  IconDown,
   IconQuestionCircle,
   IconRecord,
   IconRefresh,
@@ -163,13 +164,38 @@ const ActiveButton = ({ active, icon, tooltip, onClick }) => (
   </CustomTooltip>
 )
 
+const ToolbarActionButton = ({ active = false, icon, label, tooltip, onClick, className = "" }) => (
+  <CustomTooltip mini content={tooltip}>
+    <Button
+      className={`toolbar-action-button ${active ? "is-active" : ""} ${className}`.trim()}
+      size="small"
+      type="text"
+      onClick={onClick}
+    >
+      <span className="toolbar-button-label">
+        {icon}
+        <span>{label}</span>
+      </span>
+    </Button>
+  </CustomTooltip>
+)
+
 const ToolbarMenuButton = ({ icon, label, tooltip, children, className = "" }) => (
-  <Dropdown droplist={<Menu>{children}</Menu>} position="bl" trigger="click">
+  <Dropdown
+    droplist={<Menu className="toolbar-dropdown-menu">{children}</Menu>}
+    position="bl"
+    trigger="click"
+  >
     <CustomTooltip mini content={tooltip}>
-      <Button className={`toolbar-menu-button ${className}`.trim()} size="small" type="text">
+      <Button
+        className={`toolbar-action-button toolbar-menu-button ${className}`.trim()}
+        size="small"
+        type="text"
+      >
         <span className="toolbar-button-label">
           {icon}
           <span>{label}</span>
+          <IconDown className="toolbar-button-caret" />
         </span>
       </Button>
     </CustomTooltip>
@@ -601,9 +627,6 @@ const SearchAndSortBar = ({ info, markAllAsRead, refreshArticleList, variant = "
     return options
   }, [infoFrom, polyglot])
 
-  const currentStatus =
-    statusOptions.find((option) => option.value === showStatus) ?? statusOptions[0]
-
   const layoutOptions = useMemo(
     () => [
       {
@@ -619,6 +642,22 @@ const SearchAndSortBar = ({ info, markAllAsRead, refreshArticleList, variant = "
     ],
     [polyglot],
   )
+  const currentStatus =
+    statusOptions.find((option) => option.value === showStatus) ?? statusOptions[0]
+  const currentLayout =
+    layoutOptions.find((option) => option.value === layoutMode) ?? layoutOptions[0]
+  const sortDirectionLabel =
+    orderDirection === "desc"
+      ? polyglot.t("article_list.sort_direction_desc")
+      : polyglot.t("article_list.sort_direction_asc")
+  const statusControlLabel =
+    showStatus === "unread"
+      ? polyglot.t("article_list.filter_status_unread_only")
+      : showStatus === "all"
+        ? polyglot.t("article_list.filter_status_all_items")
+        : currentStatus.label
+  const sortControlLabel = `${polyglot.t("article_list.sort_label")}: ${sortDirectionLabel}`
+  const viewControlLabel = `${polyglot.t("article_list.view_label")}: ${currentLayout.label}`
 
   useEffect(() => {
     if (infoFrom === "starred" && showStatus === "starred") {
@@ -678,79 +717,127 @@ const SearchAndSortBar = ({ info, markAllAsRead, refreshArticleList, variant = "
           </div>
         </div>
         <div className="button-group">
-          <ActiveButton
-            active={!!filterString}
-            icon={<IconSearch />}
-            tooltip={polyglot.t("search.search")}
-            onClick={openSearchModal}
-          />
-          <DatePicker
-            popupVisible={calendarVisible}
-            position="bottom"
-            showNowBtn={false}
-            value={filterDate}
-            extra={
-              <div className="calendar-actions">
-                <Button long size="mini" type="primary" onClick={handleSetToday}>
-                  {polyglot.t("search.today")}
-                </Button>
-                <Button long size="mini" onClick={handleClearDate}>
-                  {polyglot.t("search.clear_date")}
-                </Button>
-              </div>
-            }
-            triggerElement={
-              <CustomTooltip mini content={polyglot.t("search.select_date")}>
-                <Button
-                  icon={<IconCalendar />}
-                  shape="circle"
-                  size="small"
-                  style={{
-                    backgroundColor: filterDate ? "rgb(var(--primary-6))" : "inherit",
-                  }}
-                />
-              </CustomTooltip>
-            }
-            onChange={(v) => setFilterDate(v)}
-            onVisibleChange={setCalendarVisible}
-          />
-          {infoFrom === "history" ? null : (
+          <div className="stream-primary-controls">
+            <ToolbarActionButton
+              active={!!filterString}
+              icon={<IconSearch />}
+              label={polyglot.t("search.search")}
+              tooltip={polyglot.t("search.search")}
+              onClick={openSearchModal}
+            />
+            {infoFrom === "history" ? null : (
+              <ToolbarMenuButton
+                className={showStatus === "unread" ? "is-active" : ""}
+                icon={currentStatus.icon}
+                label={statusControlLabel}
+                tooltip={statusControlLabel}
+              >
+                {statusOptions.map((option) => (
+                  <Menu.Item
+                    key={option.value}
+                    className="toolbar-menu-item"
+                    onClick={() => updateSettings({ showStatus: option.value })}
+                  >
+                    <span className="toolbar-menu-item-label">
+                      {option.icon}
+                      <span>
+                        {option.value === "unread"
+                          ? polyglot.t("article_list.filter_status_unread_only")
+                          : option.value === "all"
+                            ? polyglot.t("article_list.filter_status_all_items")
+                            : option.label}
+                      </span>
+                    </span>
+                  </Menu.Item>
+                ))}
+              </ToolbarMenuButton>
+            )}
             <ToolbarMenuButton
-              icon={currentStatus.icon}
-              label={currentStatus.label}
-              tooltip={currentStatus.label}
+              icon={orderDirection === "desc" ? <IconSortDescending /> : <IconSortAscending />}
+              label={sortControlLabel}
+              tooltip={sortDirectionLabel}
             >
-              {statusOptions.map((option) => (
+              <Menu.Item
+                key="desc"
+                className="toolbar-menu-item"
+                onClick={() => updateSettings({ orderDirection: "desc" })}
+              >
+                <span className="toolbar-menu-item-label">
+                  <IconSortDescending />
+                  <span>
+                    {polyglot.t("article_list.sort_label")}:{" "}
+                    {polyglot.t("article_list.sort_direction_desc")}
+                  </span>
+                </span>
+              </Menu.Item>
+              <Menu.Item
+                key="asc"
+                className="toolbar-menu-item"
+                onClick={() => updateSettings({ orderDirection: "asc" })}
+              >
+                <span className="toolbar-menu-item-label">
+                  <IconSortAscending />
+                  <span>
+                    {polyglot.t("article_list.sort_label")}:{" "}
+                    {polyglot.t("article_list.sort_direction_asc")}
+                  </span>
+                </span>
+              </Menu.Item>
+            </ToolbarMenuButton>
+          </div>
+          <div className="stream-secondary-controls">
+            <DatePicker
+              popupVisible={calendarVisible}
+              position="bottom"
+              showNowBtn={false}
+              value={filterDate}
+              extra={
+                <div className="calendar-actions">
+                  <Button long size="mini" type="primary" onClick={handleSetToday}>
+                    {polyglot.t("search.today")}
+                  </Button>
+                  <Button long size="mini" onClick={handleClearDate}>
+                    {polyglot.t("search.clear_date")}
+                  </Button>
+                </div>
+              }
+              triggerElement={
+                <CustomTooltip mini content={polyglot.t("search.select_date")}>
+                  <Button
+                    icon={<IconCalendar />}
+                    shape="circle"
+                    size="small"
+                    style={{
+                      backgroundColor: filterDate ? "rgb(var(--primary-6))" : "inherit",
+                    }}
+                  />
+                </CustomTooltip>
+              }
+              onChange={(v) => setFilterDate(v)}
+              onVisibleChange={setCalendarVisible}
+            />
+            <MarkReadControl info={info} markAllAsRead={markAllAsRead} />
+            <ToolbarMenuButton
+              icon={currentLayout.icon}
+              label={viewControlLabel}
+              tooltip={viewControlLabel}
+            >
+              {layoutOptions.map((option) => (
                 <Menu.Item
                   key={option.value}
                   className="toolbar-menu-item"
-                  onClick={() => updateSettings({ showStatus: option.value })}
+                  onClick={() => updateSettings({ layoutMode: option.value })}
                 >
                   <span className="toolbar-menu-item-label">
                     {option.icon}
-                    <span>{option.label}</span>
+                    <span>
+                      {polyglot.t("article_list.view_label")}: {option.label}
+                    </span>
                   </span>
                 </Menu.Item>
               ))}
             </ToolbarMenuButton>
-          )}
-          <MarkReadControl info={info} markAllAsRead={markAllAsRead} />
-          <LayoutModeSelect layoutMode={layoutMode} layoutOptions={layoutOptions} />
-          <CustomTooltip
-            mini
-            content={
-              orderDirection === "desc"
-                ? polyglot.t("article_list.sort_direction_desc")
-                : polyglot.t("article_list.sort_direction_asc")
-            }
-          >
-            <Button
-              icon={orderDirection === "desc" ? <IconSortDescending /> : <IconSortAscending />}
-              shape="circle"
-              size="small"
-              onClick={toggleOrderDirection}
-            />
-          </CustomTooltip>
+          </div>
         </div>
         <SearchModal
           value={modalInputValue}
